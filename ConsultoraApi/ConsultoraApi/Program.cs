@@ -35,7 +35,6 @@ builder.Services.AddSwaggerGen(c =>
                 }
                });
 });
-var app = builder.Build();
 
 builder.Services.AddCors(o => o.AddPolicy("ConsultoraApi", builder =>
 {
@@ -43,6 +42,7 @@ builder.Services.AddCors(o => o.AddPolicy("ConsultoraApi", builder =>
 }));
 
 builder.Services.AddRouting(r => r.SuppressCheckForUnhandledSecurityMetadata = true);
+var app = builder.Build();
 
 app.UseCors("ConsultoraApi");
 app.Use((context, next) =>
