@@ -1,50 +1,88 @@
+using ConsultoraApi.Mapper;
+using ConsultoraApi.Models;
+using ConsultoraApi.Repositorios;
+using ConsultoraApi.Repositorios.IRepositorios;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Text;
+
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+builder.Services.AddMvc(options =>
+{
+    options.AllowEmptyInputInBodyModelBinding = true;
+    foreach (var formatter in options.InputFormatters)
+    {
+        if (formatter.GetType() == typeof(SystemTextJsonInputFormatter))
+            ((SystemTextJsonInputFormatter)formatter).SupportedMediaTypes.Add(
+            Microsoft.Net.Http.Headers.MediaTypeHeaderValue.Parse("text/plain"));
+    }
+}).AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+});
+
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<ConsultoraPypContext>(options => options.UseSqlServer(connectionString));
+//Entidades Repositorio
+//mantener orden alfabetico
+builder.Services.AddScoped<IUsuarioRepositorio, UsuarioRepositorio>();
+builder.Services.AddScoped<ITipoDocumentoRepositorio, TipoDocumentoRepositorio>();
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "ConsultoraApi", Version = "v1" });
     c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First()); //esta linea agregada para intentar resolver failed api
-
-
-    //Definicion del esquema de seguridad
-    c.AddSecurityDefinition("Bearer",
-        new OpenApiSecurityScheme
-        {
-            Description = "Autenticacin JWT Bearer",
-            Type = SecuritySchemeType.Http,
-            Scheme = "bearer"
-        });
-
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement{
-                {
-                    new OpenApiSecurityScheme
-                    {
-                        Reference = new OpenApiReference
-                        {
-                            Id = "Bearer",
-                            Type = ReferenceType.SecurityScheme
-                        }
-                    }, new List<string>()
-                }
-               });
 });
+builder.Services.AddCors();
 
-builder.Services.AddCors(o => o.AddPolicy("ConsultoraApi", builder =>
-{
-    builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
-}));
+builder.Services.AddHttpContextAccessor();
+
+
+// Mapper
+builder.Services.AddAutoMapper(typeof(ConsultMappers));
 
 builder.Services.AddRouting(r => r.SuppressCheckForUnhandledSecurityMetadata = true);
+var key = "This is my test key";
+builder.Services.AddAuthentication(x =>
+{
+    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(jwt =>
+{
+    jwt.RequireHttpsMetadata = false;
+    jwt.SaveToken = true;
+    jwt.TokenValidationParameters = new TokenValidationParameters()
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(key)),
+        ValidateIssuer = false,
+        ValidateAudience = false
+    };
+});
+//builder.Services.AddSingleton<IJwtAuthenticationManager>(new JwtAuthenticationManager(key));
+
+
+
+
 var app = builder.Build();
 
-app.UseCors("ConsultoraApi");
+app.UseCors(x => x
+  .AllowAnyMethod()
+  .AllowAnyHeader()
+  .SetIsOriginAllowed(origin => true)
+  .AllowCredentials());
+
+
 app.Use((context, next) =>
 {
     context.Items["__CorsMiddlewareInvoked"] = true;
@@ -53,14 +91,27 @@ app.Use((context, next) =>
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    app.UseDeveloperExceptionPage();
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ConsultoraApi v1"));
 }
+
+
+
 
 app.UseHttpsRedirection();
 
+app.UseStaticFiles();
+
+app.UseRouting();
+
+app.UseAuthentication();
+
 app.UseAuthorization();
 
-app.MapControllers();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+});
 
 app.Run();

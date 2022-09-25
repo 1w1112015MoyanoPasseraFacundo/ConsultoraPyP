@@ -14,6 +14,7 @@ namespace ConsultoraApi.Models
         public ConsultoraPypContext(DbContextOptions<ConsultoraPypContext> options)
             : base(options)
         {
+
         }
 
         public virtual DbSet<Candidato> Candidatos { get; set; } = null!;
@@ -36,7 +37,7 @@ namespace ConsultoraApi.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+
                 optionsBuilder.UseSqlServer("Server=DESKTOP-VVK62F7; Database=ConsultoraPyp; Trusted_Connection=True;");
             }
         }
@@ -48,9 +49,7 @@ namespace ConsultoraApi.Models
                 entity.HasKey(e => e.IdCandidato)
                     .HasName("Candidatos_pk");
 
-                entity.Property(e => e.IdCandidato)
-                    .ValueGeneratedNever()
-                    .HasColumnName("idCandidato");
+                entity.Property(e => e.IdCandidato).HasColumnName("idCandidato");
 
                 entity.Property(e => e.Apellido)
                     .HasMaxLength(100)
@@ -132,9 +131,7 @@ namespace ConsultoraApi.Models
 
                 entity.ToTable("CandidatosXCompetencias");
 
-                entity.Property(e => e.IdCandidatoXcompetencia)
-                    .ValueGeneratedNever()
-                    .HasColumnName("idCandidatoXCompetencia");
+                entity.Property(e => e.IdCandidatoXcompetencia).HasColumnName("idCandidatoXCompetencia");
 
                 entity.Property(e => e.IdCandidato).HasColumnName("idCandidato");
 
@@ -158,9 +155,7 @@ namespace ConsultoraApi.Models
                 entity.HasKey(e => e.IdCliente)
                     .HasName("Clientes_pk");
 
-                entity.Property(e => e.IdCliente)
-                    .ValueGeneratedNever()
-                    .HasColumnName("idCliente");
+                entity.Property(e => e.IdCliente).HasColumnName("idCliente");
 
                 entity.Property(e => e.Direccion)
                     .HasMaxLength(100)
@@ -241,9 +236,7 @@ namespace ConsultoraApi.Models
                 entity.HasKey(e => e.IdCompetencia)
                     .HasName("Competencias_pk");
 
-                entity.Property(e => e.IdCompetencia)
-                    .ValueGeneratedNever()
-                    .HasColumnName("idCompetencia");
+                entity.Property(e => e.IdCompetencia).HasColumnName("idCompetencia");
 
                 entity.Property(e => e.FinVigencia)
                     .HasColumnType("datetime")
@@ -272,9 +265,7 @@ namespace ConsultoraApi.Models
                 entity.HasKey(e => e.IdEmpleo)
                     .HasName("Empleos_pk");
 
-                entity.Property(e => e.IdEmpleo)
-                    .ValueGeneratedNever()
-                    .HasColumnName("idEmpleo");
+                entity.Property(e => e.IdEmpleo).HasColumnName("idEmpleo");
 
                 entity.Property(e => e.FechaAlta)
                     .HasColumnType("datetime")
@@ -321,9 +312,7 @@ namespace ConsultoraApi.Models
 
                 entity.ToTable("EmpleosXCompetencias");
 
-                entity.Property(e => e.IdEmpleoXcompetencia)
-                    .ValueGeneratedNever()
-                    .HasColumnName("idEmpleoXCompetencia");
+                entity.Property(e => e.IdEmpleoXcompetencia).HasColumnName("idEmpleoXCompetencia");
 
                 entity.Property(e => e.IdCompetencia).HasColumnName("idCompetencia");
 
@@ -347,9 +336,7 @@ namespace ConsultoraApi.Models
                 entity.HasKey(e => e.IdEstado)
                     .HasName("Estados_pk");
 
-                entity.Property(e => e.IdEstado)
-                    .ValueGeneratedNever()
-                    .HasColumnName("idEstado");
+                entity.Property(e => e.IdEstado).HasColumnName("idEstado");
 
                 entity.Property(e => e.Nombre)
                     .HasMaxLength(100)
@@ -362,9 +349,7 @@ namespace ConsultoraApi.Models
                 entity.HasKey(e => e.IdGenero)
                     .HasName("PK_GENEROS");
 
-                entity.Property(e => e.IdGenero)
-                    .ValueGeneratedNever()
-                    .HasColumnName("idGenero");
+                entity.Property(e => e.IdGenero).HasColumnName("idGenero");
 
                 entity.Property(e => e.Nombre)
                     .HasMaxLength(100)
@@ -377,9 +362,7 @@ namespace ConsultoraApi.Models
                 entity.HasKey(e => e.IdPago)
                     .HasName("Pagos_pk");
 
-                entity.Property(e => e.IdPago)
-                    .ValueGeneratedNever()
-                    .HasColumnName("idPago");
+                entity.Property(e => e.IdPago).HasColumnName("idPago");
 
                 entity.Property(e => e.Estado).HasColumnName("estado");
 
@@ -403,9 +386,7 @@ namespace ConsultoraApi.Models
                 entity.HasKey(e => e.IdPais)
                     .HasName("PK_PAISES");
 
-                entity.Property(e => e.IdPais)
-                    .ValueGeneratedNever()
-                    .HasColumnName("idPais");
+                entity.Property(e => e.IdPais).HasColumnName("idPais");
 
                 entity.Property(e => e.Nombre)
                     .HasMaxLength(100)
@@ -418,9 +399,7 @@ namespace ConsultoraApi.Models
                 entity.HasKey(e => e.IdRol)
                     .HasName("PK_ROLES");
 
-                entity.Property(e => e.IdRol)
-                    .ValueGeneratedNever()
-                    .HasColumnName("idRol");
+                entity.Property(e => e.IdRol).HasColumnName("idRol");
 
                 entity.Property(e => e.Nombre)
                     .HasMaxLength(100)
@@ -433,9 +412,7 @@ namespace ConsultoraApi.Models
                 entity.HasKey(e => e.IdRubro)
                     .HasName("PK_RUBROS");
 
-                entity.Property(e => e.IdRubro)
-                    .ValueGeneratedNever()
-                    .HasColumnName("idRubro");
+                entity.Property(e => e.IdRubro).HasColumnName("idRubro");
 
                 entity.Property(e => e.Nombre)
                     .HasMaxLength(100)
@@ -450,9 +427,7 @@ namespace ConsultoraApi.Models
 
                 entity.ToTable("TiposDocumento");
 
-                entity.Property(e => e.IdTipoDocumento)
-                    .ValueGeneratedNever()
-                    .HasColumnName("idTipoDocumento");
+                entity.Property(e => e.IdTipoDocumento).HasColumnName("idTipoDocumento");
 
                 entity.Property(e => e.Nombre)
                     .HasMaxLength(100)
@@ -465,16 +440,14 @@ namespace ConsultoraApi.Models
                 entity.HasKey(e => e.IdUsuario)
                     .HasName("Usuarios_pk");
 
-                entity.Property(e => e.IdUsuario)
-                    .ValueGeneratedNever()
-                    .HasColumnName("idUsuario");
+                entity.Property(e => e.IdUsuario).HasColumnName("idUsuario");
 
                 entity.Property(e => e.Apellido)
                     .HasMaxLength(100)
                     .IsUnicode(false)
                     .HasColumnName("apellido");
 
-                entity.Property(e => e.Cuil).HasColumnName("cuil");
+                entity.Property(e => e.Cuil).HasMaxLength(50).IsUnicode(false).HasColumnName("cuil");
 
                 entity.Property(e => e.Direccion)
                     .HasMaxLength(100)
@@ -541,9 +514,7 @@ namespace ConsultoraApi.Models
 
                 entity.ToTable("UsuariosXRoles");
 
-                entity.Property(e => e.IdUsuarioXrol)
-                    .ValueGeneratedNever()
-                    .HasColumnName("idUsuarioXRol");
+                entity.Property(e => e.IdUsuarioXrol).HasColumnName("idUsuarioXRol");
 
                 entity.Property(e => e.IdRol).HasColumnName("idRol");
 
