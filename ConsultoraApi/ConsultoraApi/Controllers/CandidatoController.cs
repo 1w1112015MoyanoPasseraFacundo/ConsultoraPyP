@@ -4,14 +4,15 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ConsultoraApi.Controllers
+
 {
+    [Route("api/Candidatos")]
     [ApiController]
     [EnableCors("ConsultoraApi")]
     public class CandidatoController
     {
         private readonly ConsultoraPypContext db = new ConsultoraPypContext();
         [HttpGet]
-        [Route("candidatos")]
         public ActionResult<RespuestaAPI> Get()
         {
             var resultado = new RespuestaAPI();
