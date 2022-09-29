@@ -1,18 +1,18 @@
 import React from "react";
+import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import Swal from "sweetalert2";
 import {
-  darDeBajaCandidato,
-  obtenerCandidatosAction,
-} from "../../actions/candidatosActions";
+  darDeBajaUsuario,
+  obtenerUsuariosAction,
+} from "../../actions/usuariosActions";
 
-const AccionesCandidatos = ({ candidato }) => {
-  const { nombre, apellido, fechaNacimiento, idCandidato } = candidato;
+const AccionesUsuarios = ({ usuario }) => {
+  const { nombre, apellido, cuil, idUsuario } = usuario;
   const dispatch = useDispatch();
-  const confirmarEliminar = (idCandidato) => {
+  const confirmarEliminar = (idUsuario) => {
     Swal.fire({
-      title: "Está seguro que desea dar de baja este candidato?",
+      title: "Está seguro que desea dar de baja este usuario?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -21,37 +21,38 @@ const AccionesCandidatos = ({ candidato }) => {
       cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.isConfirmed) {
-        dispatch(darDeBajaCandidato(candidato.idCandidato));
+        dispatch(darDeBajaUsuario(idUsuario));
       }
     });
   };
 
   const navigate = useNavigate();
 
-  const redireccionarEdicion = (candidato) => {
-    dispatch(obtenerCandidatosAction(candidato));
-    navigate(`candidato/editar/${candidato.idCandidato}`);
+  const redireccionarEdicion = (usuario) => {
+    dispatch(obtenerUsuariosAction(usuario));
+    navigate(`usuario/editar/${usuario.idUsuario}`);
   };
+
   return (
     <tr>
       <td>
         {apellido}, {nombre}
       </td>
       <td>
-        <span className="font-weight-bold">{fechaNacimiento}</span>
+        <span className="font-weight-bold">{cuil}</span>
       </td>
       <td className="acciones">
         <button
           type="button"
           className="btn btn-primary mr-2"
-          onClick={() => redireccionarEdicion(candidato)}
+          onClick={() => redireccionarEdicion(usuario)}
         >
           Editar
         </button>
         <button
           type="button"
           className="btn btn-danger"
-          onClick={() => confirmarEliminar(idCandidato)}
+          onClick={() => confirmarEliminar(idUsuario)}
         >
           Dar de baja
         </button>
@@ -60,4 +61,4 @@ const AccionesCandidatos = ({ candidato }) => {
   );
 };
 
-export default AccionesCandidatos;
+export default AccionesUsuarios;

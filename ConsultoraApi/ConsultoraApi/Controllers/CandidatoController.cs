@@ -1,4 +1,6 @@
-﻿using ConsultoraApi.Models;
+﻿using AutoMapper;
+using ConsultoraApi.Models;
+using ConsultoraApi.Repositorios.IRepositorios;
 using ConsultoraApi.Resultados;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
@@ -9,27 +11,25 @@ namespace ConsultoraApi.Controllers
     [Route("api/Candidatos")]
     [ApiController]
     [EnableCors("ConsultoraApi")]
-    public class CandidatoController
+    public class CandidatoController : ControllerBase
     {
         private readonly ConsultoraPypContext db = new ConsultoraPypContext();
-        [HttpGet]
-        public ActionResult<RespuestaAPI> Get()
+        //IMapper _mapper;
+        //private readonly IUsuarioRepositorio _uRepo;
+
+        public CandidatoController(ConsultoraPypContext _db)
         {
-            var resultado = new RespuestaAPI();
-            try
+            db = _db;
+        }
+        [HttpGet]
+        public IActionResult Get()
+        {
+            var cand = db.Candidatos.ToList();
+            if (cand == null || cand.Count == 0)
             {
-                resultado.Ok = true;
-                resultado.Respuesta = db.Candidatos.ToList();
-
-                return resultado;
+                return StatusCode(400, "No existe ningún candidato registrado");
             }
-            catch (Exception ex)
-            {
-                resultado.Ok = false;
-                resultado.Error = "Error al encontrar candidatos";
-                return resultado;
-            }
-
+            return Ok(cand);
         }
     }
 }

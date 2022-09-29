@@ -49,6 +49,8 @@ namespace ConsultoraApi.Controllers
                 return StatusCode(409, "Ya existe el mismo nombre de usuario");
             }
             usu.FechaSalida = null;
+            usu.FechaAlta = DateTime.Now;
+            usu.Password = "awantia";
             if (!_uRepo.CreateUsuario(usu))
             {
                 return StatusCode(500, $"Algo salió mal creando el usuario {usu.NombreUsuario}");

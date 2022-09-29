@@ -52,12 +52,12 @@ export function obtenerCandidatosAction() {
   return async (dispatch) => {
     dispatch(descargarCandidatos());
     try {
-      const respuesta = await clienteAxios.get("/Usuarios");
-      console.log(respuesta);
+      const respuesta = await clienteAxios.get("/Candidatos");
       dispatch(descargarCandidatosExitosa(respuesta.data));
+      console.log(respuesta.data);
     } catch (error) {
-      console.log(error);
-      dispatch(descargarCandidatosError());
+      console.log(error.response.data);
+      dispatch(descargarCandidatosError(error.response));
     }
   };
 }
@@ -72,17 +72,17 @@ const descargarCandidatosExitosa = (candidatos) => ({
   payload: candidatos,
 });
 
-const descargarCandidatosError = () => ({
+const descargarCandidatosError = (error) => ({
   type: DESCARGA_CANDIDATOS_ERROR,
-  payload: true,
+  payload: error.data,
 });
 
 //dar de baja candidato
-export function darDeBajaCandidato(id) {
+export function darDeBajaCandidato(idCandidato) {
   return async (dispatch) => {
-    dispatch(obtenerCandidatoBaja(id));
+    dispatch(obtenerCandidatoBaja(idCandidato));
     try {
-      await clienteAxios.put(`/candidatos/${id}`);
+      await clienteAxios.put(`/candidatos/${idCandidato}`);
       dispatch(eliminarCandidatoExito());
       Swal.fire("Eliminado!", "El candidato ha sido dado de baja", "success");
     } catch (error) {

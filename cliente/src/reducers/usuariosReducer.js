@@ -1,18 +1,18 @@
 import {
-  AGREGAR_CANDIDATO,
-  AGREGAR_CANDIDATO_ERROR,
-  AGREGAR_CANDIDATO_EXITO,
-  CANDIDATO_ELIMINADO_ERROR,
-  CANDIDATO_ELIMINADO_EXITO,
-  COMENZAR_DESCARGA_CANDIDATOS,
-  DESCARGA_CANDIDATOS_ERROR,
-  DESCARGA_CANDIDATOS_EXITOS,
-  OBTENER_CANDIDATO_ELIMINAR,
+  AGREGAR_USUARIO,
+  AGREGAR_USUARIO_ERROR,
+  AGREGAR_USUARIO_EXITO,
+  USUARIO_ELIMINADO_ERROR,
+  USUARIO_ELIMINADO_EXITO,
+  COMENZAR_DESCARGA_USUARIOS,
+  DESCARGA_USUARIOS_ERROR,
+  DESCARGA_USUARIOS_EXITOS,
+  OBTENER_USUARIO_ELIMINAR,
 } from "../types";
 
 //cada reducer tiene su propio state
 const initialState = {
-  candidatos: [],
+  usuarios: [],
   error: null,
   loading: false,
   eliminar: null,
@@ -21,46 +21,46 @@ const initialState = {
 // eslint-disable-next-line
 export default function (state = initialState, action) {
   switch (action.type) {
-    case AGREGAR_CANDIDATO:
-    case COMENZAR_DESCARGA_CANDIDATOS:
-    case CANDIDATO_ELIMINADO_ERROR:
+    case AGREGAR_USUARIO:
+    case COMENZAR_DESCARGA_USUARIOS:
+    case USUARIO_ELIMINADO_ERROR:
       //   case PRODUCTO_EDITADO_ERROR:
       return {
         ...state,
         loading: false,
         error: action.payload,
       };
-    case AGREGAR_CANDIDATO_EXITO:
+    case AGREGAR_USUARIO_EXITO:
       return {
         ...state,
         loading: false,
-        candidatos: [...state.candidatos, action.payload],
+        usuarios: [...state.productos, action.payload],
         error: null,
       };
-    case AGREGAR_CANDIDATO_ERROR:
-    case DESCARGA_CANDIDATOS_ERROR:
+    case AGREGAR_USUARIO_ERROR:
+    case DESCARGA_USUARIOS_ERROR:
       return {
         ...state,
         loading: false,
         error: action.payload,
       };
-    case DESCARGA_CANDIDATOS_EXITOS:
+    case DESCARGA_USUARIOS_EXITOS:
       return {
         ...state,
         loading: false,
-        candidatos: action.payload,
+        usuarios: action.payload,
         error: null,
       };
-    case OBTENER_CANDIDATO_ELIMINAR:
+    case OBTENER_USUARIO_ELIMINAR:
       return {
         ...state,
         eliminar: action.payload,
       };
-    case CANDIDATO_ELIMINADO_EXITO:
+    case USUARIO_ELIMINADO_EXITO:
       return {
         ...state,
-        candidatos: state.candidatos.filter(
-          (candidato) => candidato.id !== state.eliminar
+        usuarios: state.usuarios.filter(
+          (USUARIO) => USUARIO.id !== state.eliminar
         ),
         eliminar: null,
       };
