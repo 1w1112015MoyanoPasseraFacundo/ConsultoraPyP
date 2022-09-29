@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import {
   darDeBajaUsuario,
-  obtenerUsuariosAction,
+  obtenerUsuarioEditar,
 } from "../../actions/usuariosActions";
 
 const AccionesUsuarios = ({ usuario }) => {
@@ -29,8 +29,8 @@ const AccionesUsuarios = ({ usuario }) => {
   const navigate = useNavigate();
 
   const redireccionarEdicion = (usuario) => {
-    dispatch(obtenerUsuariosAction(usuario));
-    navigate(`usuario/editar/${usuario.idUsuario}`);
+    dispatch(obtenerUsuarioEditar(usuario));
+    navigate(`editar/${usuario.idUsuario}`);
   };
 
   return (

@@ -12,7 +12,6 @@ const Usuarios = () => {
   }, []);
 
   const usuarios = useSelector((state) => state.usuarios.usuarios);
-  console.log(usuarios);
   return (
     <Fragment>
       <h1>Usuarios</h1>

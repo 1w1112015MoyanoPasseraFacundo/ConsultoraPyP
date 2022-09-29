@@ -8,6 +8,9 @@ import {
   DESCARGA_USUARIOS_ERROR,
   DESCARGA_USUARIOS_EXITOS,
   OBTENER_USUARIO_ELIMINAR,
+  USUARIO_EDITADO_ERROR,
+  USUARIO_EDITADO_EXITO,
+  OBTENER_PRODUCTO_EDITAR,
 } from "../types";
 
 //cada reducer tiene su propio state
@@ -24,7 +27,7 @@ export default function (state = initialState, action) {
     case AGREGAR_USUARIO:
     case COMENZAR_DESCARGA_USUARIOS:
     case USUARIO_ELIMINADO_ERROR:
-      //   case PRODUCTO_EDITADO_ERROR:
+    case USUARIO_EDITADO_ERROR:
       return {
         ...state,
         loading: false,
@@ -64,21 +67,25 @@ export default function (state = initialState, action) {
         ),
         eliminar: null,
       };
-    // case OBTENER_PRODUCTO_EDITAR:
-    //   return {
-    //     ...state,
-    //     editar: action.payload,
-    //   };
-    // case PRODUCTO_EDITADO_EXITO:
-    //   return {
-    //     ...state,
-    //     editar: null,
-    //     productos: state.productos.map((producto) =>
-    //       producto.id === action.payload.id
-    //         ? (producto = action.payload)
-    //         : producto
-    //     ),
-    //   };
+    case OBTENER_PRODUCTO_EDITAR:
+      return {
+        ...state,
+        editar: state.usuarios.map((usuario) =>
+          usuario.idUsuario === action.payload.idUsuario
+            ? (usuario = action.payload)
+            : usuario
+        ),
+      };
+    case USUARIO_EDITADO_EXITO:
+      return {
+        ...state,
+        editar: null,
+        usuarios: state.usuarios.map((usuario) =>
+          usuario.idUsuario === action.payload.idUsuario
+            ? (usuario = action.payload)
+            : usuario
+        ),
+      };
     default:
       return state;
   }

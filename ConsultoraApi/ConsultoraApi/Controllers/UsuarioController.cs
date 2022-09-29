@@ -33,7 +33,22 @@ namespace ConsultoraApi.Controllers
                 return StatusCode(400, "No existe usuarios registrados");
             }
             return Ok(usu);
-        }		
+        }
+
+        [HttpGet("{idUsuario:int}", Name = "GetUsuario")]
+        public IActionResult GetUsuario(int idUsuario)
+        {
+            var usuario = _uRepo.GetUsuario(idUsuario);
+
+            if (usuario == null)
+            {
+                return NotFound();
+            }
+
+            var usuarioGetDto = _mapper.Map<UpdateUsuarioDto>(usuario);
+
+            return Ok(usuarioGetDto);
+        }
 
 
         [HttpPost]

@@ -4,9 +4,13 @@ import {
   AGREGAR_USUARIO_ERROR,
   AGREGAR_USUARIO_EXITO,
   COMENZAR_DESCARGA_USUARIOS,
+  COMENZAR_EDICION_USUARIO,
   DESCARGA_USUARIOS_ERROR,
   DESCARGA_USUARIOS_EXITOS,
+  OBTENER_PRODUCTO_EDITAR,
   OBTENER_USUARIO_ELIMINAR,
+  USUARIO_EDITADO_ERROR,
+  USUARIO_EDITADO_EXITO,
   USUARIO_ELIMINADO_ERROR,
   USUARIO_ELIMINADO_EXITO,
 } from "../types";
@@ -14,7 +18,6 @@ import Swal from "sweetalert2";
 
 //crear nuevos usuarios
 export function crearNuevoUsuarioAction(usuario) {
-  console.log(usuario);
   return async (dispatch) => {
     dispatch(agregarUsuario());
 
@@ -24,7 +27,6 @@ export function crearNuevoUsuarioAction(usuario) {
       dispatch(agregarUsuarioExito(usuario));
       Swal.fire("Correcto!", "El usuario se agrego correctamente!", "success");
     } catch (error) {
-      console.log(error.config.data);
       dispatch(agregarUsuarioError(true));
       Swal.fire("Hubo un error!", "Intenta de nuevo", "error");
     }
@@ -52,11 +54,8 @@ export function obtenerUsuariosAction() {
     try {
       const respuesta = await clienteAxios.get("/Usuarios");
       dispatch(descargarUsuariosExitosa(respuesta.data));
-      console.log(respuesta.data);
     } catch (error) {
-      console.log(error.response);
       dispatch(descargarUsuariosError(error.response));
-      console.log(error.response);
     }
   };
 }
@@ -101,5 +100,51 @@ const eliminarUsuarioExito = () => ({
 
 const eliminarUsuarioError = () => ({
   type: USUARIO_ELIMINADO_ERROR,
+  payload: true,
+});
+
+export function obtenerUsuarioEditar(usuario) {
+  return async (dispatch) => {
+    try {
+      var usuarioGet = await clienteAxios.get(`/Usuarios/${usuario.idUsuario}`);
+      console.log(usuarioGet.data);
+      dispatch(obtenerUsuarioEditarAction(usuarioGet.data));
+    } catch (error) {
+      dispatch(obtenerUsuarioEditarAction(usuario));
+    }
+  };
+}
+
+const obtenerUsuarioEditarAction = (usuarioGet) => ({
+  type: OBTENER_PRODUCTO_EDITAR,
+  payload: usuarioGet.data,
+});
+
+export function editarUsuarioAction(usuario) {
+  return async (dispatch) => {
+    dispatch(editarUsuario());
+    try {
+      await clienteAxios.put(`/usuarios/${usuario.idUsuario}`, usuario);
+      console.log(usuario);
+      dispatch(editarUsuarioExito(usuario));
+      Swal.fire("Editado!", "El usuario ha sido editado", "success");
+    } catch (error) {
+      console.log(error);
+      dispatch(editarUsuarioError());
+    }
+  };
+}
+
+const editarUsuario = () => ({
+  type: COMENZAR_EDICION_USUARIO,
+});
+
+const editarUsuarioExito = (usuario) => ({
+  type: USUARIO_EDITADO_EXITO,
+  payload: usuario,
+});
+
+const editarUsuarioError = () => ({
+  type: USUARIO_EDITADO_ERROR,
   payload: true,
 });

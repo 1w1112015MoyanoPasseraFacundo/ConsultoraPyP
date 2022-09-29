@@ -13,8 +13,6 @@ const Candidatos = () => {
 
   const candidatos = useSelector((state) => state.candidatos.candidatos);
   const error = useSelector((state) => state.candidatos.error);
-  console.log(error);
-  console.log(candidatos);
   return (
     <Fragment>
       <h1>Candidatos</h1>

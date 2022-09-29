@@ -6,6 +6,7 @@ import { Provider } from "react-redux";
 import store from "./store";
 import Usuarios from "./components/Usuarios/Usuarios";
 import NuevoUsuario from "./components/Usuarios/NuevoUsuario";
+import EditarUsuario from "./components/Usuarios/EditarUsuario";
 function App() {
   return (
     <Router>
@@ -15,7 +16,12 @@ function App() {
           <Routes>
             <Route exact path="/candidatos" element={<Candidatos />} />
             <Route exact path="/usuarios" element={<Usuarios />} />
-            <Route exact path="/nuevoUsuario" element={<NuevoUsuario />} />
+            <Route exact path="usuarios/nuevo" element={<NuevoUsuario />} />
+            <Route
+              exact
+              path="/usuarios/editar/:id"
+              element={<EditarUsuario />}
+            />
           </Routes>
         </div>
       </Provider>
