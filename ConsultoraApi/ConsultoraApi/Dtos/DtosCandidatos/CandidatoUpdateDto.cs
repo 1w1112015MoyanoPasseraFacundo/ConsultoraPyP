@@ -1,9 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ConsultoraApi.Dtos.DtosUsuarios
+namespace ConsultoraApi.Dtos.DtosCandidatos
 {
-    public class UsuarioCreateDto
+    public class CandidatoUpdateDto
     {
+        public int IdCandidato { get; set; }
         [Required(ErrorMessage = "El campo Nombre es obligatorio")]
         public string Nombre { get; set; }
 
@@ -23,22 +24,16 @@ namespace ConsultoraApi.Dtos.DtosUsuarios
         [Required(ErrorMessage = "El campo Mail es obligatorio")]
         public string Mail { get; set; }
 
-        [Required(ErrorMessage = "El campo Nombre es obligatorio")]
-        public string? NombreUsuario { get; set; }
-        [Required(ErrorMessage = "El campo Cuil es obligatorio")]
-        public string Cuil { get; set; }
+        public string? Seniority { get; set; }
+        public int? EstadoCivil { get; set; }
 
-        public string? Direccion { get; set; }
+        public string? Linkedin { get; set; }
 
         [Required(ErrorMessage = "El campo Genero es obligatorio")]
         public int IdGenero { get; set; }
-
-
-        //[Required(ErrorMessage = "El campo password es obligatorio")]
-        //public string? Password { get; set; }
-
-        //[Required(ErrorMessage = "El campo Fecha Entrada es obligatorio")]
-        //public DateTime FechaAlta { get; set; }
-
+        [Required(ErrorMessage = "El campo Pais es obligatorio")]
+        public int IdPais { get; set; }
+        [Required(ErrorMessage = "El campo Rubro es obligatorio")]
+        public int IdRubro { get; set; }
     }
 }

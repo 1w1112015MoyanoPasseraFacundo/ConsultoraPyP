@@ -2,11 +2,14 @@ import {
   AGREGAR_CANDIDATO,
   AGREGAR_CANDIDATO_ERROR,
   AGREGAR_CANDIDATO_EXITO,
+  CANDIDATO_EDITADO_ERROR,
+  CANDIDATO_EDITADO_EXITO,
   CANDIDATO_ELIMINADO_ERROR,
   CANDIDATO_ELIMINADO_EXITO,
   COMENZAR_DESCARGA_CANDIDATOS,
   DESCARGA_CANDIDATOS_ERROR,
   DESCARGA_CANDIDATOS_EXITOS,
+  OBTENER_CANDIDATO_EDITAR,
   OBTENER_CANDIDATO_ELIMINAR,
 } from "../types";
 
@@ -24,7 +27,7 @@ export default function (state = initialState, action) {
     case AGREGAR_CANDIDATO:
     case COMENZAR_DESCARGA_CANDIDATOS:
     case CANDIDATO_ELIMINADO_ERROR:
-      //   case PRODUCTO_EDITADO_ERROR:
+    case CANDIDATO_EDITADO_ERROR:
       return {
         ...state,
         loading: false,
@@ -64,21 +67,21 @@ export default function (state = initialState, action) {
         ),
         eliminar: null,
       };
-    // case OBTENER_PRODUCTO_EDITAR:
-    //   return {
-    //     ...state,
-    //     editar: action.payload,
-    //   };
-    // case PRODUCTO_EDITADO_EXITO:
-    //   return {
-    //     ...state,
-    //     editar: null,
-    //     productos: state.productos.map((producto) =>
-    //       producto.id === action.payload.id
-    //         ? (producto = action.payload)
-    //         : producto
-    //     ),
-    //   };
+    case OBTENER_CANDIDATO_EDITAR:
+      return {
+        ...state,
+        editar: action.payload,
+      };
+    case CANDIDATO_EDITADO_EXITO:
+      return {
+        ...state,
+        editar: null,
+        candidatos: state.candidatos.map((candidato) =>
+          candidato.idCandidato === action.payload.idCandidato
+            ? (candidato = action.candidato)
+            : candidato
+        ),
+      };
     default:
       return state;
   }

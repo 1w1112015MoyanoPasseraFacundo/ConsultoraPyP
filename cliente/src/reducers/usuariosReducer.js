@@ -70,11 +70,7 @@ export default function (state = initialState, action) {
     case OBTENER_PRODUCTO_EDITAR:
       return {
         ...state,
-        editar: state.usuarios.map((usuario) =>
-          usuario.idUsuario === action.payload.idUsuario
-            ? (usuario = action.payload)
-            : usuario
-        ),
+        editar: action.payload,
       };
     case USUARIO_EDITADO_EXITO:
       return {

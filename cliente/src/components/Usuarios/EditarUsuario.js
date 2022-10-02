@@ -20,7 +20,7 @@ const EditarUsuario = () => {
     telefono: "",
   });
   const editar = useSelector((state) => state.usuarios.editar);
-  console.log(editar);
+  // console.log(editar);
   useEffect(() => {
     guardarUsuario(editar);
   }, [editar]);
@@ -49,6 +49,7 @@ const EditarUsuario = () => {
   const submitEditarUsuario = (e) => {
     e.preventDefault();
     dispatch(editarUsuarioAction(usuario));
+    console.log(usuario);
     navigate("/usuarios");
   };
 

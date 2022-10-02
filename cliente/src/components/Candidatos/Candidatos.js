@@ -20,7 +20,11 @@ const Candidatos = () => {
         <thead className="bg-primary table-dark">
           <tr>
             <th scope="col">Nombre</th>
-            <th scope="col">Precio</th>
+            <th scope="col">País</th>
+            <th scope="col">Documento</th>
+            <th scope="col">E-mail</th>
+            <th scope="col">Fecha de nacimiento</th>
+            <th scope="col">Teléfono</th>
             <th scope="col">Acciones</th>
           </tr>
         </thead>

@@ -4,11 +4,23 @@ import { useDispatch } from "react-redux";
 import Swal from "sweetalert2";
 import {
   darDeBajaCandidato,
+  obtenerCandidatoEditar,
   obtenerCandidatosAction,
 } from "../../actions/candidatosActions";
+import Moment from "moment";
 
 const AccionesCandidatos = ({ candidato }) => {
-  const { nombre, apellido, fechaNacimiento, idCandidato } = candidato;
+  console.log(candidato);
+  const {
+    nombre,
+    apellido,
+    documento,
+    idPais,
+    telefono,
+    mail,
+    fechaNacimiento,
+    idCandidato,
+  } = candidato;
   const dispatch = useDispatch();
   const confirmarEliminar = (idCandidato) => {
     Swal.fire({
@@ -29,8 +41,8 @@ const AccionesCandidatos = ({ candidato }) => {
   const navigate = useNavigate();
 
   const redireccionarEdicion = (candidato) => {
-    dispatch(obtenerCandidatosAction(candidato));
-    navigate(`candidato/editar/${candidato.idCandidato}`);
+    dispatch(obtenerCandidatoEditar(candidato));
+    navigate(`editar/${candidato.idCandidato}`);
   };
   return (
     <tr>
@@ -38,7 +50,21 @@ const AccionesCandidatos = ({ candidato }) => {
         {apellido}, {nombre}
       </td>
       <td>
-        <span className="font-weight-bold">{fechaNacimiento}</span>
+        <span className="font-weight-bold">{idPais}</span>
+      </td>
+      <td>
+        <span className="font-weight-bold">{documento}</span>
+      </td>
+      <td>
+        <span className="font-weight-bold">{mail}</span>
+      </td>
+      <td>
+        <span className="font-weight-bold">
+          {Moment(fechaNacimiento).format("DD/MM/YYYY")}
+        </span>
+      </td>
+      <td>
+        <span className="font-weight-bold">{telefono}</span>
       </td>
       <td className="acciones">
         <button

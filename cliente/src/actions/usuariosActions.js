@@ -20,7 +20,7 @@ import Swal from "sweetalert2";
 export function crearNuevoUsuarioAction(usuario) {
   return async (dispatch) => {
     dispatch(agregarUsuario());
-
+    console.log(usuario);
     try {
       //insertar en la API
       await clienteAxios.post("/Usuarios", usuario);
@@ -80,7 +80,7 @@ export function darDeBajaUsuario(id) {
   return async (dispatch) => {
     dispatch(obtenerUsuarioBaja(id));
     try {
-      await clienteAxios.put(`/Usuarios/${id}`);
+      await clienteAxios.delete(`/Usuarios/${id}`);
       dispatch(eliminarUsuarioExito());
       Swal.fire("Eliminado!", "El usuario ha sido dado de baja", "success");
     } catch (error) {
@@ -104,20 +104,14 @@ const eliminarUsuarioError = () => ({
 });
 
 export function obtenerUsuarioEditar(usuario) {
-  return async (dispatch) => {
-    try {
-      var usuarioGet = await clienteAxios.get(`/Usuarios/${usuario.idUsuario}`);
-      console.log(usuarioGet.data);
-      dispatch(obtenerUsuarioEditarAction(usuarioGet.data));
-    } catch (error) {
-      dispatch(obtenerUsuarioEditarAction(usuario));
-    }
+  return (dispatch) => {
+    return dispatch(obtenerUsuarioEditarAction(usuario));
   };
 }
 
-const obtenerUsuarioEditarAction = (usuarioGet) => ({
+const obtenerUsuarioEditarAction = (usuario) => ({
   type: OBTENER_PRODUCTO_EDITAR,
-  payload: usuarioGet.data,
+  payload: usuario,
 });
 
 export function editarUsuarioAction(usuario) {
@@ -127,7 +121,7 @@ export function editarUsuarioAction(usuario) {
       await clienteAxios.put(`/usuarios/${usuario.idUsuario}`, usuario);
       console.log(usuario);
       dispatch(editarUsuarioExito(usuario));
-      Swal.fire("Editado!", "El usuario ha sido editado", "success");
+      // Swal.fire("Editado!", "El usuario ha sido editado", "success");
     } catch (error) {
       console.log(error);
       dispatch(editarUsuarioError());

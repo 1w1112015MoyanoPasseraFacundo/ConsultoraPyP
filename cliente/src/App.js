@@ -7,6 +7,8 @@ import store from "./store";
 import Usuarios from "./components/Usuarios/Usuarios";
 import NuevoUsuario from "./components/Usuarios/NuevoUsuario";
 import EditarUsuario from "./components/Usuarios/EditarUsuario";
+import NuevoCandidato from "./components/Candidatos/NuevoCandidato";
+import EditarCandidato from "./components/Candidatos/EditarCandidato";
 function App() {
   return (
     <Router>
@@ -15,6 +17,16 @@ function App() {
         <div className="container mt-5">
           <Routes>
             <Route exact path="/candidatos" element={<Candidatos />} />
+            <Route
+              exact
+              path="/candidatos/nuevo"
+              element={<NuevoCandidato />}
+            />
+            <Route
+              exact
+              path="/candidatos/editar/:id"
+              element={<EditarCandidato />}
+            />
             <Route exact path="/usuarios" element={<Usuarios />} />
             <Route exact path="usuarios/nuevo" element={<NuevoUsuario />} />
             <Route

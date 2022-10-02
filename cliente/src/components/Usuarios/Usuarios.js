@@ -20,6 +20,8 @@ const Usuarios = () => {
           <tr>
             <th scope="col">Nombre</th>
             <th scope="col">Cuil</th>
+            <th scope="col">Mail</th>
+            <th scope="col">Teléfono</th>
             <th scope="col">Acciones</th>
           </tr>
         </thead>

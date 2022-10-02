@@ -15,7 +15,7 @@ namespace ConsultoraApi.Dtos.DtosUsuarios
         public int IdTipoDocumento { get; set; }
 
         [Required(ErrorMessage = "El campo Numero Documento es obligatorio")]
-        public string Documento { get; set; }
+        public int Documento { get; set; }
         [Required(ErrorMessage = "El campo Fecha Nacimiento es obligatorio")]
         public DateTime FechaNacimiento { get; set; }
 

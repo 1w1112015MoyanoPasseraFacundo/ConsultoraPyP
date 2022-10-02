@@ -3,11 +3,15 @@ import {
   AGREGAR_CANDIDATO,
   AGREGAR_CANDIDATO_ERROR,
   AGREGAR_CANDIDATO_EXITO,
+  CANDIDATO_EDITADO_ERROR,
+  CANDIDATO_EDITADO_EXITO,
   CANDIDATO_ELIMINADO_ERROR,
   CANDIDATO_ELIMINADO_EXITO,
   COMENZAR_DESCARGA_CANDIDATOS,
+  COMENZAR_EDICION_CANDIDATO,
   DESCARGA_CANDIDATOS_ERROR,
   DESCARGA_CANDIDATOS_EXITOS,
+  OBTENER_CANDIDATO_EDITAR,
   OBTENER_CANDIDATO_ELIMINAR,
 } from "../types";
 import Swal from "sweetalert2";
@@ -15,7 +19,7 @@ import Swal from "sweetalert2";
 export function crearNuevoCandidatoAction(candidato) {
   return async (dispatch) => {
     dispatch(agregarCandidato());
-
+    console.log(candidato);
     try {
       //insertar en la API
       await clienteAxios.post("/candidatos", candidato);
@@ -46,6 +50,46 @@ const agregarCandidatoExito = (candidato) => ({
 const agregarCandidatoError = (estado) => ({
   type: AGREGAR_CANDIDATO_ERROR,
   payload: estado,
+});
+
+export function obtenerCandidatoEditar(candidato) {
+  return (dispatch) => {
+    return dispatch(obtenerCandidatoEditarAction(candidato));
+  };
+}
+
+const obtenerCandidatoEditarAction = (candidato) => ({
+  type: OBTENER_CANDIDATO_EDITAR,
+  payload: candidato,
+});
+
+export function editarCandidatoAction(candidato) {
+  return async (dispatch) => {
+    dispatch(editarCandidato());
+    try {
+      await clienteAxios.put(`/candidatos/${candidato.idCandidato}`, candidato);
+      console.log(candidato);
+      dispatch(editarCandidatoExito(candidato));
+      // Swal.fire("Editado!", "El candidato ha sido editado", "success");
+    } catch (error) {
+      console.log(error);
+      dispatch(editarCandidatoError());
+    }
+  };
+}
+
+const editarCandidato = () => ({
+  type: COMENZAR_EDICION_CANDIDATO,
+});
+
+const editarCandidatoExito = (candidato) => ({
+  type: CANDIDATO_EDITADO_EXITO,
+  payload: candidato,
+});
+
+const editarCandidatoError = () => ({
+  type: CANDIDATO_EDITADO_ERROR,
+  payload: true,
 });
 
 export function obtenerCandidatosAction() {

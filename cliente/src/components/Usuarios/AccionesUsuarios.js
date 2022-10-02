@@ -8,9 +8,10 @@ import {
 } from "../../actions/usuariosActions";
 
 const AccionesUsuarios = ({ usuario }) => {
-  const { nombre, apellido, cuil, idUsuario } = usuario;
+  const { nombre, apellido, mail, telefono, cuil, idUsuario } = usuario;
   const dispatch = useDispatch();
   const confirmarEliminar = (idUsuario) => {
+    console.log(idUsuario);
     Swal.fire({
       title: "Está seguro que desea dar de baja este usuario?",
       icon: "warning",
@@ -21,6 +22,7 @@ const AccionesUsuarios = ({ usuario }) => {
       cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.isConfirmed) {
+        console.log(idUsuario);
         dispatch(darDeBajaUsuario(idUsuario));
       }
     });
@@ -40,6 +42,12 @@ const AccionesUsuarios = ({ usuario }) => {
       </td>
       <td>
         <span className="font-weight-bold">{cuil}</span>
+      </td>
+      <td>
+        <span className="font-weight-bold">{mail}</span>
+      </td>
+      <td>
+        <span className="font-weight-bold">{telefono}</span>
       </td>
       <td className="acciones">
         <button

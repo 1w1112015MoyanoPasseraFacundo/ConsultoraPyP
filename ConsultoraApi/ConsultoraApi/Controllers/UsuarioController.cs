@@ -32,7 +32,16 @@ namespace ConsultoraApi.Controllers
             {
                 return StatusCode(400, "No existe usuarios registrados");
             }
-            return Ok(usu);
+            List<UpdateUsuarioDto> usuarioGetDto = new List<UpdateUsuarioDto>();
+            for (int i = 0; i < usu.Count; i++)
+            {
+                if (usu[i].FechaSalida == null)
+                {
+                    usuarioGetDto.Add(_mapper.Map<UpdateUsuarioDto>(usu[i]));
+                }
+            }
+
+            return Ok(usuarioGetDto);
         }
 
         [HttpGet("{idUsuario:int}", Name = "GetUsuario")]
@@ -72,7 +81,6 @@ namespace ConsultoraApi.Controllers
             }
 
             return Ok($"Usuario {usu.NombreUsuario} creado con exito");
-
         } 
         [HttpPut("{idUsuario:int}", Name = "UpdateUsuario")]
         public IActionResult UpdateUsuario(int idUsuario, [FromBody] UpdateUsuarioDto usuarioUpdateDto)
@@ -94,15 +102,25 @@ namespace ConsultoraApi.Controllers
                 return StatusCode(409, "El nombre de usuario ya existe");
             }
 
-            var usu = _mapper.Map<Usuario>(usuario);
+            usuario.NombreUsuario = usuarioUpdateDto.NombreUsuario;
+            usuario.Nombre = usuarioUpdateDto.Nombre;
+            usuario.Apellido = usuarioUpdateDto.Apellido;
+            usuario.IdTipoDocumento = usuarioUpdateDto.IdTipoDocumento;
+            usuario.Documento = usuarioUpdateDto.Documento;
+            usuario.Cuil = usuarioUpdateDto.Cuil;
+            usuario.Telefono = usuarioUpdateDto.Telefono;
+            usuario.Direccion = usuarioUpdateDto.Direccion;
+            usuario.FechaNacimiento = usuarioUpdateDto.FechaNacimiento;
+            usuario.Mail = usuarioUpdateDto.Mail;
+            usuario.IdGenero = usuarioUpdateDto.IdGenero;
 
 
-            if (!_uRepo.UpdateUsuario(usu))
+            if (!_uRepo.UpdateUsuario(usuario))
             {
-                return StatusCode(500, $"Algo salió mal actualizando el registro {usu.NombreUsuario}");
+                return StatusCode(500, $"Algo salió mal actualizando el registro {usuario.NombreUsuario}");
             }
 
-            return Ok($"Usuario {usu.NombreUsuario} modificado con exito");         
+            return Ok($"Usuario {usuario.NombreUsuario} modificado con exito");         
         }
          [HttpDelete("{idUsuario:int}", Name = "BajaUsuario")]
         public IActionResult DeleteUsuario(int idUsuario)
