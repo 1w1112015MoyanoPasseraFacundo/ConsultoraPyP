@@ -126,7 +126,7 @@ export function darDeBajaCandidato(idCandidato) {
   return async (dispatch) => {
     dispatch(obtenerCandidatoBaja(idCandidato));
     try {
-      await clienteAxios.put(`/candidatos/${idCandidato}`);
+      await clienteAxios.delete(`/candidatos/${idCandidato}`);
       dispatch(eliminarCandidatoExito());
       Swal.fire("Eliminado!", "El candidato ha sido dado de baja", "success");
     } catch (error) {

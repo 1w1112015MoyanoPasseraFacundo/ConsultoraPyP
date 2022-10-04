@@ -1,12 +1,18 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { crearNuevoUsuarioAction } from "../../actions/usuariosActions";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  crearNuevoUsuarioAction,
+  llenarComboTipoDocumento,
+} from "../../actions/usuariosActions";
+import clienteAxios from "../../config/axios";
 const NuevoUsuario = () => {
   //state
+
   const [nombre, guardarNombre] = useState("");
   const [apellido, guardarApellido] = useState("");
   const [mail, guardarMail] = useState("");
   const [idTipoDocumento, guardarTipoDocumento] = useState(0);
+  const [listaTiposDocs, guardarTiposDocs] = useState([]);
   const [documento, guardarDocumento] = useState("");
   const [cuil, guardarCuil] = useState("");
   const [fechaNacimiento, guardarFecha] = useState("");
@@ -20,6 +26,19 @@ const NuevoUsuario = () => {
   const agregarUsuario = (usuario) =>
     dispatch(crearNuevoUsuarioAction(usuario));
 
+  //Ejecutar llamado a la API
+  useEffect(() => {
+    const consultarAPI = async () => {
+      const resultado = await clienteAxios.get(`/TiposDocumentos`);
+      console.log(resultado);
+      guardarTiposDocs(resultado.data);
+    };
+    consultarAPI();
+  }, []);
+  const tiposDocumentos = useSelector(
+    (state) => state.usuarios.tiposDocumentos
+  );
+  console.log(tiposDocumentos);
   // const alerta = useSelector(state => state.alerta.alerta);
 
   const submitNuevoUsuario = (e) => {
@@ -106,8 +125,16 @@ const NuevoUsuario = () => {
                     value={idTipoDocumento}
                     onChange={(e) => guardarTipoDocumento(e.target.value)}
                   >
-                    <option>Seleccione...</option>
-                    <option value="1">DNI</option>
+                    <option value="">Seleccione...</option>
+
+                    {listaTiposDocs.map((tipoDocumento) => (
+                      <option
+                        key={tipoDocumento.idTipoDocumento}
+                        value={tipoDocumento.idTipoDocumento}
+                      >
+                        {tipoDocumento.nombre}
+                      </option>
+                    ))}
                   </select>
                 </div>
                 <div className="form-group col-lg-4 col-md-4 col-sm-12 col-xs-12">

@@ -10,7 +10,7 @@ import {
   OBTENER_USUARIO_ELIMINAR,
   USUARIO_EDITADO_ERROR,
   USUARIO_EDITADO_EXITO,
-  OBTENER_PRODUCTO_EDITAR,
+  OBTENER_USUARIO_EDITAR,
 } from "../types";
 
 //cada reducer tiene su propio state
@@ -20,6 +20,7 @@ const initialState = {
   loading: false,
   eliminar: null,
   editar: null,
+  tiposDocumentos: [],
 };
 // eslint-disable-next-line
 export default function (state = initialState, action) {
@@ -37,7 +38,7 @@ export default function (state = initialState, action) {
       return {
         ...state,
         loading: false,
-        usuarios: [...state.productos, action.payload],
+        usuarios: [...state.usuarios, action.payload],
         error: null,
       };
     case AGREGAR_USUARIO_ERROR:
@@ -67,7 +68,7 @@ export default function (state = initialState, action) {
         ),
         eliminar: null,
       };
-    case OBTENER_PRODUCTO_EDITAR:
+    case OBTENER_USUARIO_EDITAR:
       return {
         ...state,
         editar: action.payload,

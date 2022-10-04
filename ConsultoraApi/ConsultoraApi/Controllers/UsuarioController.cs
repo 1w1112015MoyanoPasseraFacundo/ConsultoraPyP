@@ -55,7 +55,6 @@ namespace ConsultoraApi.Controllers
             }
 
             var usuarioGetDto = _mapper.Map<UpdateUsuarioDto>(usuario);
-
             return Ok(usuarioGetDto);
         }
 
@@ -140,9 +139,9 @@ namespace ConsultoraApi.Controllers
             var usu = _mapper.Map<Usuario>(usuario);
             usu.FechaSalida = DateTime.Now;
 
-            if (!_uRepo.UpdateUsuario(usu))
+            if (!_uRepo.DarDeBajaUsuario(usu))
             {
-                return StatusCode(500, $"Algo salió mal actualizando el registro {usu.NombreUsuario}");
+                return StatusCode(500, $"Algo salió mal dando de baja el usuario {usu.NombreUsuario}");
             }
 
             return Ok($"Usuario {usu.NombreUsuario} dado de baja con exito");         

@@ -78,7 +78,7 @@ export default function (state = initialState, action) {
         editar: null,
         candidatos: state.candidatos.map((candidato) =>
           candidato.idCandidato === action.payload.idCandidato
-            ? (candidato = action.candidato)
+            ? (candidato = action.payload)
             : candidato
         ),
       };

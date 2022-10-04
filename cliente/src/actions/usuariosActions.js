@@ -8,6 +8,8 @@ import {
   DESCARGA_USUARIOS_ERROR,
   DESCARGA_USUARIOS_EXITOS,
   OBTENER_PRODUCTO_EDITAR,
+  OBTENER_TIPOS_DOCUMENTOS,
+  OBTENER_USUARIO_EDITAR,
   OBTENER_USUARIO_ELIMINAR,
   USUARIO_EDITADO_ERROR,
   USUARIO_EDITADO_EXITO,
@@ -110,7 +112,7 @@ export function obtenerUsuarioEditar(usuario) {
 }
 
 const obtenerUsuarioEditarAction = (usuario) => ({
-  type: OBTENER_PRODUCTO_EDITAR,
+  type: OBTENER_USUARIO_EDITAR,
   payload: usuario,
 });
 

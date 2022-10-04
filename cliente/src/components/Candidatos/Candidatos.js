@@ -12,6 +12,7 @@ const Candidatos = () => {
   }, []);
 
   const candidatos = useSelector((state) => state.candidatos.candidatos);
+  console.log(candidatos);
   const error = useSelector((state) => state.candidatos.error);
   return (
     <Fragment>
@@ -30,7 +31,7 @@ const Candidatos = () => {
         </thead>
         <tbody>
           {candidatos.length === 0
-            ? error
+            ? "No hay candidatos"
             : candidatos.map((candidato) => (
                 <AccionesCandidatos
                   key={candidato.idCandidato}

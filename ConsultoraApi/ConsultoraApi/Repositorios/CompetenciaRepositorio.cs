@@ -3,35 +3,35 @@ using ConsultoraApi.Repositorios.IRepositorios;
 
 namespace ConsultoraApi.Repositorios
 {
-    public class CandidatoRepositorio : ICandidatoRepositorio
+    public class CompetenciaRepositorio : ICompetenciaRepositorio
     {
         ConsultoraPypContext db;
 
-        public CandidatoRepositorio(ConsultoraPypContext _db)
+        public CompetenciaRepositorio(ConsultoraPypContext _db)
         {
             db = _db;
         }
 
-        public Candidato GetCandidato(int idCandidato)
+        public Competencia GetCompetencia(int idCompetencia)
         {
-            if (idCandidato != null)
+            if (idCompetencia != null)
             {
-                return db.Candidatos.FirstOrDefault(u => u.IdCandidato == idCandidato);
+                return db.Competencias.FirstOrDefault(u => u.IdCompetencia == idCompetencia);
             }
             else
             {
                 return null;
             }
         }
-        public bool UpdateCandidato(Candidato candidato)
+        public bool UpdateCompetencia(Competencia competencia)
         {
-            db.Candidatos.Update(candidato);
+            db.Competencias.Update(competencia);
             return Save();
         }
 
-        public bool DarDeBajaCandidato(Candidato candidato)
+        public bool DarDeBajaCompetencia(Competencia competencia)
         {
-            db.Candidatos.Update(candidato);
+            db.Competencias.Update(competencia);
             return Save();
         }
         public bool Save()
@@ -46,9 +46,9 @@ namespace ConsultoraApi.Repositorios
             }
         }
 
-        public bool CreateCandidato(Candidato candidato)
+        public bool CreateCompetencia(Competencia competencia)
         {
-            db.Candidatos.Add(candidato);
+            db.Competencias.Add(competencia);
             return Save();
         }
     }

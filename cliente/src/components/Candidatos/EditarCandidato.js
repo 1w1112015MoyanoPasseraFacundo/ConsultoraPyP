@@ -71,7 +71,7 @@ const EditarCandidato = () => {
                     placeholder="Nombre"
                     name="nombre"
                     value={nombre}
-                    onChange={(e) => onChangeFormulario(e.target.value)}
+                    onChange={onChangeFormulario}
                   />
                 </div>
                 <div className="form-group  col-lg-4 col-md-4 col-sm-12 col-xs-12">
@@ -82,7 +82,7 @@ const EditarCandidato = () => {
                     placeholder="Apellido"
                     name="apellido"
                     value={apellido}
-                    onChange={(e) => onChangeFormulario(e.target.value)}
+                    onChange={onChangeFormulario}
                   />
                 </div>
                 <div className="form-group  col-lg-4 col-md-4 col-sm-12 col-xs-12">
@@ -93,7 +93,7 @@ const EditarCandidato = () => {
                     placeholder="E-mail"
                     name="mail"
                     value={mail}
-                    onChange={(e) => onChangeFormulario(e.target.value)}
+                    onChange={onChangeFormulario}
                   />
                 </div>
               </div>
@@ -104,7 +104,7 @@ const EditarCandidato = () => {
                     className="form-control"
                     name="tipoDocumento"
                     value={idTipoDocumento}
-                    onChange={(e) => onChangeFormulario(e.target.value)}
+                    onChange={onChangeFormulario}
                   >
                     <option>Seleccione...</option>
                     <option value="1">DNI</option>
@@ -118,7 +118,7 @@ const EditarCandidato = () => {
                     placeholder="Documento"
                     name="documento"
                     value={documento}
-                    onChange={(e) => onChangeFormulario(e.target.value)}
+                    onChange={onChangeFormulario}
                   />
                 </div>
                 <div className="form-group  col-lg-4 col-md-4 col-sm-12 col-xs-12">
@@ -128,7 +128,7 @@ const EditarCandidato = () => {
                     className="form-control"
                     name="fechaNacimiento"
                     value={fechaNacimiento}
-                    onChange={(e) => onChangeFormulario(e.target.value)}
+                    onChange={onChangeFormulario}
                   />
                 </div>
               </div>
@@ -139,7 +139,7 @@ const EditarCandidato = () => {
                     className="form-control"
                     name="rubro"
                     value={idRubro}
-                    onChange={(e) => onChangeFormulario(e.target.value)}
+                    onChange={onChangeFormulario}
                   >
                     <option>Seleccione...</option>
                     <option value="1">Tech</option>
@@ -151,7 +151,7 @@ const EditarCandidato = () => {
                     className="form-control"
                     name="pais"
                     value={idPais}
-                    onChange={(e) => onChangeFormulario(e.target.value)}
+                    onChange={onChangeFormulario}
                   >
                     <option>Seleccione...</option>
                     <option value="1">Argentina</option>
@@ -163,7 +163,7 @@ const EditarCandidato = () => {
                     className="form-control"
                     name="genero"
                     value={idGenero}
-                    onChange={(e) => onChangeFormulario(e.target.value)}
+                    onChange={onChangeFormulario}
                   >
                     <option>Seleccione...</option>
                     <option value="1">Masculino</option>
@@ -182,7 +182,7 @@ const EditarCandidato = () => {
                       className="form-control"
                       name="estadoCivil"
                       value={estadoCivil}
-                      onChange={(e) => onChangeFormulario(e.target.value)}
+                      onChange={onChangeFormulario}
                     />
                   </div>
                 </div>
@@ -194,7 +194,7 @@ const EditarCandidato = () => {
                       className="form-control"
                       name="telefono"
                       value={telefono}
-                      onChange={(e) => onChangeFormulario(e.target.value)}
+                      onChange={onChangeFormulario}
                     />
                   </div>
                 </div>
@@ -206,7 +206,7 @@ const EditarCandidato = () => {
                       className="form-control"
                       name="linkedin"
                       value={linkedin}
-                      onChange={(e) => onChangeFormulario(e.target.value)}
+                      onChange={onChangeFormulario}
                     />
                   </div>
                 </div>

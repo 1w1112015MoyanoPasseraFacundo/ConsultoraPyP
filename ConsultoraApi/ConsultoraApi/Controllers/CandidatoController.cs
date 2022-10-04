@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using ConsultoraApi.Dtos.DtosCandidatos;
-using ConsultoraApi.Dtos.DtosUsuarios;
 using ConsultoraApi.Models;
 using ConsultoraApi.Repositorios.IRepositorios;
 using ConsultoraApi.Resultados;
@@ -95,6 +94,12 @@ namespace ConsultoraApi.Controllers
             candidato.FechaNacimiento = candidatoUpdateDto.FechaNacimiento;
             candidato.Mail = candidatoUpdateDto.Mail;
             candidato.IdGenero = candidatoUpdateDto.IdGenero;
+            candidato.IdPais = candidatoUpdateDto.IdPais;
+            candidato.IdRubro = candidatoUpdateDto.IdRubro;
+            candidato.Linkedin = candidatoUpdateDto.Linkedin;
+            candidato.Seniority = candidatoUpdateDto.Seniority;
+            candidato.EstadoCivil = candidatoUpdateDto.EstadoCivil;
+            
 
 
             if (!_uRepo.UpdateCandidato(candidato))
@@ -103,6 +108,32 @@ namespace ConsultoraApi.Controllers
             }
 
             return Ok($"candidato {candidato.Nombre} {candidato.Apellido} modificado con exito");
+        }
+
+
+        [HttpDelete("{idCandidato:int}", Name = "BajaCandidato")]
+        public IActionResult DeletCandidato(int idCandidato)
+        {
+            if (idCandidato == null)
+            {
+                BadRequest();
+            }
+            var cand = _uRepo.GetCandidato(idCandidato);
+
+
+            if (cand == null)
+            {
+                return StatusCode(400, "El candidato no existe");
+            }
+
+            cand.IdEstado = 3;
+
+            if (!_uRepo.DarDeBajaCandidato(cand))
+            {
+                return StatusCode(500, $"Algo salió mal dando de baja el candidato {cand.Nombre} {cand.Apellido}");
+            }
+
+            return Ok($"Candidato {cand.Nombre} {cand.Apellido} dado de baja con exito");
         }
     }
 }

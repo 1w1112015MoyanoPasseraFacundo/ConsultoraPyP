@@ -9,6 +9,9 @@ import NuevoUsuario from "./components/Usuarios/NuevoUsuario";
 import EditarUsuario from "./components/Usuarios/EditarUsuario";
 import NuevoCandidato from "./components/Candidatos/NuevoCandidato";
 import EditarCandidato from "./components/Candidatos/EditarCandidato";
+import Competencias from "./components/Competencias/Competencias";
+import NuevaCompetencia from "./components/Competencias/NuevaCompetencia";
+import EditarCompetencia from "./components/Competencias/EditarCompetencia";
 function App() {
   return (
     <Router>
@@ -33,6 +36,17 @@ function App() {
               exact
               path="/usuarios/editar/:id"
               element={<EditarUsuario />}
+            />
+            <Route exact path="/competencias" element={<Competencias />} />
+            <Route
+              exact
+              path="/competencias/nuevo"
+              element={<NuevaCompetencia />}
+            />
+            <Route
+              exact
+              path="/competencias/editar/:id"
+              element={<EditarCompetencia />}
             />
           </Routes>
         </div>

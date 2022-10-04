@@ -13,7 +13,7 @@ namespace ConsultoraApi.Models
 
         public int IdCompetencia { get; set; }
         public string Nombre { get; set; } = null!;
-        public DateTime InicioVigencia { get; set; }
+        public DateTime? InicioVigencia { get; set; }
         public DateTime? FinVigencia { get; set; }
         public int IdRubro { get; set; }
 

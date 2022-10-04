@@ -2,9 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { editarUsuarioAction } from "../../actions/usuariosActions";
+import clienteAxios from "../../config/axios";
 const EditarUsuario = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const [listaTiposDocs, guardarTiposDocs] = useState([]);
 
   const [usuario, guardarUsuario] = useState({
     nombre: "",
@@ -19,9 +22,15 @@ const EditarUsuario = () => {
     direccion: "",
     telefono: "",
   });
+
   const editar = useSelector((state) => state.usuarios.editar);
   // console.log(editar);
   useEffect(() => {
+    const consultarAPI = async () => {
+      const resultado = await clienteAxios.get(`/TiposDocumentos`);
+      guardarTiposDocs(resultado.data);
+    };
+    consultarAPI();
     guardarUsuario(editar);
   }, [editar]);
 
@@ -30,6 +39,7 @@ const EditarUsuario = () => {
       ...usuario,
       [e.target.name]: e.target.value,
     });
+    console.log(usuario);
   };
 
   const {
@@ -99,6 +109,7 @@ const EditarUsuario = () => {
               <div className="row p-t-20">
                 <div className="form-group col-lg-4 col-md-4 col-sm-12 col-xs-12">
                   <label>Tipo de Documento</label>
+
                   <select
                     className="form-control"
                     name="tipoDocumento"
@@ -106,7 +117,14 @@ const EditarUsuario = () => {
                     onChange={onChangeFormulario}
                   >
                     <option>Seleccione...</option>
-                    <option value="1">DNI</option>
+                    {listaTiposDocs.map((tipoDocumento) => (
+                      <option
+                        key={tipoDocumento.idTipoDocumento}
+                        value={tipoDocumento.idTipoDocumento}
+                      >
+                        {tipoDocumento.nombre}
+                      </option>
+                    ))}
                   </select>
                 </div>
                 <div className="form-group col-lg-4 col-md-4 col-sm-12 col-xs-12">
@@ -139,7 +157,7 @@ const EditarUsuario = () => {
                     type="date"
                     className="form-control"
                     name="fechaNacimiento"
-                    value={fechaNacimiento}
+                    value={fechaNacimiento.split("T")[1]}
                     onChange={onChangeFormulario}
                   />
                 </div>

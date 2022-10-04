@@ -8,5 +8,6 @@ namespace ConsultoraApi.Repositorios.IRepositorios
         public bool Save();
         public bool UpdateCandidato(Candidato candidato);
         public bool CreateCandidato(Candidato candidato);
+        public bool DarDeBajaCandidato(Candidato candidato);
     }
 }

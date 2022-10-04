@@ -10,7 +10,6 @@ import {
 import Moment from "moment";
 
 const AccionesCandidatos = ({ candidato }) => {
-  console.log(candidato);
   const {
     nombre,
     apellido,

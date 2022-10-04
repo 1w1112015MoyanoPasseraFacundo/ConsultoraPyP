@@ -36,6 +36,7 @@ builder.Services.AddDbContext<ConsultoraPypContext>(options => options.UseSqlSer
 builder.Services.AddScoped<IUsuarioRepositorio, UsuarioRepositorio>();
 builder.Services.AddScoped<ITipoDocumentoRepositorio, TipoDocumentoRepositorio>();
 builder.Services.AddScoped<ICandidatoRepositorio, CandidatoRepositorio>();
+builder.Services.AddScoped<ICompetenciaRepositorio, CompetenciaRepositorio>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
