@@ -1,14 +1,17 @@
-import React from "react";
-import { useDispatch } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import {
   darDeBajaCompetencia,
+  getRubro,
   obtenerCompetenciaEditar,
 } from "../../actions/competenciasActions";
+import clienteAxios from "../../config/axios";
 const AccionesCompetencias = ({ competencia }) => {
-  const { idCompetencia, nombre, idRubro } = competencia;
+  const { idCompetencia, nombre, idRubro, nombreRubro } = competencia;
   const dispatch = useDispatch();
+
   const confirmarEliminar = (idCompetencia) => {
     Swal.fire({
       title: "Está seguro que desea dar de baja este candidato?",
@@ -34,9 +37,7 @@ const AccionesCompetencias = ({ competencia }) => {
   return (
     <tr>
       <td>{nombre}</td>
-      <td>
-        <span className="font-weight-bold">{idRubro}</span>
-      </td>
+      <td>{nombreRubro}</td>
 
       <td className="acciones">
         <button

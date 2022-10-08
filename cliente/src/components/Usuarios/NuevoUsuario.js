@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  crearNuevoUsuarioAction,
-  llenarComboTipoDocumento,
-} from "../../actions/usuariosActions";
+import { useNavigate } from "react-router-dom";
+import { crearNuevoUsuarioAction } from "../../actions/usuariosActions";
 import clienteAxios from "../../config/axios";
 const NuevoUsuario = () => {
   //state
@@ -13,6 +11,7 @@ const NuevoUsuario = () => {
   const [mail, guardarMail] = useState("");
   const [idTipoDocumento, guardarTipoDocumento] = useState(0);
   const [listaTiposDocs, guardarTiposDocs] = useState([]);
+  const [listaGeneros, guardarGeneros] = useState([]);
   const [documento, guardarDocumento] = useState("");
   const [cuil, guardarCuil] = useState("");
   const [fechaNacimiento, guardarFecha] = useState("");
@@ -20,30 +19,27 @@ const NuevoUsuario = () => {
   const [idGenero, guardarGenero] = useState(0);
   const [direccion, guardarDireccion] = useState("");
   const [telefono, guardarTelefono] = useState("");
-
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   //llama UsuarioAction
   const agregarUsuario = (usuario) =>
     dispatch(crearNuevoUsuarioAction(usuario));
 
-  //Ejecutar llamado a la API
-  useEffect(() => {
-    const consultarAPI = async () => {
-      const resultado = await clienteAxios.get(`/TiposDocumentos`);
-      console.log(resultado);
-      guardarTiposDocs(resultado.data);
-    };
-    consultarAPI();
-  }, []);
-  const tiposDocumentos = useSelector(
-    (state) => state.usuarios.tiposDocumentos
-  );
-  console.log(tiposDocumentos);
+  const consultarAPI = async () => {
+    const resultado = await clienteAxios.get(`/TiposDocumentos`);
+    console.log(resultado);
+    guardarTiposDocs(resultado.data);
+  };
+  const llenarGenero = async () => {
+    const resultado = await clienteAxios.get(`/Generos`);
+    guardarGeneros(resultado.data);
+  };
+
   // const alerta = useSelector(state => state.alerta.alerta);
 
   const submitNuevoUsuario = (e) => {
     e.preventDefault();
-
+    console.log(fechaNacimiento);
     //validar form
     if (nombre.trim() === "" || apellido.trim() === "") {
       const alerta = {
@@ -71,8 +67,11 @@ const NuevoUsuario = () => {
       direccion,
       telefono,
     });
+    navigate("/usuarios");
   };
-
+  const cancelar = () => {
+    navigate("/candidatos");
+  };
   return (
     <div className="row justify-content-center">
       <div className="col-md-12">
@@ -80,7 +79,7 @@ const NuevoUsuario = () => {
           <div className="card-body">
             <h2 className="mb-4 font-weight-bold">Nuevo Usuario</h2>
             {/* {alerta ? <p className={alerta.clases}>{alerta.msg}</p>:null} */}
-            <form onSubmit={submitNuevoUsuario}>
+            <form>
               <div className="row p-t-20">
                 <div className="form-group col-lg-4 col-md-4 col-sm-12 col-xs-12">
                   <label>Nombre</label>
@@ -122,6 +121,7 @@ const NuevoUsuario = () => {
                   <select
                     className="form-control"
                     name="tipoDocumento"
+                    onClick={consultarAPI}
                     value={idTipoDocumento}
                     onChange={(e) => guardarTipoDocumento(e.target.value)}
                   >
@@ -188,11 +188,15 @@ const NuevoUsuario = () => {
                     className="form-control"
                     name="genero"
                     value={idGenero}
+                    onClick={llenarGenero}
                     onChange={(e) => guardarGenero(e.target.value)}
                   >
                     <option>Seleccione...</option>
-                    <option value="1">Masculino</option>
-                    {/* <option id="2">Femenino</option> */}
+                    {listaGeneros.map((genero) => (
+                      <option key={genero.idGenero} value={genero.idGenero}>
+                        {genero.nombre}
+                      </option>
+                    ))}
                   </select>
                 </div>
               </div>
@@ -232,12 +236,14 @@ const NuevoUsuario = () => {
                   <button
                     type="submit"
                     className="btn btn-primary font-weight-bold text-uppercase"
+                    onClick={cancelar}
                   >
                     Cancelar
                   </button>
                   <button
                     type="submit"
                     className="btn btn-primary font-weight-bold text-uppercase d-block  nuevo"
+                    onClick={submitNuevoUsuario}
                   >
                     Guardar
                   </button>

@@ -11,6 +11,7 @@ import {
   DESCARGA_COMPETENCIAS_EXITOS,
   OBTENER_COMPETENCIA_EDITAR,
   OBTENER_COMPETENCIA_ELIMINAR,
+  OBTENER_RUBRO,
 } from "../types";
 
 const initialState = {
@@ -19,6 +20,7 @@ const initialState = {
   loading: false,
   eliminar: null,
   editar: null,
+  rubro: null,
 };
 // eslint-disable-next-line
 export default function (state = initialState, action) {
@@ -81,6 +83,7 @@ export default function (state = initialState, action) {
             : competencia
         ),
       };
+
     default:
       return state;
   }

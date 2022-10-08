@@ -8,6 +8,7 @@ const EditarUsuario = () => {
   const dispatch = useDispatch();
 
   const [listaTiposDocs, guardarTiposDocs] = useState([]);
+  const [listaGeneros, guardarGeneros] = useState([]);
 
   const [usuario, guardarUsuario] = useState({
     nombre: "",
@@ -31,10 +32,16 @@ const EditarUsuario = () => {
       guardarTiposDocs(resultado.data);
     };
     consultarAPI();
+    const llenarGenero = async () => {
+      const resultado = await clienteAxios.get(`/Generos`);
+      guardarGeneros(resultado.data);
+    };
+    llenarGenero();
     guardarUsuario(editar);
   }, [editar]);
 
   const onChangeFormulario = (e) => {
+    console.log(e.target);
     guardarUsuario({
       ...usuario,
       [e.target.name]: e.target.value,
@@ -62,7 +69,9 @@ const EditarUsuario = () => {
     console.log(usuario);
     navigate("/usuarios");
   };
-
+  const cancelar = () => {
+    navigate("/usuarios");
+  };
   return (
     <div className="row justify-content-center">
       <div className="col-md-12">
@@ -70,7 +79,9 @@ const EditarUsuario = () => {
           <div className="card-body">
             <h2 className="mb-4 font-weight-bold">Nuevo Usuario</h2>
             {/* {alerta ? <p className={alerta.clases}>{alerta.msg}</p>:null} */}
-            <form onSubmit={submitEditarUsuario}>
+
+            {/* <LocalizationProvider> */}
+            <form>
               <div className="row p-t-20">
                 <div className="form-group col-lg-4 col-md-4 col-sm-12 col-xs-12">
                   <label>Nombre</label>
@@ -112,19 +123,24 @@ const EditarUsuario = () => {
 
                   <select
                     className="form-control"
-                    name="tipoDocumento"
+                    name="idTipoDocumento"
                     value={idTipoDocumento}
                     onChange={onChangeFormulario}
                   >
                     <option>Seleccione...</option>
-                    {listaTiposDocs.map((tipoDocumento) => (
-                      <option
-                        key={tipoDocumento.idTipoDocumento}
-                        value={tipoDocumento.idTipoDocumento}
-                      >
-                        {tipoDocumento.nombre}
-                      </option>
-                    ))}
+                    {listaTiposDocs.map(
+                      (tipoDocumento) => (
+                        console.log(tipoDocumento),
+                        (
+                          <option
+                            key={tipoDocumento.idTipoDocumento}
+                            value={tipoDocumento.idTipoDocumento}
+                          >
+                            {tipoDocumento.nombre}
+                          </option>
+                        )
+                      )
+                    )}
                   </select>
                 </div>
                 <div className="form-group col-lg-4 col-md-4 col-sm-12 col-xs-12">
@@ -157,7 +173,7 @@ const EditarUsuario = () => {
                     type="date"
                     className="form-control"
                     name="fechaNacimiento"
-                    value={fechaNacimiento.split("T")[1]}
+                    value={fechaNacimiento}
                     onChange={onChangeFormulario}
                   />
                 </div>
@@ -176,13 +192,16 @@ const EditarUsuario = () => {
                   <label>Género</label>
                   <select
                     className="form-control"
-                    name="genero"
+                    name="idGenero"
                     value={idGenero}
                     onChange={onChangeFormulario}
                   >
                     <option>Seleccione...</option>
-                    <option value="1">Masculino</option>
-                    {/* <option id="2">Femenino</option> */}
+                    {listaGeneros.map((genero) => (
+                      <option key={genero.idGenero} value={genero.idGenero}>
+                        {genero.nombre}
+                      </option>
+                    ))}
                   </select>
                 </div>
               </div>
@@ -222,18 +241,21 @@ const EditarUsuario = () => {
                   <button
                     type="submit"
                     className="btn btn-primary font-weight-bold text-uppercase"
+                    onClick={cancelar}
                   >
                     Cancelar
                   </button>
                   <button
                     type="submit"
                     className="btn btn-primary font-weight-bold text-uppercase d-block  nuevo"
+                    onClick={submitEditarUsuario}
                   >
                     Guardar
                   </button>
                 </div>
               </div>
             </form>
+            {/* </LocalizationProvider> */}
           </div>
         </div>
       </div>

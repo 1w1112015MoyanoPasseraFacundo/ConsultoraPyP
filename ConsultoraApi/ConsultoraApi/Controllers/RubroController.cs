@@ -30,5 +30,21 @@ namespace ConsultoraApi.Controllers
             return Ok(usu);
         }
 
+        [HttpGet("{idRubro:int}", Name = "GetRubro")]
+        public IActionResult GetUsuario(int idRubro)
+        {
+            var rubro = db.Rubros.Where(x => x.IdRubro == idRubro).FirstOrDefault();
+
+            if (rubro == null)
+            {
+                return NotFound();
+            }
+
+
+
+            return Ok(rubro.Nombre);
+        }
+
+
     }
 }

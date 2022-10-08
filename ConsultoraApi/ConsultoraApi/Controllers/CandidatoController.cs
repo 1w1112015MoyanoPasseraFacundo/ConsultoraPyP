@@ -17,12 +17,14 @@ namespace ConsultoraApi.Controllers
         private readonly ConsultoraPypContext db = new ConsultoraPypContext();
         IMapper _mapper;
         private readonly ICandidatoRepositorio _uRepo;
+        private readonly ICandidatoXCompetenciaRepositorio _CXCRepo;
 
-        public CandidatoController(ConsultoraPypContext _db, IMapper mapper, ICandidatoRepositorio uRepo)
+        public CandidatoController(ConsultoraPypContext _db, IMapper mapper, ICandidatoRepositorio uRepo, ICandidatoXCompetenciaRepositorio CXCRepo)
         {
             db = _db;
             _mapper = mapper;
             _uRepo = uRepo;
+            _CXCRepo = CXCRepo;
         }
         [HttpGet]
         public IActionResult Get()
@@ -32,17 +34,31 @@ namespace ConsultoraApi.Controllers
             {
                 return StatusCode(400, "No existe ningún candidato registrado");
             }
-            List<CandidatoUpdateDto> candidatoGetDto = new List<CandidatoUpdateDto>();
+            var candidatoGetDto = new List<CandidatoUpdateDto>();
             for (int i = 0; i < cand.Count; i++)
             {
+
                 if (cand[i].IdEstado != 3)
                 {
+
                     candidatoGetDto.Add(_mapper.Map<CandidatoUpdateDto>(cand[i]));
                 }
+            }
+            for (int i = 0; i < candidatoGetDto.Count; i++)
+            {
+                List<int> candXCompe = db.CandidatosXcompetencias.Where(x => x.IdCandidato == candidatoGetDto[i].IdCandidato).Select(x => x.IdCompetencia).ToList();
+                var pais = db.Paises.Where(x => x.IdPais == candidatoGetDto[i].IdPais).FirstOrDefault();
+                candidatoGetDto[i].nombrePais = pais.Nombre;
+                candidatoGetDto[i].lstCompes = candXCompe;
+
+
             }
 
             return Ok(candidatoGetDto);
         }
+
+
+
 
         [HttpPost]
         public IActionResult CreateCandidato(CandidatoCreateDto candidatoDto)
@@ -62,7 +78,17 @@ namespace ConsultoraApi.Controllers
             {
                 return StatusCode(500, $"Algo salió mal creando el candidato {cand.Nombre} {cand.Apellido}");
             }
+            foreach (var compe in candidatoDto.lstCompes)
+            {
+                CandidatosXcompetencia candxCompe = new();
+                candxCompe.IdCandidato = cand.IdCandidato;
+                candxCompe.IdCompetencia = compe;
 
+                if (!_CXCRepo.CreateCandXCompe(candxCompe))
+                {
+                    return StatusCode(500, $"Algo salió mal creando el candidatoXCompetencia {compe}/{cand.IdCandidato}");
+                }
+            }
             return Ok($"Candidato {cand.Nombre} {cand.Apellido} creado con exito");
         }
 
@@ -99,12 +125,23 @@ namespace ConsultoraApi.Controllers
             candidato.Linkedin = candidatoUpdateDto.Linkedin;
             candidato.Seniority = candidatoUpdateDto.Seniority;
             candidato.EstadoCivil = candidatoUpdateDto.EstadoCivil;
-            
+
 
 
             if (!_uRepo.UpdateCandidato(candidato))
             {
                 return StatusCode(500, $"Algo salió mal actualizando el candidato {candidato.Nombre} {candidato.Apellido}");
+            }
+            foreach (var compe in candidatoUpdateDto.lstCompes)
+            {
+                CandidatosXcompetencia candxCompe = new();
+                candxCompe.IdCandidato = candidato.IdCandidato;
+                candxCompe.IdCompetencia = compe;
+
+                if (!_CXCRepo.UpdateCandXCompe(candxCompe))
+                {
+                    return StatusCode(500, $"Algo salió mal actulizando el candidatoXCompetencia {compe}/{candidato.IdCandidato}");
+                }
             }
 
             return Ok($"candidato {candidato.Nombre} {candidato.Apellido} modificado con exito");

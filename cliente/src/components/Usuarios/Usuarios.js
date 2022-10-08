@@ -12,6 +12,7 @@ const Usuarios = () => {
   }, []);
 
   const usuarios = useSelector((state) => state.usuarios.usuarios);
+
   return (
     <Fragment>
       <h1>Usuarios</h1>
@@ -28,9 +29,13 @@ const Usuarios = () => {
         <tbody>
           {usuarios.length === 0
             ? "No hay usuarios"
-            : usuarios.map((usuario) => (
-                <AccionesUsuarios key={usuario.idUsuario} usuario={usuario} />
-              ))}
+            : usuarios.map((usuario) => {
+                let fecha = usuario.fechaNacimiento.split("T");
+                usuario.fechaNacimiento = fecha[0];
+                return (
+                  <AccionesUsuarios key={usuario.idUsuario} usuario={usuario} />
+                );
+              })}
         </tbody>
       </table>
     </Fragment>

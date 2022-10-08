@@ -15,10 +15,12 @@ const AccionesCandidatos = ({ candidato }) => {
     apellido,
     documento,
     idPais,
+    nombrePais,
     telefono,
     mail,
     fechaNacimiento,
     idCandidato,
+    lstCompes,
   } = candidato;
   const dispatch = useDispatch();
   const confirmarEliminar = (idCandidato) => {
@@ -41,6 +43,7 @@ const AccionesCandidatos = ({ candidato }) => {
 
   const redireccionarEdicion = (candidato) => {
     dispatch(obtenerCandidatoEditar(candidato));
+    console.log(candidato);
     navigate(`editar/${candidato.idCandidato}`);
   };
   return (
@@ -49,7 +52,7 @@ const AccionesCandidatos = ({ candidato }) => {
         {apellido}, {nombre}
       </td>
       <td>
-        <span className="font-weight-bold">{idPais}</span>
+        <span className="font-weight-bold">{nombrePais}</span>
       </td>
       <td>
         <span className="font-weight-bold">{documento}</span>

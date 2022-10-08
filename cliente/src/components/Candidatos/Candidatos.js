@@ -1,11 +1,13 @@
 import React, { Fragment, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { obtenerCandidatosAction } from "../../actions/candidatosActions";
+import clienteAxios from "../../config/axios";
 import AccionesCandidatos from "./AccionesCandidatos";
 const Candidatos = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     //consultar api
+
     const cargarCandidatos = () => dispatch(obtenerCandidatosAction());
     cargarCandidatos();
     // eslint-disable-next-line
@@ -32,12 +34,17 @@ const Candidatos = () => {
         <tbody>
           {candidatos.length === 0
             ? "No hay candidatos"
-            : candidatos.map((candidato) => (
-                <AccionesCandidatos
-                  key={candidato.idCandidato}
-                  candidato={candidato}
-                />
-              ))}
+            : candidatos.map((candidato) => {
+                let fecha = candidato.fechaNacimiento.split("T");
+                candidato.fechaNacimiento = fecha[0];
+                console.log(candidato);
+                return (
+                  <AccionesCandidatos
+                    key={candidato.idCandidato}
+                    candidato={candidato}
+                  />
+                );
+              })}
         </tbody>
       </table>
     </Fragment>

@@ -17,7 +17,7 @@ namespace ConsultoraApi.Models
         public int IdTipoDocumento { get; set; }
         public int Documento { get; set; }
         public DateTime FechaAlta { get; set; }
-        public int? Telefono { get; set; }
+        public string? Telefono { get; set; }
         public string Mail { get; set; } = null!;
         public string? RazonSocial { get; set; }
         public int IdEstado { get; set; }

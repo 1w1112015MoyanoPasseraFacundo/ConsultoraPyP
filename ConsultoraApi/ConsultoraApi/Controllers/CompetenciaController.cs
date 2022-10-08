@@ -30,13 +30,22 @@ namespace ConsultoraApi.Controllers
             {
                 return StatusCode(400, "No existe ningúna competencia registrada");
             }
-            List<CompetenciaUpdateDto> compeGetDto = new List<CompetenciaUpdateDto>();
-            for (int i = 0; i < compe.Count; i++)
+           var compeGetDto = new List<CompetenciaGetDto>();
+
+            foreach (var i in compe)
             {
-                if (compe[i].FinVigencia == null)
+                if (i.FinVigencia == null)
                 {
-                    compeGetDto.Add(_mapper.Map<CompetenciaUpdateDto>(compe[i]));
+                    var rubro = db.Rubros.FirstOrDefault(x => x.IdRubro == i.IdRubro);
+
+                    var dto = new CompetenciaGetDto { idRubro = i.IdRubro, IdCompetencia = i.IdCompetencia, Nombre = i.Nombre, nombreRubro = rubro.Nombre };
+                    compeGetDto.Add(dto);
                 }
+                
+            }
+            if(compeGetDto.Count == 0 || compeGetDto == null)
+            {
+                return StatusCode(409, "No hay competencias habilitadas");
             }
 
             return Ok(compeGetDto);

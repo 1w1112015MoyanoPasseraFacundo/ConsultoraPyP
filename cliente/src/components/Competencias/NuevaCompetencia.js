@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { crearNuevaCompetenciaAction } from "../../actions/competenciasActions";
+import clienteAxios from "../../config/axios";
 const NuevaCompetencia = () => {
   const [nombre, guardarNombre] = useState("");
   const [idRubro, guardarRubro] = useState(0);
+  const [listaRubros, guardarRubros] = useState([]);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -12,6 +14,11 @@ const NuevaCompetencia = () => {
   const agregarCompetencia = (competencia) => {
     dispatch(crearNuevaCompetenciaAction(competencia));
     navigate("/competencias");
+  };
+
+  const llenarRubro = async () => {
+    const resultado = await clienteAxios.get(`/rubros`);
+    guardarRubros(resultado.data);
   };
   const submitNuevaCompetencia = (e) => {
     e.preventDefault();
@@ -34,8 +41,12 @@ const NuevaCompetencia = () => {
       nombre,
       idRubro,
     });
+    navigate("/competencias");
   };
 
+  const cancelar = () => {
+    navigate("/competencias");
+  };
   return (
     <div className="row justify-content-center">
       <div className="col-md-12">
@@ -43,7 +54,7 @@ const NuevaCompetencia = () => {
           <div className="card-body">
             <h2 className="mb-4 font-weight-bold">Nueva competencia</h2>
             {/* {alerta ? <p className={alerta.clases}>{alerta.msg}</p>:null} */}
-            <form onSubmit={submitNuevaCompetencia}>
+            <form>
               <div className="row p-t-20">
                 <div className="form-group col-lg-6 col-md-6 col-sm-12 col-xs-12">
                   <label>Nombre</label>
@@ -61,11 +72,16 @@ const NuevaCompetencia = () => {
                   <select
                     className="form-control"
                     name="idRubro"
+                    onClick={llenarRubro}
                     value={idRubro}
                     onChange={(e) => guardarRubro(e.target.value)}
                   >
                     <option>Seleccione...</option>
-                    <option value="1">Tech</option>
+                    {listaRubros.map((rubro) => (
+                      <option key={rubro.idRubro} value={rubro.idRubro}>
+                        {rubro.nombre}
+                      </option>
+                    ))}
                   </select>
                 </div>
                 <div className="form-group  col-lg-4 col-md-4 col-sm-12 col-xs-12"></div>
@@ -79,12 +95,14 @@ const NuevaCompetencia = () => {
                   <button
                     type="submit"
                     className="btn btn-primary font-weight-bold text-uppercase"
+                    onClick={cancelar}
                   >
                     Cancelar
                   </button>
                   <button
                     type="submit"
                     className="btn btn-primary font-weight-bold text-uppercase d-block  nuevo"
+                    onClick={submitNuevaCompetencia}
                   >
                     Guardar
                   </button>

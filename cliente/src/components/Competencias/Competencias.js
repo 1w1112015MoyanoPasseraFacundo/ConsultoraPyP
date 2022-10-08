@@ -4,8 +4,8 @@ import { obtenerCompetenciasAction } from "../../actions/competenciasActions";
 import AccionesCompetencias from "./AccionesCompetencias";
 const Competencias = () => {
   const dispatch = useDispatch();
+
   useEffect(() => {
-    //consultar api
     const cargarCompetencias = () => dispatch(obtenerCompetenciasAction());
     cargarCompetencias();
     // eslint-disable-next-line

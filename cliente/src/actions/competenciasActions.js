@@ -14,6 +14,7 @@ import {
   OBTENER_COMPETENCIA_ELIMINAR,
   COMPETENCIA_ELIMINADO_EXITO,
   COMPETENCIA_ELIMINADO_ERROR,
+  OBTENER_RUBRO,
 } from "../types";
 
 export function obtenerCompetenciasAction() {
@@ -21,7 +22,6 @@ export function obtenerCompetenciasAction() {
     dispatch(descargarCompetencias());
     try {
       const respuesta = await clienteAxios.get("/Competencias");
-      console.log(respuesta);
       dispatch(descargarCompetenciasExitosa(respuesta.data));
     } catch (error) {
       console.log(error);

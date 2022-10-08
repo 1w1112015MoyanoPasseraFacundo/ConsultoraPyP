@@ -200,7 +200,8 @@ namespace ConsultoraApi.Models
                     .IsUnicode(false)
                     .HasColumnName("razonSocial");
 
-                entity.Property(e => e.Telefono).HasColumnName("telefono");
+                entity.Property(e => e.Telefono).HasMaxLength(50)
+                    .IsUnicode(false).HasColumnName("telefono");
 
                 entity.HasOne(d => d.IdEstadoNavigation)
                     .WithMany(p => p.Clientes)

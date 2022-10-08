@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ConsultoraApi.Dtos.DtosCandidatos;
+using ConsultoraApi.Dtos.DtosClientes;
 using ConsultoraApi.Dtos.DtosCompetencias;
 using ConsultoraApi.Dtos.DtosUsuarios;
 using ConsultoraApi.Models;
@@ -16,6 +17,9 @@ namespace ConsultoraApi.Mapper
             CreateMap<Candidato, CandidatoCreateDto>().ReverseMap();
             CreateMap<Competencia, CompetenciaCreateDto>().ReverseMap();
             CreateMap<Competencia, CompetenciaUpdateDto>().ReverseMap();
+            CreateMap<Cliente, ClienteGetDto>().ReverseMap();
+            CreateMap<Cliente, ClienteCreateDto>().ReverseMap();
+            CreateMap<Cliente, ClienteUpdateDto>().ReverseMap();
 
         }
     }
