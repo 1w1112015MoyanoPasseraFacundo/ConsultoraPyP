@@ -14,9 +14,8 @@ namespace ConsultoraApi.Models
         public string Nombre { get; set; } = null!;
         public int IdCliente { get; set; }
         public int IdRubro { get; set; }
-        public int? Modalidad { get; set; }
+        public string? Modalidad { get; set; }
         public DateTime FechaAlta { get; set; }
-        public int? Telefono { get; set; }
         public int IdEstado { get; set; }
 
         public virtual Cliente IdClienteNavigation { get; set; } = null!;

@@ -280,14 +280,14 @@ namespace ConsultoraApi.Models
 
                 entity.Property(e => e.IdRubro).HasColumnName("idRubro");
 
-                entity.Property(e => e.Modalidad).HasColumnName("modalidad");
+                entity.Property(e => e.Modalidad).HasMaxLength(50)
+                    .IsUnicode(false).HasColumnName("modalidad");
 
                 entity.Property(e => e.Nombre)
                     .HasMaxLength(100)
                     .IsUnicode(false)
                     .HasColumnName("nombre");
 
-                entity.Property(e => e.Telefono).HasColumnName("telefono");
 
                 entity.HasOne(d => d.IdClienteNavigation)
                     .WithMany(p => p.Empleos)

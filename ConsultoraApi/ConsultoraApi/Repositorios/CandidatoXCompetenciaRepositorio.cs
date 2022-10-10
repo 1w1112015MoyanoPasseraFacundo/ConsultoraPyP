@@ -15,9 +15,25 @@ namespace ConsultoraApi.Repositorios
             db.CandidatosXcompetencias.Add(candXCompe);
             return Save();
         }
+        public List<CandidatosXcompetencia> GetCandXCompes(int idCandidato)
+        {
+            if (idCandidato != null)
+            {
+                return db.CandidatosXcompetencias.Where(u => u.IdCandidato == idCandidato).ToList();
+            }
+            else
+            {
+                return null;
+            }
+        }
         public bool UpdateCandXCompe(CandidatosXcompetencia candXCompe)
         {
-            db.CandidatosXcompetencias.Update(candXCompe);
+            db.CandidatosXcompetencias.Add(candXCompe);
+            return Save();
+        }
+        public bool DeleteCandXCompe(CandidatosXcompetencia candXCompe)
+        {
+            db.CandidatosXcompetencias.Remove(candXCompe);
             return Save();
         }
         public bool Save()

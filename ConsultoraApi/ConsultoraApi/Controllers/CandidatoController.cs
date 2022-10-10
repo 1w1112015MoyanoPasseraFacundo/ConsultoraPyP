@@ -132,6 +132,12 @@ namespace ConsultoraApi.Controllers
             {
                 return StatusCode(500, $"Algo salió mal actualizando el candidato {candidato.Nombre} {candidato.Apellido}");
             }
+            List<CandidatosXcompetencia> candXComp = _CXCRepo.GetCandXCompes(idCandidato);
+            foreach (CandidatosXcompetencia xcompetencia in candXComp)
+                if (!_CXCRepo.DeleteCandXCompe(xcompetencia))
+                {
+                    return StatusCode(500, $"Algo salió mal actulizando el candidatoXCompetencia {xcompetencia.IdCandidato}/{candidato.IdCandidato}");
+                }
             foreach (var compe in candidatoUpdateDto.lstCompes)
             {
                 CandidatosXcompetencia candxCompe = new();
@@ -144,12 +150,12 @@ namespace ConsultoraApi.Controllers
                 }
             }
 
-            return Ok($"candidato {candidato.Nombre} {candidato.Apellido} modificado con exito");
+            return Ok($"Candidato {candidato.Nombre} {candidato.Apellido} modificado con exito");
         }
 
 
         [HttpDelete("{idCandidato:int}", Name = "BajaCandidato")]
-        public IActionResult DeletCandidato(int idCandidato)
+        public IActionResult DeleteCandidato(int idCandidato)
         {
             if (idCandidato == null)
             {
@@ -170,6 +176,13 @@ namespace ConsultoraApi.Controllers
                 return StatusCode(500, $"Algo salió mal dando de baja el candidato {cand.Nombre} {cand.Apellido}");
             }
 
+            //ELIMINAR CANDIDATOXCOMPETENCIA
+            //List<CandidatosXcompetencia> candXComp = _CXCRepo.GetCandXCompes(idCandidato);
+            //foreach (CandidatosXcompetencia xcompetencia in candXComp)
+            //    if (!_CXCRepo.DeleteCandXCompe(xcompetencia))
+            //    {
+            //        return StatusCode(500, $"Algo salió mal dando de baja el candidatoXCompetencia {xcompetencia.IdCandidato}/{cand.IdCandidato}");
+            //    }
             return Ok($"Candidato {cand.Nombre} {cand.Apellido} dado de baja con exito");
         }
     }

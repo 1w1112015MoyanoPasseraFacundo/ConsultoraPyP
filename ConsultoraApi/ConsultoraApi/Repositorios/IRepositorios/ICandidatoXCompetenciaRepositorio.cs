@@ -7,6 +7,8 @@ namespace ConsultoraApi.Repositorios.IRepositorios
 
         public bool CreateCandXCompe(CandidatosXcompetencia candXCompe);
         public bool UpdateCandXCompe(CandidatosXcompetencia candXCompe);
+        public List<CandidatosXcompetencia> GetCandXCompes(int idCandidato);
+        public bool DeleteCandXCompe(CandidatosXcompetencia candXCompe);
         public bool Save();
     }
 }
