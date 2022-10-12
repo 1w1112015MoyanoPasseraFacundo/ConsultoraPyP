@@ -150,7 +150,7 @@ const EditarCandidato = () => {
       <div className="col-md-12">
         <div className="card">
           <div className="card-body">
-            <h2 className="mb-4 font-weight-bold">Nuevo Candidato</h2>
+            <h2 className="mb-4 font-weight-bold">Editar Candidato</h2>
             {/* {alerta ? <p className={alerta.clases}>{alerta.msg}</p>:null} */}
             <form>
               <div className="row p-t-20">

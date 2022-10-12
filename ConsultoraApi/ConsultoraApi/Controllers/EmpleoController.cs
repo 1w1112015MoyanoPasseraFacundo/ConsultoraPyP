@@ -43,10 +43,10 @@ namespace ConsultoraApi.Controllers
 
                     empleoGetDto.Add(_mapper.Map<EmpleoGetDto>(empleo[i]));
                 }
-                else
-                {
-                    return StatusCode(409, "No existe ningún empleo activo actualmente");
-                }
+            }
+            if (empleoGetDto == null)
+            {
+                return StatusCode(409, "No existe ningún empleo activo actualmente");
             }
             for (int i = 0; i < empleoGetDto.Count; i++)
             {
@@ -65,7 +65,7 @@ namespace ConsultoraApi.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateCandidato(EmpleoCreateDto empleoDto)
+        public IActionResult CreateEmpleo(EmpleoCreateDto empleoDto)
         {
             if (empleoDto == null)
             {

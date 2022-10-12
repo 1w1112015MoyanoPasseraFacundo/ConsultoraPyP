@@ -15,6 +15,12 @@ import EditarCompetencia from "./components/Competencias/EditarCompetencia";
 import Clientes from "./components/Clientes/Clientes";
 import NuevoCliente from "./components/Clientes/NuevoCliente";
 import EditarCliente from "./components/Clientes/EditarCliente";
+import Empleos from "./components/Empleos/Empleos";
+import NuevoEmpleo from "./components/Empleos/NuevoEmpleo";
+import EditarEmpleo from "./components/Empleos/EditarEmpleo";
+import Pagos from "./components/Pagos/Pagos";
+import NuevoPago from "./components/Pagos/NuevoPago";
+import EditarPago from "./components/Pagos/EditarPago";
 function App() {
   return (
     <Router>
@@ -58,6 +64,16 @@ function App() {
               path="/clientes/editar/:id"
               element={<EditarCliente />}
             />
+            <Route exact path="/empleos" element={<Empleos />} />
+            <Route exact path="/empleos/nuevo" element={<NuevoEmpleo />} />
+            <Route
+              exact
+              path="/empleos/editar/:id"
+              element={<EditarEmpleo />}
+            />
+            <Route exact path="/pagos" element={<Pagos />} />
+            <Route exact path="/pagos/nuevo" element={<NuevoPago />} />
+            <Route exact path="/pagos/editar/:id" element={<EditarPago />} />
           </Routes>
         </div>
       </Provider>

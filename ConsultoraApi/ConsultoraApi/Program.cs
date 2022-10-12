@@ -42,6 +42,7 @@ builder.Services.AddScoped<ICandidatoXCompetenciaRepositorio, CandidatoXCompeten
 builder.Services.AddScoped<IClienteRepositorio, ClienteRepositorio>();
 builder.Services.AddScoped<IEmpleoRepositorio, EmpleoRepositorio>();
 builder.Services.AddScoped<IEmpleoXCompetenciaRepositorio, EmpleoXCompetenciaRepositorio>();
+builder.Services.AddScoped<IPagoRepositorio, PagoRepositorio>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

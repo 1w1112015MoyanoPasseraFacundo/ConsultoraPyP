@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { obtenerCandidatosAction } from "../../actions/candidatosActions";
-import clienteAxios from "../../config/axios";
+import { obtenerEmpleosAction } from "../../actions/empleosActions";
 import AccionesCandidatos from "./AccionesCandidatos";
 const Candidatos = () => {
   const dispatch = useDispatch();
