@@ -17,17 +17,17 @@ const Empleos = () => {
   const error = useSelector((state) => state.empleos.error);
   return (
     <Fragment>
-      <h1>Empleos</h1>
+      <h3 className="title-decorator">Empleos</h3>
       <table className="table table-striped">
         <thead className="bg-primary table-dark">
           <tr>
-            <th scope="col">Descripción</th>
-            <th scope="col">Cliente</th>
-            <th scope="col">Rubro</th>
-            <th scope="col">Modalidad</th>
-            <th scope="col">Estado</th>
-            <th scope="col">Competencias</th>
-            <th scope="col">Acciones</th>
+            <th className="colu" scope="col">Descripción</th>
+            <th className="colu" scope="col">Cliente</th>
+            <th className="colu" scope="col">Rubro</th>
+            <th className="colu" scope="col">Modalidad</th>
+            <th className="colu" scope="col">Estado</th>
+            <th className="colu" scope="col">Competencias</th>
+            <th className="colu" scope="col">Acciones</th>
           </tr>
         </thead>
         <tbody>

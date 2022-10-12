@@ -15,13 +15,13 @@ const Competencias = () => {
   const error = useSelector((state) => state.competencias.error);
   return (
     <Fragment>
-      <h1>Competencias</h1>
+      <h3 className="title-decorator">Competencias</h3>
       <table className="table table-striped">
         <thead className="bg-primary table-dark">
           <tr>
-            <th scope="col">Nombre</th>
-            <th scope="col">Rubro</th>
-            <th scope="col">Acciones</th>
+            <th className="colu" scope="col">Nombre</th>
+            <th className="colu" scope="col">Rubro</th>
+            <th className="colu" scope="col">Acciones</th>
           </tr>
         </thead>
         <tbody>

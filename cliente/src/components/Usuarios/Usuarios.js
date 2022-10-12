@@ -15,15 +15,15 @@ const Usuarios = () => {
 
   return (
     <Fragment>
-      <h1>Usuarios</h1>
+      <h3 className="title-decorator">Usuarios</h3>
       <table className="table table-striped">
         <thead className="bg-primary table-dark">
           <tr>
-            <th scope="col">Nombre</th>
-            <th scope="col">Cuil</th>
-            <th scope="col">Mail</th>
-            <th scope="col">Teléfono</th>
-            <th scope="col">Acciones</th>
+            <th className="colu" scope="col">Nombre</th>
+            <th className="colu" scope="col">Cuil</th>
+            <th className="colu" scope="col">Mail</th>
+            <th className="colu" scope="col">Teléfono</th>
+            <th className="colu" scope="col">Acciones</th>
           </tr>
         </thead>
         <tbody>

@@ -1,9 +1,9 @@
 import React from "react";
 const Header = () => {
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-primary justify-content-between">
+    <nav className="navbar navbar-expand-lg navbar-dark justify-content-between header">
       <div className="container">
-        <h1>
+        <h1 className="titulo">
           {/* <Link to={"/"} className="text-light"> */}
           Consultora Pyp
           {/* </Link> */}

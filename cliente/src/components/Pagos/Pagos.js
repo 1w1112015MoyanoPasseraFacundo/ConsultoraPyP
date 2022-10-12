@@ -17,15 +17,15 @@ const Pagos = () => {
   const error = useSelector((state) => state.pagos.error);
   return (
     <Fragment>
-      <h1>Pagos</h1>
+      <h3 className="title-decorator">Pagos</h3>
       <table className="table table-striped">
         <thead className="bg-primary table-dark">
           <tr>
-            <th scope="col">Cliente</th>
-            <th scope="col">Monto</th>
-            <th scope="col">Fecha</th>
-            <th scope="col">Estado</th>
-            <th scope="col">Acciones</th>
+            <th className="colu" scope="col">Cliente</th>
+            <th className="colu" scope="col">Monto</th>
+            <th className="colu" scope="col">Fecha</th>
+            <th className="colu" scope="col">Estado</th>
+            <th className="colu" scope="col">Acciones</th>
           </tr>
         </thead>
         <tbody>

@@ -18,17 +18,17 @@ const Candidatos = () => {
   const error = useSelector((state) => state.candidatos.error);
   return (
     <Fragment>
-      <h1>Candidatos</h1>
+      <h3 className="title-decorator">Candidatos</h3>
       <table className="table table-striped">
         <thead className="bg-primary table-dark">
           <tr>
-            <th scope="col">Nombre</th>
-            <th scope="col">País</th>
-            <th scope="col">Documento</th>
-            <th scope="col">E-mail</th>
-            <th scope="col">Fecha de nacimiento</th>
-            <th scope="col">Teléfono</th>
-            <th scope="col">Acciones</th>
+            <th className="colu" scope="col">Nombre</th>
+            <th className="colu" scope="col">País</th>
+            <th className="colu" scope="col">Documento</th>
+            <th className="colu" scope="col">E-mail</th>
+            <th className="colu" scope="col">Fecha de nacimiento</th>
+            <th className="colu" scope="col">Teléfono</th>
+            <th className="colu" scope="col">Acciones</th>
           </tr>
         </thead>
         <tbody>

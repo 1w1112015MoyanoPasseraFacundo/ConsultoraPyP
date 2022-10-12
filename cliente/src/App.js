@@ -3,6 +3,7 @@ import Header from "./components/Header";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Candidatos from "./components/Candidatos/Candidatos";
 import { Provider } from "react-redux";
+import "bootswatch/dist/materia/bootstrap.min.css";
 import store from "./store";
 import Usuarios from "./components/Usuarios/Usuarios";
 import NuevoUsuario from "./components/Usuarios/NuevoUsuario";

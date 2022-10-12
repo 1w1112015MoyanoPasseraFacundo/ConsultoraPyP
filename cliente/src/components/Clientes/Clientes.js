@@ -14,25 +14,25 @@ const Clientes = () => {
   }, []);
 
   const clientes = useSelector((state) => state.clientes.clientes);
+
   console.log(clientes);
   return (
     <Fragment>
-      <h1>Clientes</h1>
+      <h3 className="title-decorator">Clientes</h3>
       <table className="table table-striped">
-        <thead className="bg-primary table-dark">
+        <thead className="bg-primary table-light">
           <tr>
-            <th scope="col">Nombre</th>
-            <th scope="col">País</th>
-            <th scope="col">CUIT</th>
-            <th scope="col">E-mail</th>
-            <th scope="col">Acciones</th>
+            <th className="colu" scope="col">Nombre</th>
+            <th className="colu" scope="col">País</th>
+            <th className="colu" scope="col">CUIT</th>
+            <th className="colu" scope="col">E-mail</th>
+            <th className="colu" scope="col">Acciones</th>
           </tr>
         </thead>
         <tbody>
           {clientes.length === 0
             ? "No hay candidatos"
             : clientes.map((cliente) => {
-                console.log(cliente);
                 return (
                   <AccionesCliente key={cliente.idCliente} cliente={cliente} />
                 );
