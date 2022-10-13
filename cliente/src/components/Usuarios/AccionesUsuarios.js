@@ -6,6 +6,7 @@ import {
   darDeBajaUsuario,
   obtenerUsuarioEditar,
 } from "../../actions/usuariosActions";
+import { BsFillPencilFill, BsTrashFill } from "react-icons/bs";
 
 const AccionesUsuarios = ({ usuario }) => {
   const { nombre, apellido, mail, telefono, cuil, idUsuario } = usuario;
@@ -41,13 +42,13 @@ const AccionesUsuarios = ({ usuario }) => {
         {apellido}, {nombre}
       </td>
       <td>
-        <span className="font-weight-bold">{cuil}</span>
+        <span>{cuil}</span>
       </td>
       <td>
-        <span className="font-weight-bold">{mail}</span>
+        <span>{mail}</span>
       </td>
       <td>
-        <span className="font-weight-bold">{telefono}</span>
+        <span>{telefono}</span>
       </td>
       <td className="acciones">
         <button
@@ -55,14 +56,14 @@ const AccionesUsuarios = ({ usuario }) => {
           className="btn btn-success mr-2"
           onClick={() => redireccionarEdicion(usuario)}
         >
-          Editar
+          <BsFillPencilFill />
         </button>
         <button
           type="button"
           className="btn btn-danger"
           onClick={() => confirmarEliminar(idUsuario)}
         >
-          Dar de baja
+          <BsTrashFill />
         </button>
       </td>
     </tr>

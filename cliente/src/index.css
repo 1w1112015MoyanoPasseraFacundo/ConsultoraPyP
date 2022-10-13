@@ -1,3 +1,4 @@
+
 body {
   margin: 0;
   padding: 0;
@@ -36,7 +37,23 @@ h1 a.text-light:hover {
   position: relative;
   margin-bottom: 2rem;
 }
+.table td,
+.table th {
+  border-color: #f3f1f1;
+}
 
+.table thead {
+  background-color: #eaeef0;
+}
+
+.table thead th,
+.table th {
+  font-weight: 500;
+  color: #828385;
+}
+.table-hover tbody tr:hover {
+  background: #eff7fe;
+}
 
 .title-decorator::after {
   content: '';
@@ -78,3 +95,13 @@ h1 a.text-light:hover {
 .acciones > *{
   flex: 1;
 }
+
+
+.card-form {
+  background-color: #36a1ea;
+    margin-bottom: 1rem;
+}
+
+
+
+

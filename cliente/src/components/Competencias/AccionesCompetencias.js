@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { BsFillPencilFill, BsTrashFill } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -45,14 +46,14 @@ const AccionesCompetencias = ({ competencia }) => {
           className="btn btn-success mr-2"
           onClick={() => redireccionarEdicion(competencia)}
         >
-          Editar
+          <BsFillPencilFill />
         </button>
         <button
           type="button"
           className="btn btn-danger"
           onClick={() => confirmarEliminar(idCompetencia)}
         >
-          Dar de baja
+          <BsTrashFill />
         </button>
       </td>
     </tr>

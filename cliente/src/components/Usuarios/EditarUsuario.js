@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { BsCheckLg, BsReplyFill } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { editarUsuarioAction } from "../../actions/usuariosActions";
@@ -75,9 +76,9 @@ const EditarUsuario = () => {
   return (
     <div className="row justify-content-center">
       <div className="col-md-12">
+        <h3 className="title-decorator">Editar Usuario</h3>
         <div className="card">
           <div className="card-body">
-            <h2 className="mb-4 font-weight-bold">Nuevo Usuario</h2>
             {/* {alerta ? <p className={alerta.clases}>{alerta.msg}</p>:null} */}
 
             {/* <LocalizationProvider> */}
@@ -240,17 +241,23 @@ const EditarUsuario = () => {
                 <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                   <button
                     type="submit"
-                    className="btn btn-primary font-weight-bold text-uppercase"
+                    className="btn btn-light font-weight-bold text-uppercase"
                     onClick={cancelar}
                   >
-                    Cancelar
+                    <i class="mx-1 mr-2">
+                      <BsReplyFill />
+                    </i>
+                    <span> Volver</span>
                   </button>
                   <button
                     type="submit"
                     className="btn btn-primary font-weight-bold text-uppercase d-block  nuevo"
                     onClick={submitEditarUsuario}
                   >
-                    Guardar
+                    <i class="mx-1 mr-2">
+                      <BsCheckLg />
+                    </i>
+                    <span> Guardar</span>
                   </button>
                 </div>
               </div>

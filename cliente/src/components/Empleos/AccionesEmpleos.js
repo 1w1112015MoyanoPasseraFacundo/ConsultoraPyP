@@ -1,4 +1,5 @@
 import React from "react";
+import { BsFillPencilFill, BsTrashFill } from "react-icons/bs";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -42,19 +43,19 @@ const AccionesEmpleos = ({ empleo }) => {
     <tr>
       <td>{nombre}</td>
       <td>
-        <span className="font-weight-bold">{nombreCliente}</span>
+        <span>{nombreCliente}</span>
       </td>
       <td>
-        <span className="font-weight-bold">{nombreRubro}</span>
+        <span>{nombreRubro}</span>
       </td>
       <td>
-        <span className="font-weight-bold">{modalidad}</span>
+        <span>{modalidad}</span>
       </td>
       <td>
-        <span className="font-weight-bold">{idEstado}</span>
+        <span>{idEstado}</span>
       </td>
       <td>
-        <span className="font-weight-bold">{lstCompes}</span>
+        <span>{lstCompes}</span>
       </td>
       <td className="acciones">
         <button
@@ -62,14 +63,14 @@ const AccionesEmpleos = ({ empleo }) => {
           className="btn btn-success mr-2"
           onClick={() => redireccionarEdicion(empleo)}
         >
-          Editar
+          <BsFillPencilFill />
         </button>
         <button
           type="button"
           className="btn btn-danger"
           onClick={() => confirmarEliminar(idEmpleo)}
         >
-          Dar de baja
+          <BsTrashFill />
         </button>
       </td>
     </tr>

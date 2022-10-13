@@ -1,4 +1,5 @@
 import React from "react";
+import { BsFillPencilFill, BsTrashFill } from "react-icons/bs";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -32,16 +33,16 @@ const AccionesPagos = ({ pago }) => {
   return (
     <tr>
       <td>
-        <span className="font-weight-bold">{nombreCliente}</span>
+        <span>{nombreCliente}</span>
       </td>
       <td>
-        <span className="font-weight-bold">{montoPago}</span>
+        <span>{montoPago}</span>
       </td>
       <td>
-        <span className="font-weight-bold">{fechaPago}</span>
+        <span>{fechaPago}</span>
       </td>
       <td>
-        <span className="font-weight-bold">{Estado}</span>
+        <span>{Estado}</span>
       </td>
 
       <td className="acciones">
@@ -50,14 +51,14 @@ const AccionesPagos = ({ pago }) => {
           className="btn btn-success mr-2"
           onClick={() => redireccionarEdicion(pago)}
         >
-          Editar
+          <BsFillPencilFill />
         </button>
         <button
           type="button"
           className="btn btn-danger"
           onClick={() => confirmarEliminar(idPago)}
         >
-          Dar de baja
+          <BsTrashFill />
         </button>
       </td>
     </tr>

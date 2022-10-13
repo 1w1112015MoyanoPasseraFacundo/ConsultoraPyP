@@ -8,6 +8,7 @@ import {
   obtenerCandidatosAction,
 } from "../../actions/candidatosActions";
 import Moment from "moment";
+import { BsFillPencilFill, BsTrashFill } from "react-icons/bs";
 
 const AccionesCandidatos = ({ candidato }) => {
   const {
@@ -52,21 +53,19 @@ const AccionesCandidatos = ({ candidato }) => {
         {apellido}, {nombre}
       </td>
       <td>
-        <span className="font-weight-bold">{nombrePais}</span>
+        <span>{nombrePais}</span>
       </td>
       <td>
-        <span className="font-weight-bold">{documento}</span>
+        <span>{documento}</span>
       </td>
       <td>
-        <span className="font-weight-bold">{mail}</span>
+        <span>{mail}</span>
       </td>
       <td>
-        <span className="font-weight-bold">
-          {Moment(fechaNacimiento).format("DD/MM/YYYY")}
-        </span>
+        <span>{Moment(fechaNacimiento).format("DD/MM/YYYY")}</span>
       </td>
       <td>
-        <span className="font-weight-bold">{telefono}</span>
+        <span>{telefono}</span>
       </td>
       <td className="acciones">
         <button
@@ -74,14 +73,14 @@ const AccionesCandidatos = ({ candidato }) => {
           className="btn btn-success mr-2"
           onClick={() => redireccionarEdicion(candidato)}
         >
-          Editar
+          <BsFillPencilFill />
         </button>
         <button
           type="button"
           className="btn btn-danger"
           onClick={() => confirmarEliminar(idCandidato)}
         >
-          Dar de baja
+          <BsTrashFill />
         </button>
       </td>
     </tr>

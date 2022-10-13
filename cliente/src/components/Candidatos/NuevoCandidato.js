@@ -10,6 +10,7 @@ import {
   MenuItem,
   Select,
 } from "@mui/material";
+import { BsCheckLg, BsReplyFill } from "react-icons/bs";
 const NuevoCandidato = () => {
   const navigate = useNavigate();
   //state
@@ -153,9 +154,9 @@ const NuevoCandidato = () => {
   return (
     <div className="row justify-content-center">
       <div className="col-md-12">
+        <h3 className="title-decorator">Nuevo Candidato</h3>
         <div className="card">
           <div className="card-body">
-            <h2 className="mb-4 font-weight-bold">Nuevo Candidato</h2>
             {/* {alerta ? <p className={alerta.clases}>{alerta.msg}</p>:null} */}
             <form>
               <div className="row p-t-20">
@@ -380,17 +381,23 @@ const NuevoCandidato = () => {
                 <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                   <button
                     type="submit"
-                    className="btn btn-primary font-weight-bold text-uppercase"
+                    className="btn btn-light font-weight-bold text-uppercase"
                     onClick={cancelar}
                   >
-                    Cancelar
+                    <i class="mx-1 mr-2">
+                      <BsReplyFill />
+                    </i>
+                    <span> Volver</span>
                   </button>
                   <button
                     type="submit"
                     className="btn btn-primary font-weight-bold text-uppercase d-block  nuevo"
                     onClick={submitNuevoCandidato}
                   >
-                    Guardar
+                    <i class="mx-1 mr-2">
+                      <BsCheckLg />
+                    </i>
+                    <span> Guardar</span>
                   </button>
                 </div>
               </div>

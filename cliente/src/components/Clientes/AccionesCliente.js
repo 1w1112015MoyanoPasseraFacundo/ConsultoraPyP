@@ -1,4 +1,5 @@
 import React from "react";
+import { BsFillPencilFill, BsTrashFill } from "react-icons/bs";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -38,29 +39,29 @@ const AccionesCliente = ({ cliente }) => {
     <tr>
       <td>{nombre}</td>
       <td>
-        <span className="font-weight-bold">{nombrePais}</span>
+        <span>{nombrePais}</span>
       </td>
       <td>
-        <span className="font-weight-bold">{documento}</span>
+        <span>{documento}</span>
       </td>
       <td>
-        <span className="font-weight-bold">{mail}</span>
+        <span>{mail}</span>
       </td>
 
       <td className="acciones">
         <button
           type="button"
-          className="btn btn-success mr-2"
+          className="btn btn-primary mr-2"
           onClick={() => redireccionarEdicion(cliente)}
         >
-          Editar
+          <BsFillPencilFill />
         </button>
         <button
           type="button"
           className="btn btn-danger"
           onClick={() => confirmarEliminar(idCliente)}
         >
-          Dar de baja
+          <BsTrashFill />
         </button>
       </td>
     </tr>
