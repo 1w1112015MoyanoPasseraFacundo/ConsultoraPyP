@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Header from "./components/Header";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Candidatos from "./components/Candidatos/Candidatos";
@@ -22,14 +22,19 @@ import EditarEmpleo from "./components/Empleos/EditarEmpleo";
 import Pagos from "./components/Pagos/Pagos";
 import NuevoPago from "./components/Pagos/NuevoPago";
 import EditarPago from "./components/Pagos/EditarPago";
+import SideBar from "./components/SideBar";
+import Login from "./login/Login";
 function App() {
   return (
     <Router>
+      <Routes>
+        <Route exact path="/login" element={<Login />} />
+      </Routes>
+      <Header />
+      <SideBar />
       <Provider store={store}>
-        <Header />
         <div className="container cont mt-5">
           <Routes>
-            <Route exact path="/candidatos" element={<Candidatos />} />
             <Route
               exact
               path="/candidatos/nuevo"

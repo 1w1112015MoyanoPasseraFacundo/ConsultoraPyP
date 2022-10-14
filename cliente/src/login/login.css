@@ -1,0 +1,161 @@
+.login-container {
+    height: 100vh;
+  }
+  
+  .login-bg-img {
+    background-image: url("../assets/login-bg.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    height: 100vh;
+    width: 100vw;
+  }
+  .logo{
+    background-image: url("../assets/logo.png");
+  }
+  .login-form-container {
+    z-index: 55;
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+  
+  .login-register {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    height: 100vh;
+    width: 100%;
+    padding: 10% 0;
+    position: fixed;
+  }
+  
+  .login-card-wrapper {
+    margin: auto 0;
+    padding: 2.25rem;
+  }
+  
+  .login-box {
+    right: 0px;
+    position: absolute;
+    height: 100%;
+    width: 28rem;
+  }
+  
+  .login-box .footer {
+    width: 100%;
+    left: 0px;
+    right: 0px;
+  }
+  
+  .login-box .social {
+    display: block;
+    margin-bottom: 30px;
+  }
+  
+  #recoverform {
+    display: none;
+  }
+  
+  .login-sidebar {
+    padding: 0px;
+    margin-top: 0px;
+  }
+  
+  .login-sidebar .login-box {
+    right: 0px;
+    position: absolute;
+    height: 100%;
+  }
+  
+  .image-box {
+    position: absolute;
+    left: 25%;
+    height: 100vh;
+    width: calc(100% -250px);
+  }
+  
+  .bandeja-imagen {
+    height: 80px;
+    width: 100%;
+    object-fit: contain;
+  }
+  
+  .bandeja-imagen-hv {
+    height: 3.5rem;
+  }
+  
+  .powered-mobile {
+    height: 1.5rem !important;
+  }
+  
+  .login-box-icon {
+    display: none;
+  }
+  
+  @media (max-width: 1024px) {
+    .image-box {
+      position: absolute;
+      left: 0%;
+      height: 100vh;
+      width: calc(100% -250px);
+      display: flex !important;
+    }
+    .login-box {
+      width: 25rem;
+    }
+    .flex-responsive {
+      display: flex !important;
+    }
+  }
+  
+  @media (max-width: 767px) {
+    .login-sidebar {
+      padding: 10% 0;
+    }
+    .login-register {
+      position: relative;
+      overflow: hidden;
+    }
+    .login-sidebar .login-box {
+      position: relative;
+    }
+    .login-box {
+      width: 90%;
+      margin: auto;
+      border-radius: 6px;
+      background-color: rgba(0, 0, 0, 0.25);
+    }
+    .login-box-icon {
+      display: block;
+      margin: auto;
+      height: 4rem;
+    }
+    .box-title {
+      color: #fefefe;
+    }
+  
+    .display-responsive {
+      display: none;
+    }
+  
+    .form-material .form-control {
+      color: #fefefe;
+    }
+    .link-wf {
+      color: #398bf7 !important;
+      transition: 0.3s;
+    }
+    .link-wf:hover {
+      color: #fefefe !important;
+    }
+    .flex-responsive {
+      display: block !important;
+    }
+  }
+  
+  @media screen and (min-width: ≥576px) {
+    .login-bg-img {
+      position: absolute;
+      bottom: 0;
+    }
+  }
+  
