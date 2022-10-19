@@ -1,4 +1,5 @@
-﻿using ConsultoraApi.Models;
+﻿using ConsultoraApi.Dtos.DtosCompetencias;
+using ConsultoraApi.Models;
 
 namespace ConsultoraApi.Repositorios.IRepositorios
 {
@@ -9,5 +10,6 @@ namespace ConsultoraApi.Repositorios.IRepositorios
         public bool UpdateCompetencia(Competencia competencia);
         public bool CreateCompetencia(Competencia competencia);
         public bool DarDeBajaCompetencia(Competencia competencia);
+        public ICollection<Competencia> GetFilterCompetencia(CompetenciaFilterDto filterDto);
     }
 }

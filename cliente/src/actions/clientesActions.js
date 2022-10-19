@@ -30,6 +30,24 @@ export function obtenerClientesAction() {
   };
 }
 
+export function obtenerClientesFilterAction(filtros) {
+  return async (dispatch) => {
+    dispatch(descargarClientes());
+    console.log(filtros);
+    try {
+      const respuesta = await clienteAxios.get(
+        `/Clientes/GetClientesFilter?nombre=${filtros.nombre}&mail=${filtros.mail}&estado=${filtros.estado}`
+      );
+      console.log(respuesta);
+
+      dispatch(descargarClientesExitosa(respuesta.data));
+    } catch (error) {
+      console.log(error);
+      dispatch(descargarClientesError(error.response.data));
+    }
+  };
+}
+
 const descargarClientes = () => ({
   type: COMENZAR_DESCARGA_CLIENTES,
   payload: true,
@@ -42,7 +60,7 @@ const descargarClientesExitosa = (clientes) => ({
 
 const descargarClientesError = (error) => ({
   type: DESCARGA_CLIENTES_ERROR,
-  payload: error.data,
+  payload: error,
 });
 
 export function crearNuevoClienteAction(cliente) {

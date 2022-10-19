@@ -24,6 +24,7 @@ import NuevoPago from "./components/Pagos/NuevoPago";
 import EditarPago from "./components/Pagos/EditarPago";
 import SideBar from "./components/SideBar";
 import Login from "./login/Login";
+import Dashboard from "./components/Dashboard";
 function App() {
   return (
     <Router>
@@ -35,6 +36,9 @@ function App() {
       <Provider store={store}>
         <div className="container cont mt-5">
           <Routes>
+            <Route exact path="/" element={<Dashboard />} />
+
+            <Route exact path="/candidatos" element={<Candidatos />} />
             <Route
               exact
               path="/candidatos/nuevo"

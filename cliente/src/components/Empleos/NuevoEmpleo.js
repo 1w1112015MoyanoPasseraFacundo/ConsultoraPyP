@@ -211,28 +211,10 @@ const NuevoEmpleo = () => {
                     renderValue={(selected) => selected.join(", ")}
                     MenuProps={MenuProps}
                   >
-                    <MenuItem value="all">
-                      <ListItemIcon>
-                        <Checkbox
-                          classes={{
-                            indeterminate: classes.indeterminateColor,
-                          }}
-                          checked={isAllSelected}
-                          indeterminate={
-                            lstCompes.length > 0 &&
-                            lstCompes.length < listaCompetencias.length
-                          }
-                        />
-                      </ListItemIcon>
-                      <ListItemText
-                        classes={{ primary: classes.selectAllText }}
-                        primary={"Select All"}
-                      />
-                    </MenuItem>
                     {listaCompetencias.map((competencia) => (
                       <MenuItem
                         key={competencia.idCompetencia}
-                        value={competencia.idCompetencia}
+                        value={competencia.nombre}
                       >
                         <ListItemIcon>
                           <Checkbox

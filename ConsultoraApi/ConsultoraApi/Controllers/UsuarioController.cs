@@ -1,4 +1,5 @@
 using AutoMapper;
+using ConsultoraApi.Dtos.DtosCompetencias;
 using ConsultoraApi.Dtos.DtosUsuarios;
 using ConsultoraApi.Models;
 using ConsultoraApi.Repositorios;
@@ -56,6 +57,19 @@ namespace ConsultoraApi.Controllers
 
             var usuarioGetDto = _mapper.Map<UpdateUsuarioDto>(usuario);
             return Ok(usuarioGetDto);
+        }
+
+        [HttpGet("GetUsuariosFilter")]
+        public IActionResult GetUsuariosFilter([FromQuery] UsuarioFilterDto filterDto)
+        {
+            var listaCompetencias = _uRepo.GetFilterUsuario(filterDto);
+
+            if (listaCompetencias.Count == 0)
+            {
+                return StatusCode(409, "No hay competencias con esos filtros");
+            }
+            
+            return Ok(listaCompetencias);
         }
 
 

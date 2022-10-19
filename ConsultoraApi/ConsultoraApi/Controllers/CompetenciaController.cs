@@ -4,6 +4,7 @@ using ConsultoraApi.Models;
 using ConsultoraApi.Repositorios.IRepositorios;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel;
 
 namespace ConsultoraApi.Controllers
 {
@@ -30,25 +31,43 @@ namespace ConsultoraApi.Controllers
             {
                 return StatusCode(400, "No existe ningúna competencia registrada");
             }
-           var compeGetDto = new List<CompetenciaGetDto>();
+            var compeGetDto = new List<CompetenciaGetDto>();
 
             foreach (var i in compe)
             {
-                if (i.FinVigencia == null)
-                {
-                    var rubro = db.Rubros.FirstOrDefault(x => x.IdRubro == i.IdRubro);
+                var rubro = db.Rubros.FirstOrDefault(x => x.IdRubro == i.IdRubro);
 
-                    var dto = new CompetenciaGetDto { idRubro = i.IdRubro, IdCompetencia = i.IdCompetencia, Nombre = i.Nombre, nombreRubro = rubro.Nombre };
-                    compeGetDto.Add(dto);
-                }
-                
+                var dto = new CompetenciaGetDto { idRubro = i.IdRubro, IdCompetencia = i.IdCompetencia, Nombre = i.Nombre, nombreRubro = rubro.Nombre };
+                compeGetDto.Add(dto);
             }
-            if(compeGetDto.Count == 0 || compeGetDto == null)
+            if (compeGetDto.Count == 0 || compeGetDto == null)
             {
                 return StatusCode(409, "No hay competencias habilitadas");
             }
 
             return Ok(compeGetDto);
+        }
+
+        [HttpGet("GetCompetenciasFilter")]
+        public IActionResult GetCompetenciasFilter([FromQuery] CompetenciaFilterDto filterDto)
+        {
+            var listaCompetencias = _uRepo.GetFilterCompetencia(filterDto);
+            var listaCompetenciasDto = new List<CompetenciaGetDto>();
+
+            if (listaCompetencias.Count == 0)
+            {
+                return StatusCode(409, "No hay competencias con esos filtros");
+            }
+            int i = 0; //contador que recorre los usuariosGetAllDto
+            foreach (var item in listaCompetencias)
+            {
+
+                listaCompetenciasDto.Add(_mapper.Map<CompetenciaGetDto>(item));
+                var rubro = db.Rubros.FirstOrDefault(x => x.IdRubro == item.IdRubro);
+                listaCompetenciasDto[i].nombreRubro = rubro.Nombre;
+                i++;
+            }
+            return Ok(listaCompetenciasDto);
         }
 
         [HttpPost]

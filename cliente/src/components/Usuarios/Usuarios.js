@@ -1,10 +1,17 @@
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { BsPlusLg, BsSearch } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { obtenerUsuariosAction } from "../../actions/usuariosActions";
+import {
+  obtenerUsuariosAction,
+  obtenerUsuariosFilterAction,
+} from "../../actions/usuariosActions";
 import AccionesUsuarios from "./AccionesUsuarios";
 const Usuarios = () => {
+  const [usuario, guardarUsuario] = useState("");
+  const [cuil, guardarCuil] = useState("");
+  const [estado, guardarEstado] = useState("");
+
   const dispatch = useDispatch();
   useEffect(() => {
     //consultar api
@@ -12,8 +19,19 @@ const Usuarios = () => {
     cargarUsuarios();
     // eslint-disable-next-line
   }, []);
-
+  const filtrar = (e) => {
+    e.preventDefault();
+    buscar({
+      usuario,
+      cuil,
+      estado,
+    });
+  };
+  const buscar = (datos) => {
+    dispatch(obtenerUsuariosFilterAction(datos));
+  };
   const usuarios = useSelector((state) => state.usuarios.usuarios);
+  const error = useSelector((state) => state.usuarios.error);
   const navigate = useNavigate();
 
   const nuevo = () => {
@@ -26,31 +44,51 @@ const Usuarios = () => {
         <div class="col-lg-12">
           <div class="card card-form alert-dismissible">
             <div class="card-body card-body-custom">
-              <form class="form-horizontal p-t-20">
+              <form class="form-horizontal p-t-20" onSubmit={filtrar}>
                 <div class="row">
-                  <div class="col-md-4">
+                  <div class="col-md-3">
                     <div class="form-group">
                       <input
                         type="text"
                         class="form-control"
-                        id="nombre"
-                        placeholder="Nombre del usuario"
-                        formControlName="nombre"
+                        name="usuario"
+                        placeholder="Nombre de usuario"
+                        value={usuario}
+                        onChange={(e) => guardarUsuario(e.target.value)}
                       />
                     </div>
                   </div>
-                  <div class="col-md-4">
+                  <div class="col-md-3">
                     <div class="form-group">
                       <input
-                        type="text"
+                        type="number"
                         class="form-control"
-                        id="descripcion"
-                        placeholder="E-mail del usuario "
-                        formControlName="descripcion"
+                        name="cuil"
+                        placeholder="Cuil del usuario"
+                        value={cuil}
+                        onChange={(e) => guardarCuil(e.target.value)}
                       />
                     </div>
                   </div>
-                  <div class="col-md-4">
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <select
+                        type="text"
+                        class="form-control"
+                        name="estado"
+                        value={estado}
+                        onChange={(e) => guardarEstado(e.target.value)}
+                      >
+                        <option hidden value="" disabled selected>
+                          VIGENCIA
+                        </option>
+                        <option>TODOS</option>
+                        <option>SI</option>
+                        <option>NO</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
                     <div class="pull-right text-right">
                       <button type="submit" class="btn btn-primary">
                         <i class="mx-1 mr-2">
@@ -87,8 +125,12 @@ const Usuarios = () => {
                     Nombre
                   </th>
                   <th className="colu" scope="col">
+                    Nombre usuario
+                  </th>
+                  <th className="colu" scope="col">
                     Cuil
                   </th>
+
                   <th className="colu" scope="col">
                     Mail
                   </th>
@@ -101,7 +143,7 @@ const Usuarios = () => {
                 </tr>
               </thead>
               <tbody>
-                {usuarios.length === 0
+                {error != null
                   ? "No hay usuarios"
                   : usuarios.map((usuario) => {
                       let fecha = usuario.fechaNacimiento.split("T");

@@ -1,11 +1,18 @@
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { BsPlusLg, BsSearch } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { obtenerCompetenciasAction } from "../../actions/competenciasActions";
+import {
+  obtenerCompetenciasAction,
+  obtenerCompetenciasFilterAction,
+} from "../../actions/competenciasActions";
+import clienteAxios from "../../config/axios";
 import AccionesCompetencias from "./AccionesCompetencias";
 const Competencias = () => {
   const dispatch = useDispatch();
+  const [nombre, guardarNombre] = useState("");
+  const [idRubro, guardarRubro] = useState("");
+  const [listaRubros, guardarRubros] = useState([]);
 
   useEffect(() => {
     const cargarCompetencias = () => dispatch(obtenerCompetenciasAction());
@@ -13,34 +20,72 @@ const Competencias = () => {
     // eslint-disable-next-line
   }, []);
   const navigate = useNavigate();
-
+  const buscar = (datos) => {
+    console.log(datos);
+    dispatch(obtenerCompetenciasFilterAction(datos));
+  };
+  const filtrar = (e) => {
+    e.preventDefault();
+    buscar({
+      nombre,
+      idRubro,
+    });
+  };
   const nuevo = () => {
     navigate("/competencias/nuevo");
   };
+  const llenarRubro = async () => {
+    const resultado = await clienteAxios.get(`/rubros`);
+    guardarRubros(resultado.data);
+  };
   const competencias = useSelector((state) => state.competencias.competencias);
+  console.log(competencias);
   const error = useSelector((state) => state.competencias.error);
+  console.log(error);
+  // const cargando = useSelector((state) => state.competencias.loading);
+  const empty = "";
   return (
     <Fragment>
-      <h3 className="title-decorator">Competencias</h3>
+      <h3 class="title-decorator">Competencias</h3>
+
+      {/* {cargando ? <p className="text-center">Cargando...</p> : null} */}
       <div class="row">
         <div class="col-lg-12">
           <div class="card card-form alert-dismissible">
             <div class="card-body card-body-custom">
-              <form class="form-horizontal p-t-20">
+              <form class="form-horizontal p-t-20" onSubmit={filtrar}>
                 <div class="row">
-                  <div class="col-md-6">
+                  <div class="col-md-4">
                     <div class="form-group">
                       <input
                         type="text"
                         class="form-control"
-                        id="nombre"
+                        value={nombre}
                         placeholder="Nombre de la competencia"
-                        formControlName="nombre"
+                        name="nombre"
+                        onChange={(e) => guardarNombre(e.target.value)}
                       />
                     </div>
                   </div>
-                  <div class="col-md-2">
-                    <div class="form-group"></div>
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <select
+                        type="text"
+                        class="form-control"
+                        value={idRubro}
+                        placeholder="Rubro"
+                        name="idRubro"
+                        onClick={llenarRubro}
+                        onChange={(e) => guardarRubro(e.target.value)}
+                      >
+                        <option value={empty}>Seleccione...</option>
+                        {listaRubros.map((rubro) => (
+                          <option key={rubro.idRubro} value={rubro.idRubro}>
+                            {rubro.nombre}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
                   </div>
                   <div class="col-md-4">
                     <div class="pull-right text-right">
@@ -72,22 +117,22 @@ const Competencias = () => {
       <div class="card custom-card-shadow">
         <div class="row">
           <div class="col-lg-12">
-            <table className="table table-hover">
+            <table class="table table-hover">
               <thead>
                 <tr>
-                  <th className="colu" scope="col">
+                  <th class="colu" scope="col">
                     Nombre
                   </th>
-                  <th className="colu" scope="col">
+                  <th class="colu" scope="col">
                     Rubro
                   </th>
-                  <th className="colu" scope="col">
+                  <th class="colu" scope="col">
                     Acciones
                   </th>
                 </tr>
               </thead>
               <tbody>
-                {competencias.length === 0
+                {error != null
                   ? "No hay Competencias"
                   : competencias.map((competencia) => (
                       <AccionesCompetencias

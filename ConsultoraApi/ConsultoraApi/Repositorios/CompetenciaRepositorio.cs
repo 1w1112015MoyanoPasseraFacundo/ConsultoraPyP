@@ -1,5 +1,7 @@
-﻿using ConsultoraApi.Models;
+﻿using ConsultoraApi.Dtos.DtosCompetencias;
+using ConsultoraApi.Models;
 using ConsultoraApi.Repositorios.IRepositorios;
+using Microsoft.EntityFrameworkCore;
 
 namespace ConsultoraApi.Repositorios
 {
@@ -22,6 +24,21 @@ namespace ConsultoraApi.Repositorios
             {
                 return null;
             }
+        }
+         public ICollection<Competencia> GetFilterCompetencia(CompetenciaFilterDto filterDto)
+        {
+            var lstCompes = db.Competencias.ToList();
+           
+            if (filterDto.Nombre != null)
+            {
+                lstCompes = lstCompes.Where(c => c.Nombre.ToLower().Contains(filterDto.Nombre.ToLower())).ToList();
+            }
+            if (filterDto.idRubro != null)
+            {
+                lstCompes = lstCompes.Where(n => n.IdRubro==filterDto.idRubro).ToList();
+            }
+
+            return lstCompes;
         }
         public bool UpdateCompetencia(Competencia competencia)
         {

@@ -29,6 +29,23 @@ export function obtenerCompetenciasAction() {
     }
   };
 }
+export function obtenerCompetenciasFilterAction(filtros) {
+  return async (dispatch) => {
+    dispatch(descargarCompetencias());
+    console.log(filtros);
+    try {
+      const respuesta = await clienteAxios.get(
+        `/Competencias/GetCompetenciasFilter?Nombre=${filtros.nombre}&idRubro=${filtros.idRubro}`
+      );
+      console.log(respuesta);
+
+      dispatch(descargarCompetenciasExitosa(respuesta.data));
+    } catch (error) {
+      console.log(error);
+      dispatch(descargarCompetenciasError(error.response.data));
+    }
+  };
+}
 
 const descargarCompetencias = () => ({
   type: COMENZAR_DESCARGA_COMPETENCIAS,

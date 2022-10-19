@@ -48,13 +48,13 @@ const AccionesCompetencias = ({ competencia }) => {
         >
           <BsFillPencilFill />
         </button>
-        <button
+        {/* <button
           type="button"
           className="btn btn-danger"
           onClick={() => confirmarEliminar(idCompetencia)}
         >
           <BsTrashFill />
-        </button>
+        </button> */}
       </td>
     </tr>
   );

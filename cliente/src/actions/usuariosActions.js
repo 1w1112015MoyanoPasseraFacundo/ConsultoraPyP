@@ -62,6 +62,24 @@ export function obtenerUsuariosAction() {
   };
 }
 
+export function obtenerUsuariosFilterAction(filtros) {
+  return async (dispatch) => {
+    dispatch(descargarUsuarios());
+    console.log(filtros);
+    try {
+      const respuesta = await clienteAxios.get(
+        `/Usuarios/GetUsuariosFilter?nombreUsuario=${filtros.usuario}&cuil=${filtros.cuil}&estado=${filtros.estado}`
+      );
+      console.log(respuesta);
+
+      dispatch(descargarUsuariosExitosa(respuesta.data));
+    } catch (error) {
+      console.log(error);
+      dispatch(descargarUsuariosError(error.response.data));
+    }
+  };
+}
+
 const descargarUsuarios = () => ({
   type: COMENZAR_DESCARGA_USUARIOS,
   payload: true,

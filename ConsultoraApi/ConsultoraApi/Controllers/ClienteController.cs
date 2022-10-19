@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using ConsultoraApi.Dtos.DtosCandidatos;
 using ConsultoraApi.Dtos.DtosClientes;
+using ConsultoraApi.Dtos.DtosCompetencias;
+using ConsultoraApi.Dtos.DtosUsuarios;
 using ConsultoraApi.Models;
 using ConsultoraApi.Repositorios.IRepositorios;
 using Microsoft.AspNetCore.Cors;
@@ -50,10 +52,29 @@ namespace ConsultoraApi.Controllers
                 clienteGetDto[j].nombreRubro = rubro.Nombre;
                 clienteGetDto[j].nombrePais = pais.Nombre;
             }
-            
-
-
             return Ok(clienteGetDto);
+        }
+
+
+        [HttpGet("GetClientesFilter")]
+        public IActionResult GetClientesFilter([FromQuery] ClienteFilterDto filterDto)
+        {
+            var listaClientes = _cRepo.GetFilterCliente(filterDto);
+            var listaClientesDto = new List<ClienteGetDto>();
+
+            if (listaClientes.Count == 0)
+            {
+                return StatusCode(409, "No hay competencias con esos filtros");
+            }
+            int i = 0;
+            foreach (var item in listaClientes)
+            {
+                listaClientesDto.Add(_mapper.Map<ClienteGetDto>(item));
+                var pais = db.Paises.FirstOrDefault(x => x.IdPais == item.IdPais);
+                listaClientesDto[i].nombrePais = pais.Nombre;
+                i++;
+            }
+            return Ok(listaClientesDto);
         }
         [HttpPost]
         public IActionResult CreateCliente(ClienteCreateDto clienteDto)

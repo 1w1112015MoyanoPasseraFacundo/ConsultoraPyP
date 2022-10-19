@@ -10,6 +10,6 @@ namespace ConsultoraApi.Dtos.DtosCompetencias
         [Required(ErrorMessage = "El campo Rubro es obligatorio")]
         public int idRubro { get; set; }
 
-        public string nombreRubro { get; set; }
+        public string? nombreRubro { get; set; }
     }
 }

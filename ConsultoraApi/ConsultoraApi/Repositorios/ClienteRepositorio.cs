@@ -1,4 +1,5 @@
 ﻿
+using ConsultoraApi.Dtos.DtosClientes;
 using ConsultoraApi.Models;
 using ConsultoraApi.Repositorios.IRepositorios;
 
@@ -25,6 +26,31 @@ namespace ConsultoraApi.Repositorios
             {
                 return null;
             }
+        }
+        public ICollection<Cliente> GetFilterCliente(ClienteFilterDto filterDto)
+        {
+            var lstUsuarios = db.Clientes.ToList();
+            if (filterDto.estado != null)
+            {
+                if (filterDto.estado == "SI")
+                {
+                    lstUsuarios = lstUsuarios.Where(u => u.IdEstado != 3).ToList();
+                }
+                if (filterDto.estado == "NO")
+                {
+                    lstUsuarios = lstUsuarios.Where(u => u.IdEstado == 3).ToList();
+                }
+            }
+            if (filterDto.nombre != null)
+            {
+                lstUsuarios = lstUsuarios.Where(c => c.Nombre.ToLower().Contains(filterDto.nombre.ToLower())).ToList();
+            }
+            if (filterDto.mail != null)
+            {
+                lstUsuarios = lstUsuarios.Where(n => n.Mail.Contains(filterDto.mail)).ToList();
+            }
+
+            return lstUsuarios;
         }
         public bool UpdateCliente(Cliente cliente)
         {

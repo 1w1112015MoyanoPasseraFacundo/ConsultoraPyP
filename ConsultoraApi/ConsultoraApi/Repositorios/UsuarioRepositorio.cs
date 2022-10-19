@@ -1,4 +1,6 @@
-﻿using ConsultoraApi.Models;
+﻿using ConsultoraApi.Dtos.DtosCompetencias;
+using ConsultoraApi.Dtos.DtosUsuarios;
+using ConsultoraApi.Models;
 using ConsultoraApi.Repositorios.IRepositorios;
 
 namespace ConsultoraApi.Repositorios
@@ -23,6 +25,31 @@ namespace ConsultoraApi.Repositorios
             {
                 return null;
             }
+        }
+        public ICollection<Usuario> GetFilterUsuario(UsuarioFilterDto filterDto)
+        {
+            var lstUsuarios = db.Usuarios.ToList();
+            if (filterDto.estado != null)
+            {
+                if (filterDto.estado == "SI")
+                {
+                    lstUsuarios = lstUsuarios.Where(u => u.FechaSalida == null).ToList();
+                }
+                if (filterDto.estado == "NO")
+                {
+                    lstUsuarios = lstUsuarios.Where(u => u.FechaSalida != null).ToList();
+                }
+            }
+            if (filterDto.nombreUsuario != null)
+            {
+                lstUsuarios = lstUsuarios.Where(c => c.NombreUsuario.ToLower().Contains(filterDto.nombreUsuario.ToLower())).ToList();
+            }
+            if (filterDto.cuil != null)
+            {
+                lstUsuarios = lstUsuarios.Where(n => n.Cuil.Contains(filterDto.cuil)).ToList();
+            }
+
+            return lstUsuarios;
         }
         public bool Save()
         {
