@@ -128,7 +128,7 @@ const Usuarios = () => {
                     Nombre usuario
                   </th>
                   <th className="colu" scope="col">
-                    Cuil
+                    Documento
                   </th>
 
                   <th className="colu" scope="col">

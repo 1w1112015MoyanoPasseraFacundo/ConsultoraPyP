@@ -24,7 +24,6 @@ const initialState = {
 export default function (state = initialState, action) {
   switch (action.type) {
     case AGREGAR_EMPLEO:
-    case COMENZAR_DESCARGA_EMPLEOS:
     case EMPLEO_ELIMINADO_ERROR:
     case EMPLEO_EDITADO_ERROR:
       return {
@@ -78,6 +77,11 @@ export default function (state = initialState, action) {
         ...state,
         empleos: state.empleos.filter((empleo) => empleo.id !== state.eliminar),
         eliminar: null,
+      };
+    case COMENZAR_DESCARGA_EMPLEOS:
+      return {
+        ...state,
+        loading: action.payload,
       };
     default:
       return state;

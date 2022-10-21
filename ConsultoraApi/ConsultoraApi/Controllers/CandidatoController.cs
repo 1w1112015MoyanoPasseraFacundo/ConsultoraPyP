@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ConsultoraApi.Dtos.DtosCandidatos;
+using ConsultoraApi.Dtos.DtosUsuarios;
 using ConsultoraApi.Models;
 using ConsultoraApi.Repositorios.IRepositorios;
 using ConsultoraApi.Resultados;
@@ -38,9 +39,8 @@ namespace ConsultoraApi.Controllers
             for (int i = 0; i < cand.Count; i++)
             {
 
-                if (cand[i].IdEstado != 3)
+                if (cand[i].Estado != "Descartado") 
                 {
-
                     candidatoGetDto.Add(_mapper.Map<CandidatoUpdateDto>(cand[i]));
                 }
             }
@@ -57,7 +57,18 @@ namespace ConsultoraApi.Controllers
             return Ok(candidatoGetDto);
         }
 
+        [HttpGet("GetCandidatosFilter")]
+        public IActionResult GetCandidatosFilter([FromQuery] CandidatoFilterDto filterDto)
+        {
+            var listaCandidatos = _uRepo.GetFilterCandidato(filterDto);
 
+            if (listaCandidatos.Count == 0)
+            {
+                return StatusCode(409, "No hay candidatos con esos filtros");
+            }
+
+            return Ok(listaCandidatos);
+        }
 
 
         [HttpPost]
@@ -73,6 +84,7 @@ namespace ConsultoraApi.Controllers
                 return StatusCode(409, "Ya existe un candidato con ese documento");
             }
             cand.IdEstado = 1;
+            cand.Estado = "Postulado";
 
             if (!_uRepo.CreateCandidato(cand))
             {
@@ -123,7 +135,7 @@ namespace ConsultoraApi.Controllers
             candidato.IdPais = candidatoUpdateDto.IdPais;
             candidato.IdRubro = candidatoUpdateDto.IdRubro;
             candidato.Linkedin = candidatoUpdateDto.Linkedin;
-            candidato.Seniority = candidatoUpdateDto.Seniority;
+            candidato.Estado = candidatoUpdateDto.Estado;
             candidato.EstadoCivil = candidatoUpdateDto.EstadoCivil;
 
 

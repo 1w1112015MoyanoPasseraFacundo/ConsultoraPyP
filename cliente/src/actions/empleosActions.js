@@ -30,6 +30,24 @@ export function obtenerEmpleosAction() {
   };
 }
 
+export function obtenerEmpleosFilterAction(filtros) {
+  return async (dispatch) => {
+    console.log(filtros);
+    dispatch(descargarEmpleos());
+    try {
+      const respuesta = await clienteAxios.get(
+        `/Empleos/GetEmpleosFilter?nombre=${filtros.nombre}&idRubro=${filtros.idRubro}&idCliente=${filtros.idCliente}&idEstado=${filtros.idEstado}`
+      );
+      console.log(respuesta);
+
+      dispatch(descargarEmpleosExitosa(respuesta.data));
+    } catch (error) {
+      console.log(error);
+      dispatch(descargarEmpleosError(error.response.data));
+    }
+  };
+}
+
 const descargarEmpleos = () => ({
   type: COMENZAR_DESCARGA_EMPLEOS,
   payload: true,
@@ -42,7 +60,7 @@ const descargarEmpleosExitosa = (empleos) => ({
 
 const descargarEmpleosError = (error) => ({
   type: DESCARGA_EMPLEOS_ERROR,
-  payload: error.data,
+  payload: error,
 });
 
 export function crearNuevoEmpleoAction(empleo) {

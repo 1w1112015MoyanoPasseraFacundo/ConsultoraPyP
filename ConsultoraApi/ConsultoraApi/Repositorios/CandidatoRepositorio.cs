@@ -1,4 +1,6 @@
-﻿using ConsultoraApi.Models;
+﻿using ConsultoraApi.Dtos.DtosCandidatos;
+using ConsultoraApi.Dtos.DtosUsuarios;
+using ConsultoraApi.Models;
 using ConsultoraApi.Repositorios.IRepositorios;
 
 namespace ConsultoraApi.Repositorios
@@ -22,6 +24,47 @@ namespace ConsultoraApi.Repositorios
             {
                 return null;
             }
+        }
+        public ICollection<Candidato> GetFilterCandidato(CandidatoFilterDto filterDto)
+        {
+            var lstCandidatos = db.Candidatos.ToList();
+            if (filterDto.estado != null)
+            {
+                if (filterDto.estado == "Preseleccionado")
+                {
+                    lstCandidatos = lstCandidatos.Where(u => u.Estado == filterDto.estado).ToList();
+                }
+                if (filterDto.estado == "En proceso")
+                {
+                    lstCandidatos = lstCandidatos.Where(u => u.Estado == filterDto.estado).ToList();
+                }
+                if (filterDto.estado == "Descartado")
+                {
+                    lstCandidatos = lstCandidatos.Where(u => u.Estado == filterDto.estado).ToList();
+                }
+                if (filterDto.estado == "Postulado")
+                {
+                    lstCandidatos = lstCandidatos.Where(u => u.Estado == filterDto.estado).ToList();
+                }
+                if (filterDto.estado == "En base")
+                {
+                    lstCandidatos = lstCandidatos.Where(u => u.Estado == filterDto.estado).ToList();
+                }
+                if (filterDto.estado == "Seleccionado")
+                {
+                    lstCandidatos = lstCandidatos.Where(u => u.Estado == filterDto.estado).ToList();
+                }
+            }
+            if (filterDto.nombre != null)
+            {
+                lstCandidatos = lstCandidatos.Where(c => c.Nombre.ToLower().Contains(filterDto.nombre.ToLower())).ToList();
+            }
+            if (filterDto.apellido != null)
+            {
+                lstCandidatos = lstCandidatos.Where(c => c.Apellido.ToLower().Contains(filterDto.apellido.ToLower())).ToList();
+            }
+            
+            return lstCandidatos;
         }
         public bool UpdateCandidato(Candidato candidato)
         {

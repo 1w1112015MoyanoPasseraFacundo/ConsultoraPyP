@@ -24,7 +24,7 @@ namespace ConsultoraApi.Dtos.DtosCandidatos
         [Required(ErrorMessage = "El campo Mail es obligatorio")]
         public string Mail { get; set; }
 
-        public string? Seniority { get; set; }
+        public string? Estado { get; set; }
         public int? EstadoCivil { get; set; }
 
         public string? Linkedin { get; set; }

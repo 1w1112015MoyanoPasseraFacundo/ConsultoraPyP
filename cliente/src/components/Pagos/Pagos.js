@@ -1,11 +1,18 @@
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { BsPlusLg, BsSearch } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { obtenerPagosAction } from "../../actions/pagosActions";
+import {
+  obtenerPagosAction,
+  obtenerPagosFilterAction,
+} from "../../actions/pagosActions";
+import clienteAxios from "../../config/axios";
 import AccionesPagos from "./AccionesPagos";
 const Pagos = () => {
   const dispatch = useDispatch();
+  const [idCliente, guardarCliente] = useState("");
+  const [estado, guardarEstado] = useState("");
+  const [listaClientes, guardarClientes] = useState([]);
   useEffect(() => {
     //consultar api
 
@@ -15,12 +22,27 @@ const Pagos = () => {
   }, []);
   const navigate = useNavigate();
 
+  const llenarCliente = async () => {
+    const resultado = await clienteAxios.get(`/clientes`);
+    guardarClientes(resultado.data);
+  };
+  const buscar = (datos) => {
+    console.log(datos);
+    dispatch(obtenerPagosFilterAction(datos));
+  };
+  const filtrar = (e) => {
+    e.preventDefault();
+    buscar({
+      idCliente,
+      estado,
+    });
+  };
   const nuevo = () => {
     navigate("/pagos/nuevo");
   };
   const pagos = useSelector((state) => state.pagos.pagos);
-  console.log(pagos);
   const error = useSelector((state) => state.pagos.error);
+  const empty = "";
   return (
     <Fragment>
       <h3 className="title-decorator">Pagos</h3>
@@ -28,29 +50,43 @@ const Pagos = () => {
         <div class="col-lg-12">
           <div class="card card-form alert-dismissible">
             <div class="card-body card-body-custom">
-              <form class="form-horizontal p-t-20">
+              <form class="form-horizontal p-t-20" onSubmit={filtrar}>
                 <div class="row">
                   <div class="col-md-4">
                     <div class="form-group">
                       <select
                         type="text"
                         class="form-control"
-                        id="descripcion"
-                        formControlName="descripcion"
+                        value={idCliente}
+                        name="idCliente"
+                        onClick={llenarCliente}
+                        onChange={(e) => guardarCliente(e.target.value)}
                       >
-                        <option>Cliente</option>
+                        <option value={empty}>Seleccione...</option>
+                        {listaClientes.map((cliente) => (
+                          <option
+                            key={cliente.idCliente}
+                            value={cliente.idCliente}
+                          >
+                            {cliente.nombre}
+                          </option>
+                        ))}
                       </select>
                     </div>
                   </div>
                   <div class="col-md-4">
                     <div class="form-group">
-                      <input
+                      <select
                         type="text"
                         class="form-control"
-                        id="descripcion"
-                        placeholder="Fecha de pago"
-                        formControlName="descripcion"
-                      />
+                        value={estado}
+                        name="estado"
+                        onChange={(e) => guardarEstado(e.target.value)}
+                      >
+                        <option value={empty}>Seleccione estado...</option>
+                        <option value={true}>Completo</option>
+                        <option value={false}>Parcial</option>
+                      </select>
                     </div>
                   </div>
                   <div class="col-md-4">
@@ -104,7 +140,7 @@ const Pagos = () => {
                 </tr>
               </thead>
               <tbody>
-                {pagos.length === 0
+                {error !== null
                   ? "No hay pagos"
                   : pagos.map((pago) => {
                       let fecha = pago.fechaPago.split("T");

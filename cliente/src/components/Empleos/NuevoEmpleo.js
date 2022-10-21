@@ -1,16 +1,12 @@
-import {
-  Checkbox,
-  ListItemIcon,
-  ListItemText,
-  MenuItem,
-  Select,
-} from "@mui/material";
-import React, { useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { BsCheckLg, BsReplyFill } from "react-icons/bs";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { obtenerCompetenciasAction } from "../../actions/competenciasActions";
 import { crearNuevoEmpleoAction } from "../../actions/empleosActions";
 import clienteAxios from "../../config/axios";
+import { Multipleselect } from "../MultipleSelect";
+import { useGetCompetencia } from "./Hooks/useGetCompetencia";
 const NuevoEmpleo = () => {
   const navigate = useNavigate();
   //state
@@ -22,27 +18,8 @@ const NuevoEmpleo = () => {
   const [idRubro, guardarRubro] = useState(0);
   const [listaRubros, guardarRubros] = useState([]);
   const [modalidad, guardarModalidad] = useState("");
-
+  const [lstCompes, guardarCompetencias] = useState([]);
   const dispatch = useDispatch();
-  const ITEM_HEIGHT = 48;
-  const ITEM_PADDING_TOP = 8;
-  const MenuProps = {
-    PaperProps: {
-      style: {
-        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-        width: 250,
-      },
-    },
-    anchorOrigin: {
-      vertical: "bottom",
-      horizontal: "center",
-    },
-    transformOrigin: {
-      vertical: "top",
-      horizontal: "center",
-    },
-    variant: "menu",
-  };
 
   // const alerta = useSelector((state) => state.alerta.alerta);
   //llama empleoAction
@@ -89,49 +66,8 @@ const NuevoEmpleo = () => {
     navigate("/empleos");
   };
 
-  const useStyles = () => ({
-    formControl: {
-      width: 300,
-    },
-    indeterminateColor: {
-      color: "#f50057",
-    },
-    selectAllText: {
-      fontWeight: 500,
-    },
-    selectedAll: {
-      backgroundColor: "rgba(0, 0, 0, 0.08)",
-      "&:hover": {
-        backgroundColor: "rgba(0, 0, 0, 0.08)",
-      },
-    },
-  });
-  const classes = useStyles();
-  const [listaCompetencias, guardarCompetencias] = useState([]);
+  const { data } = useGetCompetencia();
 
-  const llenarCompetencias = async () => {
-    const resultado = await clienteAxios.get(`/competencias`);
-    console.log(resultado);
-    guardarCompetencias(resultado.data);
-  };
-
-  const [lstCompes, setSelected] = useState([]);
-  const isAllSelected =
-    listaCompetencias.length > 0 &&
-    lstCompes.length === listaCompetencias.length;
-  const handleChange = (event) => {
-    console.log(event);
-    const value = event.target.value;
-    console.log(value);
-    if (value[value.length - 1] === "all") {
-      setSelected(
-        lstCompes.length === listaCompetencias.length ? [] : listaCompetencias
-      );
-      return;
-    }
-    setSelected(value);
-  };
-  console.log(lstCompes);
   return (
     <div className="row justify-content-center">
       <div className="col-md-12">
@@ -201,32 +137,11 @@ const NuevoEmpleo = () => {
                 </div>
                 <div className="form-group col-lg-4 col-md-4 col-sm-12 col-xs-12">
                   <label>Competencias</label>
-                  <Select
-                    className="form-control"
-                    labelId="mutiple-select-label"
-                    multiple
-                    value={lstCompes}
-                    onChange={handleChange}
-                    onClick={llenarCompetencias}
-                    renderValue={(selected) => selected.join(", ")}
-                    MenuProps={MenuProps}
-                  >
-                    {listaCompetencias.map((competencia) => (
-                      <MenuItem
-                        key={competencia.idCompetencia}
-                        value={competencia.nombre}
-                      >
-                        <ListItemIcon>
-                          <Checkbox
-                            checked={
-                              lstCompes.indexOf(competencia.idCompetencia) > -1
-                            }
-                          />
-                        </ListItemIcon>
-                        <ListItemText primary={competencia.nombre} />
-                      </MenuItem>
-                    ))}
-                  </Select>
+                  <Multipleselect
+                    options={data ? data : []}
+                    setState={guardarCompetencias}
+                    defaultOption={"Seleccione Competencias"}
+                  />
                 </div>
               </div>
 

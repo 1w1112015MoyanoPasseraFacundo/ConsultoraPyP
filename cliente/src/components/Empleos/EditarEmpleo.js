@@ -11,6 +11,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { editarEmpleoAction } from "../../actions/empleosActions";
 import clienteAxios from "../../config/axios";
+import { Multipleselect } from "../MultipleSelect";
+import { useGetCompetencia } from "./Hooks/useGetCompetencia";
 const EditarEmpleo = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -37,11 +39,11 @@ const EditarEmpleo = () => {
       guardarClientes(resultado.data);
     };
     llenarClientes();
-    const llenarCompetencias = async () => {
-      const resultado = await clienteAxios.get(`/competencias`);
-      guardarCompetencias(resultado.data);
-    };
-    llenarCompetencias();
+    // const llenarCompetencias = async () => {
+    //   const resultado = await clienteAxios.get(`/competencias`);
+    //   guardarCompetencias(resultado.data);
+    // };
+    // llenarCompetencias();
     guardarEmpleo(editar);
   }, [editar]);
 
@@ -61,61 +63,10 @@ const EditarEmpleo = () => {
     dispatch(editarEmpleoAction(empleo));
     navigate("/empleos");
   };
-  const ITEM_HEIGHT = 48;
-  const ITEM_PADDING_TOP = 8;
-  const MenuProps = {
-    PaperProps: {
-      style: {
-        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-        width: 250,
-      },
-    },
-    anchorOrigin: {
-      vertical: "bottom",
-      horizontal: "center",
-    },
-    transformOrigin: {
-      vertical: "top",
-      horizontal: "center",
-    },
-    variant: "menu",
-  };
-  const useStyles = () => ({
-    formControl: {
-      width: 300,
-    },
-    indeterminateColor: {
-      color: "#f50057",
-    },
-    selectAllText: {
-      fontWeight: 500,
-    },
-    selectedAll: {
-      backgroundColor: "rgba(0, 0, 0, 0.08)",
-      "&:hover": {
-        backgroundColor: "rgba(0, 0, 0, 0.08)",
-      },
-    },
-  });
-  const classes = useStyles();
-  const [listaCompetencias, guardarCompetencias] = useState([]);
 
-  const [listaCompes, setSelected] = useState([]);
-  const isAllSelected =
-    listaCompetencias.length > 0 &&
-    listaCompes.length === listaCompetencias.length;
-  const handleChange = (event) => {
-    const value = event.target.value;
-    console.log(event.target);
-    console.log(lstCompes);
-    if (value[value.length - 1] === "all") {
-      setSelected(
-        lstCompes.length === listaCompetencias.length ? [] : listaCompetencias
-      );
-      return;
-    }
-    setSelected(value);
-  };
+  const [listaCompetencias, guardarCompetencias] = useState([]);
+  const { data } = useGetCompetencia();
+
   return (
     <div className="row justify-content-center">
       <div className="col-md-12">
@@ -183,49 +134,12 @@ const EditarEmpleo = () => {
                 </div>
                 <div className="form-group col-lg-4 col-md-4 col-sm-12 col-xs-12">
                   <label>Competencias</label>
-                  <Select
-                    className="form-control"
-                    labelId="mutiple-select-label"
-                    multiple
+                  <Multipleselect
+                    options={data ? data : []}
+                    setState={guardarCompetencias}
+                    defaultOption={"Seleccione Competencias"}
                     value={lstCompes}
-                    onChange={handleChange}
-                    renderValue={(selected) => selected.join(", ")}
-                    MenuProps={MenuProps}
-                  >
-                    <MenuItem value="all">
-                      <ListItemIcon>
-                        <Checkbox
-                          classes={{
-                            indeterminate: classes.indeterminateColor,
-                          }}
-                          checked={isAllSelected}
-                          indeterminate={
-                            lstCompes.length > 0 &&
-                            lstCompes.length < listaCompetencias.length
-                          }
-                        />
-                      </ListItemIcon>
-                      <ListItemText
-                        classes={{ primary: classes.selectAllText }}
-                        primary={"Select All"}
-                      />
-                    </MenuItem>
-                    {listaCompetencias.map((competencia) => (
-                      <MenuItem
-                        key={competencia.idCompetencia}
-                        value={competencia.idCompetencia}
-                      >
-                        <ListItemIcon>
-                          <Checkbox
-                            checked={
-                              lstCompes.indexOf(competencia.idCompetencia) > -1
-                            }
-                          />
-                        </ListItemIcon>
-                        <ListItemText primary={competencia.nombre} />
-                      </MenuItem>
-                    ))}
-                  </Select>
+                  />
                 </div>
               </div>
 

@@ -106,6 +106,24 @@ export function obtenerCandidatosAction() {
   };
 }
 
+export function obtenerCandidatosFilterAction(filtros) {
+  return async (dispatch) => {
+    console.log(filtros);
+    dispatch(descargarCandidatos());
+    try {
+      const respuesta = await clienteAxios.get(
+        `/Candidatos/GetCandidatosFilter?nombre=${filtros.nombre}&apellido=${filtros.apellido}&estado=${filtros.estado}`
+      );
+      console.log(respuesta);
+
+      dispatch(descargarCandidatosExitosa(respuesta.data));
+    } catch (error) {
+      console.log(error);
+      dispatch(descargarCandidatosError(error.response.data));
+    }
+  };
+}
+
 const descargarCandidatos = () => ({
   type: COMENZAR_DESCARGA_CANDIDATOS,
   payload: true,
@@ -118,7 +136,7 @@ const descargarCandidatosExitosa = (candidatos) => ({
 
 const descargarCandidatosError = (error) => ({
   type: DESCARGA_CANDIDATOS_ERROR,
-  payload: error.data,
+  payload: error,
 });
 
 //dar de baja candidato

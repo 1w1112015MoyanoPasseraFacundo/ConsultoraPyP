@@ -18,7 +18,7 @@ namespace ConsultoraApi.Models
         public DateTime FechaNacimiento { get; set; }
         public string? Telefono { get; set; }
         public string Mail { get; set; } = null!;
-        public string? Seniority { get; set; }
+        public string? Estado { get; set; }
         public string? Linkedin { get; set; }
         public int? EstadoCivil { get; set; }
         public int IdPais { get; set; }

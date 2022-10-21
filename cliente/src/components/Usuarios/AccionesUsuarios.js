@@ -9,8 +9,15 @@ import {
 import { BsFillPencilFill, BsTrashFill } from "react-icons/bs";
 
 const AccionesUsuarios = ({ usuario }) => {
-  const { nombre, apellido, mail, telefono, cuil, idUsuario, nombreUsuario } =
-    usuario;
+  const {
+    nombre,
+    apellido,
+    mail,
+    telefono,
+    documento,
+    idUsuario,
+    nombreUsuario,
+  } = usuario;
   const dispatch = useDispatch();
   const confirmarEliminar = (idUsuario) => {
     console.log(idUsuario);
@@ -46,7 +53,7 @@ const AccionesUsuarios = ({ usuario }) => {
         <span>{nombreUsuario}</span>
       </td>
       <td>
-        <span>{cuil}</span>
+        <span>{documento}</span>
       </td>
 
       <td>

@@ -16,6 +16,7 @@ const AccionesEmpleos = ({ empleo }) => {
     nombreRubro,
     modalidad,
     idEstado,
+    nombreEstado,
     lstCompes,
     idEmpleo,
   } = empleo;
@@ -52,11 +53,9 @@ const AccionesEmpleos = ({ empleo }) => {
         <span>{modalidad}</span>
       </td>
       <td>
-        <span>{idEstado}</span>
+        <span>{nombreEstado}</span>
       </td>
-      <td>
-        <span>{lstCompes}</span>
-      </td>
+
       <td className="acciones">
         <button
           type="button"

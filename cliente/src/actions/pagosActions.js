@@ -29,6 +29,21 @@ export function obtenerPagosAction() {
     }
   };
 }
+export function obtenerPagosFilterAction(filtros) {
+  return async (dispatch) => {
+    dispatch(descargarPagos());
+    console.log(filtros);
+    try {
+      const respuesta = await clienteAxios.get(
+        `/Pagos/GetPagosFilter?idCliente=${filtros.idCliente}&estado=${filtros.estado}`
+      );
+
+      dispatch(descargarPagosExitosa(respuesta.data));
+    } catch (error) {
+      dispatch(descargarPagosError(error.response.data));
+    }
+  };
+}
 
 const descargarPagos = () => ({
   type: COMENZAR_DESCARGA_PAGOS,
@@ -42,13 +57,12 @@ const descargarPagosExitosa = (pagos) => ({
 
 const descargarPagosError = (error) => ({
   type: DESCARGA_PAGOS_ERROR,
-  payload: error.data,
+  payload: error,
 });
 
 export function crearNuevoPagoAction(pago) {
   return async (dispatch) => {
     dispatch(agregarPago());
-    console.log(pago);
     try {
       //insertar en la API
       await clienteAxios.post("/Pagos", pago);
@@ -56,7 +70,6 @@ export function crearNuevoPagoAction(pago) {
       dispatch(agregarPagoExito(pago));
       Swal.fire("Correcto!", "El pago se agrego correctamente!", "success");
     } catch (error) {
-      console.log(error);
       dispatch(agregarPagoError(true));
       Swal.fire("Hubo un error!", "Intenta de nuevo", "error");
     }

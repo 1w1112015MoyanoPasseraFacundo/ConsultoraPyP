@@ -20,22 +20,22 @@ const Login = () => {
 
           <h5 className="text-info my-4 display-responsive">v.1.0.0</h5>
         </div>
-        <img
+        {/* <img
           className="m-b-20 display-responsive"
           src="./src/assets/logo.png"
-        />
+        /> */}
       </div>
       <div className="login-box card px-2">
         <div className="card-body d-flex justify-content-center align-items-center flex-responsive">
-          <img
+          {/* <img
             // src=" ../assets/images/logo-wf.svg"
             // alt="Home"
             className="my-2 login-box-icon"
-          />
-          <img
+          /> */}
+          {/* <img
             // src="../../../assets/images/bandeja-de-documentos.png"
             className="my-4 login-box-icon bandeja-imagen-hv"
-          />
+          /> */}
 
           <form
             className="form-horizontal form-material w-100"

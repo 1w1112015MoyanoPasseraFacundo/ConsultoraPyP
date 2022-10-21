@@ -1,4 +1,6 @@
-﻿using ConsultoraApi.Models;
+﻿using ConsultoraApi.Dtos.DtosCompetencias;
+using ConsultoraApi.Dtos.DtosEmpleos;
+using ConsultoraApi.Models;
 using ConsultoraApi.Repositorios.IRepositorios;
 
 namespace ConsultoraApi.Repositorios
@@ -23,6 +25,32 @@ namespace ConsultoraApi.Repositorios
                 return null;
             }
         }
+
+        public ICollection<Empleo> GetFilterEmpleo(EmpleoFilterDto filterDto)
+        {
+            var lstEmpleos = db.Empleos.ToList();
+
+            if (filterDto.Nombre != null)
+            {
+                lstEmpleos = lstEmpleos.Where(c => c.Nombre.ToLower().Contains(filterDto.Nombre.ToLower())).ToList();
+            }
+            if (filterDto.idEstado != null)
+            {
+                lstEmpleos = lstEmpleos.Where(n => n.IdEstado == filterDto.idEstado).ToList();
+            }
+            if (filterDto.idRubro != null)
+            {
+                lstEmpleos = lstEmpleos.Where(n => n.IdRubro == filterDto.idRubro).ToList();
+            }
+            if (filterDto.idCliente != null)
+            {
+                lstEmpleos = lstEmpleos.Where(n => n.IdCliente == filterDto.idCliente).ToList();
+            }
+           
+
+            return lstEmpleos;
+        }
+
         public bool UpdateEmpleo(Empleo empleo)
         {
             db.Empleos.Update(empleo);

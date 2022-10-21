@@ -1,11 +1,25 @@
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { BsPlusLg, BsSearch } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { obtenerEmpleosAction } from "../../actions/empleosActions";
+import {
+  obtenerEmpleosAction,
+  obtenerEmpleosFilterAction,
+} from "../../actions/empleosActions";
+import clienteAxios from "../../config/axios";
+import Spinner from "../../syles/Spinner";
 import AccionesEmpleos from "./AccionesEmpleos";
 const Empleos = () => {
   const dispatch = useDispatch();
+
+  const [nombre, guardarNombre] = useState("");
+  const [idCliente, guardarCliente] = useState("");
+  const [idRubro, guardarRubro] = useState("");
+  const [idEstado, guardarEstado] = useState("");
+  const [listaRubros, guardarRubros] = useState([]);
+  const [listaClientes, guardarClientes] = useState([]);
+  const [listaEstados, guardarEstados] = useState([]);
+
   useEffect(() => {
     //consultar api
 
@@ -18,26 +32,54 @@ const Empleos = () => {
   const nuevo = () => {
     navigate("/empleos/nuevo");
   };
+  const llenarRubro = async () => {
+    const resultado = await clienteAxios.get(`/rubros`);
+    guardarRubros(resultado.data);
+  };
+  const llenarCliente = async () => {
+    const resultado = await clienteAxios.get(`/clientes`);
+    guardarClientes(resultado.data);
+  };
+  const llenarEstado = async () => {
+    const resultado = await clienteAxios.get(`/estados`);
+    guardarEstados(resultado.data);
+  };
+  const buscar = (datos) => {
+    console.log(datos);
+    dispatch(obtenerEmpleosFilterAction(datos));
+  };
+  const filtrar = (e) => {
+    e.preventDefault();
+    buscar({
+      nombre,
+      idRubro,
+      idCliente,
+      idEstado,
+    });
+  };
   const empleos = useSelector((state) => state.empleos.empleos);
   console.log(empleos);
   const error = useSelector((state) => state.empleos.error);
+  const cargando = useSelector((state) => state.empleos.loading);
+  const empty = "";
   return (
     <Fragment>
-      <h3 className="title-decorator">Empleos</h3>
+      <h3 className="title-decorator">Vacantes a cubrir</h3>
       <div class="row">
         <div class="col-lg-12">
           <div class="card card-form alert-dismissible">
             <div class="card-body card-body-custom">
-              <form class="form-horizontal p-t-20">
+              <form class="form-horizontal p-t-20" onSubmit={filtrar}>
                 <div class="row">
                   <div class="col-md-3">
                     <div class="form-group">
                       <input
                         type="text"
                         class="form-control"
-                        id="nombre"
+                        value={nombre}
                         placeholder="Descripción del empleo"
-                        formControlName="nombre"
+                        name="nombre"
+                        onChange={(e) => guardarNombre(e.target.value)}
                       />
                     </div>
                   </div>
@@ -46,11 +88,20 @@ const Empleos = () => {
                       <select
                         type="text"
                         class="form-control"
-                        id="descripcion"
-                        placeholder="Cliente"
-                        formControlName="descripcion"
+                        value={idCliente}
+                        name="idCliente"
+                        onClick={llenarCliente}
+                        onChange={(e) => guardarCliente(e.target.value)}
                       >
-                        <option placeholder="Cliente">Cliente</option>
+                        <option value={empty}>Seleccione cliente...</option>
+                        {listaClientes.map((cliente) => (
+                          <option
+                            key={cliente.idCliente}
+                            value={cliente.idCliente}
+                          >
+                            {cliente.nombre}
+                          </option>
+                        ))}
                       </select>
                     </div>
                   </div>
@@ -59,11 +110,17 @@ const Empleos = () => {
                       <select
                         type="text"
                         class="form-control"
-                        id="descripcion"
-                        placeholder="Cliente"
-                        formControlName="descripcion"
+                        value={idRubro}
+                        name="idRubro"
+                        onClick={llenarRubro}
+                        onChange={(e) => guardarRubro(e.target.value)}
                       >
-                        <option placeholder="Rubro"></option>
+                        <option value={empty}>Seleccione rubro...</option>
+                        {listaRubros.map((rubro) => (
+                          <option key={rubro.idRubro} value={rubro.idRubro}>
+                            {rubro.nombre}
+                          </option>
+                        ))}
                       </select>
                     </div>
                   </div>
@@ -72,11 +129,17 @@ const Empleos = () => {
                       <select
                         type="text"
                         class="form-control"
-                        id="descripcion"
-                        placeholder="Cliente"
-                        formControlName="descripcion"
+                        value={idEstado}
+                        name="idEstado"
+                        onClick={llenarEstado}
+                        onChange={(e) => guardarEstado(e.target.value)}
                       >
-                        <option placeholder="Modalidad"></option>
+                        <option value={empty}>Seleccione estado...</option>
+                        {listaEstados.map((estado) => (
+                          <option key={estado.idEstado} value={estado.idEstado}>
+                            {estado.nombre}
+                          </option>
+                        ))}
                       </select>
                     </div>
                   </div>
@@ -107,6 +170,7 @@ const Empleos = () => {
           </div>
         </div>
       </div>
+
       <div class="card custom-card-shadow">
         <div class="row">
           <div class="col-lg-12">
@@ -128,16 +192,14 @@ const Empleos = () => {
                   <th className="colu" scope="col">
                     Estado
                   </th>
-                  <th className="colu" scope="col">
-                    Competencias
-                  </th>
+
                   <th className="colu" scope="col">
                     Acciones
                   </th>
                 </tr>
               </thead>
               <tbody>
-                {empleos.length === 0
+                {error != null
                   ? "No hay empleos"
                   : empleos.map((empleo) => {
                       console.log(empleo);
@@ -153,6 +215,7 @@ const Empleos = () => {
           </div>
         </div>
       </div>
+      {cargando ? <Spinner /> : null}
     </Fragment>
   );
 };

@@ -15,7 +15,7 @@ namespace ConsultoraApi.Dtos.DtosEmpleos
         [Required(ErrorMessage = "El campo estado es obligatorio")]
         public int idEstado { get; set; }
 
-
+        public string nombreEstado { get; set; }
 
         [Required(ErrorMessage = "El campo Rubro es obligatorio")]
         public int IdRubro { get; set; }

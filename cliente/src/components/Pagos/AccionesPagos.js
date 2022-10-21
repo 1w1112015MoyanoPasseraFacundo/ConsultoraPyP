@@ -7,7 +7,7 @@ import { darDeBajaPago, obtenerPagoEditar } from "../../actions/pagosActions";
 const AccionesPagos = ({ pago }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { montoPago, fechaPago, idCliente, nombreCliente, Estado, idPago } =
+  const { montoPago, fechaPago, idCliente, nombreCliente, estado, idPago } =
     pago;
 
   const confirmarEliminar = (idPago) => {
@@ -42,7 +42,7 @@ const AccionesPagos = ({ pago }) => {
         <span>{fechaPago}</span>
       </td>
       <td>
-        <span>{Estado}</span>
+        <span>{estado ? "Completo" : "Parcial"}</span>
       </td>
 
       <td className="acciones">

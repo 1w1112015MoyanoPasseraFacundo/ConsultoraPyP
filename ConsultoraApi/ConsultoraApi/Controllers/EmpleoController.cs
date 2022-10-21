@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ConsultoraApi.Dtos.DtosCandidatos;
+using ConsultoraApi.Dtos.DtosCompetencias;
 using ConsultoraApi.Dtos.DtosEmpleos;
 using ConsultoraApi.Models;
 using ConsultoraApi.Repositorios.IRepositorios;
@@ -51,9 +52,11 @@ namespace ConsultoraApi.Controllers
             for (int i = 0; i < empleoGetDto.Count; i++)
             {
                 List<int> empXCompe = db.EmpleosXcompetencias.Where(x => x.IdEmpleo == empleoGetDto[i].IdEmpleo).Select(x => x.IdCompetencia).ToList();
+                var estado = db.Estados.Where(x => x.IdEstado == empleoGetDto[i].idEstado).FirstOrDefault();
                 var rubro = db.Rubros.Where(x => x.IdRubro == empleoGetDto[i].IdRubro).FirstOrDefault();
                 var cliente = db.Clientes.Where(x => x.IdCliente == empleoGetDto[i].IdCliente).FirstOrDefault();
                 empleoGetDto[i].nombreRubro = rubro.Nombre;
+                empleoGetDto[i].nombreEstado = estado.Nombre;
                 empleoGetDto[i].nombreCliente = cliente.Nombre;
                 empleoGetDto[i].lstCompes = empXCompe;
 
@@ -62,6 +65,31 @@ namespace ConsultoraApi.Controllers
 
             return Ok(empleoGetDto);
 
+        }
+
+        [HttpGet("GetEmpleosFilter")]
+        public IActionResult GetEmpleosFilter([FromQuery] EmpleoFilterDto filterDto)
+        {
+            var listaEmpleos = _eRepo.GetFilterEmpleo(filterDto);
+            var listaEmpleosDto = new List<EmpleoGetDto>();
+
+            if (listaEmpleos.Count == 0)
+            {
+                return StatusCode(409, "No hay competencias con esos filtros");
+            }
+            int i = 0; //contador que recorre los usuariosGetAllDto
+            foreach (var item in listaEmpleos)
+            {
+                listaEmpleosDto.Add(_mapper.Map<EmpleoGetDto>(item));
+                var rubro = db.Rubros.FirstOrDefault(x => x.IdRubro == item.IdRubro);
+                var cliente = db.Clientes.FirstOrDefault(x => x.IdCliente == item.IdCliente);
+                var estado = db.Estados.FirstOrDefault(x => x.IdEstado == item.IdEstado);
+                listaEmpleosDto[i].nombreRubro = rubro.Nombre;
+                listaEmpleosDto[i].nombreCliente = cliente.Nombre;
+                listaEmpleosDto[i].nombreEstado = estado.Nombre;
+                i++;
+            }
+            return Ok(listaEmpleosDto);
         }
 
         [HttpPost]

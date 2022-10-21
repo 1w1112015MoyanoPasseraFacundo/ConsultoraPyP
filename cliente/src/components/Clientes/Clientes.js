@@ -44,82 +44,76 @@ const Clientes = () => {
   return (
     <Fragment>
       <h3 className="title-decorator">Clientes</h3>
-      <div class="row">
-        <div class="col-lg-12">
-          <div class="card card-form alert-dismissible">
-            <div class="card-body card-body-custom">
-              <form class="form-horizontal p-t-20" onSubmit={filtrar}>
-                <div class="row">
-                  <div class="col-md-3">
-                    <div class="form-group">
-                      <input
-                        type="text"
-                        class="form-control"
-                        name="nombre"
-                        placeholder="Nombre del cliente"
-                        value={nombre}
-                        onChange={(e) => guardarNombre(e.target.value)}
-                      />
-                    </div>
-                  </div>
-                  <div class="col-md-3">
-                    <div class="form-group">
-                      <input
-                        type="text"
-                        class="form-control"
-                        name="mail"
-                        placeholder="E-mail del cliente "
-                        value={mail}
-                        onChange={(e) => guardarMail(e.target.value)}
-                      />
-                    </div>
-                  </div>
 
-                  <div class="col-md-3">
-                    <div class="form-group">
-                      <select
-                        type="text"
-                        class="form-control"
-                        name="estado"
-                        value={estado}
-                        onChange={(e) => guardarEstado(e.target.value)}
-                      >
-                        <option hidden value="" disabled selected>
-                          VIGENCIA
-                        </option>
-                        <option>TODOS</option>
-                        <option>SI</option>
-                        <option>NO</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="col-md-3">
-                    <div class="pull-right text-right">
-                      <button type="submit" class="btn btn-primary">
-                        <i class="mx-1 mr-2">
-                          <BsSearch />
-                        </i>
-                        <span> Buscar</span>
-                      </button>
-                      &nbsp;
-                      <button
-                        type="button"
-                        class="btn btn-dark"
-                        onClick={nuevo}
-                      >
-                        <i class="mx-1 mr-2">
-                          <BsPlusLg />
-                        </i>
-                        <span> Nuevo</span>
-                      </button>
-                    </div>
-                  </div>
+      <div class="card card-form alert-dismissible">
+        <div class="card-body card-body-custom">
+          <form class="form-horizontal p-t-20" onSubmit={filtrar}>
+            <div class="row">
+              <div class="col-md-3">
+                <div class="form-group">
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="nombre"
+                    placeholder="Nombre del cliente"
+                    value={nombre}
+                    onChange={(e) => guardarNombre(e.target.value)}
+                  />
                 </div>
-              </form>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="mail"
+                    placeholder="E-mail del cliente "
+                    value={mail}
+                    onChange={(e) => guardarMail(e.target.value)}
+                  />
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <div class="form-group">
+                  <select
+                    type="text"
+                    class="form-control"
+                    name="estado"
+                    value={estado}
+                    onChange={(e) => guardarEstado(e.target.value)}
+                  >
+                    <option hidden value="" disabled selected>
+                      VIGENCIA
+                    </option>
+                    <option>TODOS</option>
+                    <option>SI</option>
+                    <option>NO</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="pull-right text-right">
+                  <button type="submit" class="btn btn-primary">
+                    <i class="mx-1 mr-2">
+                      <BsSearch />
+                    </i>
+                    <span> Buscar</span>
+                  </button>
+                  &nbsp;
+                  <button type="button" class="btn btn-dark" onClick={nuevo}>
+                    <i class="mx-1 mr-2">
+                      <BsPlusLg />
+                    </i>
+                    <span> Nuevo</span>
+                  </button>
+                </div>
+              </div>
             </div>
-          </div>
+          </form>
         </div>
       </div>
+
       <div class="card custom-card-shadow">
         <div class="row">
           <div class="col-lg-12">

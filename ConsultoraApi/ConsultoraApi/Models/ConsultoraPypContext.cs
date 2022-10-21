@@ -89,8 +89,8 @@ namespace ConsultoraApi.Models
                     .IsUnicode(false)
                     .HasColumnName("nombre");
 
-                entity.Property(e => e.Seniority).HasMaxLength(50)
-                    .IsUnicode(false).HasColumnName("seniority");
+                entity.Property(e => e.Estado).HasMaxLength(50)
+                    .IsUnicode(false).HasColumnName("estado");
 
                 entity.Property(e => e.Telefono).HasMaxLength(20)
                     .IsUnicode(false).HasColumnName("telefono");

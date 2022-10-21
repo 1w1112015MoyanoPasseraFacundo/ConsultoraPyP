@@ -1,4 +1,5 @@
-﻿using ConsultoraApi.Models;
+﻿using ConsultoraApi.Dtos.DtosEmpleos;
+using ConsultoraApi.Models;
 
 namespace ConsultoraApi.Repositorios.IRepositorios
 {
@@ -8,6 +9,7 @@ namespace ConsultoraApi.Repositorios.IRepositorios
         public bool Save();
         public bool UpdateEmpleo(Empleo empleo);
         public Empleo GetEmpleo(int idEmpleo);
+        public ICollection<Empleo> GetFilterEmpleo(EmpleoFilterDto filterDto);
         public bool DarDeBajaEmpleo(Empleo empleo);
     }
 }

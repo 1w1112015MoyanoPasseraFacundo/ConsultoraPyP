@@ -1,12 +1,31 @@
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { BsPlusLg, BsSearch } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { obtenerCandidatosAction } from "../../actions/candidatosActions";
+import {
+  obtenerCandidatosAction,
+  obtenerCandidatosFilterAction,
+} from "../../actions/candidatosActions";
 import { obtenerEmpleosAction } from "../../actions/empleosActions";
 import AccionesCandidatos from "./AccionesCandidatos";
 const Candidatos = () => {
   const dispatch = useDispatch();
+  const [nombre, guardarNombre] = useState("");
+  const [apellido, guardarApellido] = useState("");
+  const [estado, guardarEstado] = useState("");
+
+  const filtrar = (e) => {
+    e.preventDefault();
+    buscar({
+      nombre,
+      apellido,
+      estado,
+    });
+  };
+  const buscar = (datos) => {
+    dispatch(obtenerCandidatosFilterAction(datos));
+  };
+
   useEffect(() => {
     //consultar api
 
@@ -30,31 +49,55 @@ const Candidatos = () => {
         <div class="col-lg-12">
           <div class="card card-form alert-dismissible">
             <div class="card-body card-body-custom">
-              <form class="form-horizontal p-t-20">
+              <form class="form-horizontal p-t-20" onSubmit={filtrar}>
                 <div class="row">
-                  <div class="col-md-4">
+                  <div class="col-md-3">
                     <div class="form-group">
                       <input
                         type="text"
                         class="form-control"
-                        id="nombre"
+                        id={nombre}
                         placeholder="Nombre del candidato"
-                        formControlName="nombre"
+                        name="nombre"
+                        onChange={(e) => guardarNombre(e.target.value)}
                       />
                     </div>
                   </div>
-                  <div class="col-md-4">
+                  <div class="col-md-3">
                     <div class="form-group">
                       <input
                         type="text"
                         class="form-control"
-                        id="descripcion"
-                        placeholder="E-mail del candidato "
-                        formControlName="descripcion"
+                        id={apellido}
+                        placeholder="Apellido del candidato"
+                        name="apellido"
+                        onChange={(e) => guardarApellido(e.target.value)}
                       />
                     </div>
                   </div>
-                  <div class="col-md-4">
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <select
+                        type="text"
+                        class="form-control"
+                        name="estado"
+                        value={estado}
+                        onChange={(e) => guardarEstado(e.target.value)}
+                      >
+                        <option hidden value="" disabled selected>
+                          ESTADO
+                        </option>
+                        <option>TODOS</option>
+                        <option>Postulado</option>
+                        <option>Preseleccionado</option>
+                        <option>En proceso</option>
+                        <option>En base</option>
+                        <option>Seleccionado</option>
+                        <option>Descartado</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
                     <div class="pull-right text-right">
                       <button type="submit" class="btn btn-primary">
                         <i class="mx-1 mr-2">
@@ -90,9 +133,7 @@ const Candidatos = () => {
                   <th className="colu" scope="col">
                     Nombre
                   </th>
-                  <th className="colu" scope="col">
-                    País
-                  </th>
+
                   <th className="colu" scope="col">
                     Documento
                   </th>
@@ -103,6 +144,9 @@ const Candidatos = () => {
                     Fecha de nacimiento
                   </th>
                   <th className="colu" scope="col">
+                    Estado
+                  </th>
+                  <th className="colu" scope="col">
                     Teléfono
                   </th>
                   <th className="colu" scope="col">
@@ -111,7 +155,7 @@ const Candidatos = () => {
                 </tr>
               </thead>
               <tbody>
-                {candidatos.length === 0
+                {error != null
                   ? "No hay candidatos"
                   : candidatos.map((candidato) => {
                       let fecha = candidato.fechaNacimiento.split("T");

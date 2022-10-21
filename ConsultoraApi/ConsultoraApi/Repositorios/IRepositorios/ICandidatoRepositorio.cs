@@ -1,4 +1,5 @@
-﻿using ConsultoraApi.Models;
+﻿using ConsultoraApi.Dtos.DtosCandidatos;
+using ConsultoraApi.Models;
 
 namespace ConsultoraApi.Repositorios.IRepositorios
 {
@@ -7,6 +8,7 @@ namespace ConsultoraApi.Repositorios.IRepositorios
         public Candidato GetCandidato(int idCandidato);
         public bool Save();
         public bool UpdateCandidato(Candidato candidato);
+        public ICollection<Candidato> GetFilterCandidato(CandidatoFilterDto filterDto);
         public bool CreateCandidato(Candidato candidato);
         public bool DarDeBajaCandidato(Candidato candidato);
     }

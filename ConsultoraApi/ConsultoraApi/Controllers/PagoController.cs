@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ConsultoraApi.Dtos.DtosCompetencias;
 using ConsultoraApi.Dtos.DtosPagos;
 using ConsultoraApi.Dtos.DtosPagos;
 using ConsultoraApi.Dtos.DtosPagos;
@@ -36,12 +37,7 @@ namespace ConsultoraApi.Controllers
             var pagoGetDto = new List<PagoGetDto>();
             for (int i = 0; i < pago.Count; i++)
             {
-
-                if (pago[i].Estado != false)
-                {
-
-                    pagoGetDto.Add(_mapper.Map<PagoGetDto>(pago[i]));
-                }
+                pagoGetDto.Add(_mapper.Map<PagoGetDto>(pago[i]));
             }
             if (pagoGetDto == null)
             {
@@ -55,6 +51,28 @@ namespace ConsultoraApi.Controllers
 
             return Ok(pagoGetDto);
 
+        }
+
+        [HttpGet("GetPagosFilter")]
+        public IActionResult GetPagosFilter([FromQuery] PagoFilterDto filterDto)
+        {
+            var listaPagos = _pRepo.GetFilterPago(filterDto);
+            var listaPagosDto = new List<PagoGetDto>();
+
+            if (listaPagos.Count == 0)
+            {
+                return StatusCode(409, "No hay pagos con esos filtros");
+            }
+            int i = 0; //contador que recorre los usuariosGetAllDto
+            foreach (var item in listaPagos)
+            {
+
+                listaPagosDto.Add(_mapper.Map<PagoGetDto>(item));
+                var cliente = db.Clientes.FirstOrDefault(x => x.IdCliente == item.IdCliente);
+                listaPagosDto[i].nombreCliente = cliente.Nombre;
+                i++;
+            }
+            return Ok(listaPagosDto);
         }
 
         [HttpPost]
@@ -73,7 +91,7 @@ namespace ConsultoraApi.Controllers
             {
                 return StatusCode(500, $"Algo salió mal creando el pago {pago.IdPago} ");
             }
-           
+
             return Ok($"Pago {pago.IdPago}  creado con exito");
         }
         [HttpPut("{idPago:int}", Name = "UpdatePago")]
@@ -103,8 +121,8 @@ namespace ConsultoraApi.Controllers
             {
                 return StatusCode(500, $"Algo salió mal actualizando el Pago {pago.IdPago} ");
             }
-            
-            
+
+
 
             return Ok($"Pago {pago.IdPago} modificado con exito");
         }
@@ -130,7 +148,7 @@ namespace ConsultoraApi.Controllers
             {
                 return StatusCode(500, $"Algo salió mal dando de baja el pago {pago.IdPago}");
             }
-     
+
 
             return Ok($"Pago {pago.IdPago} dado de baja con exito");
         }

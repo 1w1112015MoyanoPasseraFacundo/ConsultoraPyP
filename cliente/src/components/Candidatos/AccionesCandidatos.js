@@ -17,6 +17,7 @@ const AccionesCandidatos = ({ candidato }) => {
     documento,
     idPais,
     nombrePais,
+    estado,
     telefono,
     mail,
     fechaNacimiento,
@@ -52,9 +53,7 @@ const AccionesCandidatos = ({ candidato }) => {
       <td>
         {apellido}, {nombre}
       </td>
-      <td>
-        <span>{nombrePais}</span>
-      </td>
+
       <td>
         <span>{documento}</span>
       </td>
@@ -65,8 +64,12 @@ const AccionesCandidatos = ({ candidato }) => {
         <span>{Moment(fechaNacimiento).format("DD/MM/YYYY")}</span>
       </td>
       <td>
+        <span>{estado}</span>
+      </td>
+      <td>
         <span>{telefono}</span>
       </td>
+
       <td className="acciones">
         <button
           type="button"

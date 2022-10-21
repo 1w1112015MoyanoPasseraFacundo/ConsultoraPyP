@@ -1,4 +1,6 @@
-﻿using ConsultoraApi.Models;
+﻿using ConsultoraApi.Dtos.DtosCompetencias;
+using ConsultoraApi.Dtos.DtosPagos;
+using ConsultoraApi.Models;
 using ConsultoraApi.Repositorios.IRepositorios;
 
 namespace ConsultoraApi.Repositorios
@@ -23,6 +25,28 @@ namespace ConsultoraApi.Repositorios
             {
                 return null;
             }
+        }
+        public ICollection<Pago> GetFilterPago(PagoFilterDto filterDto)
+        {
+            var lstPagos = db.Pagos.ToList();
+
+            if (filterDto.estado != null)
+            {
+                if (filterDto.estado == true)
+                {
+                    lstPagos = lstPagos.Where(n => n.Estado == filterDto.estado).ToList();
+                }
+                else
+                {
+                    lstPagos = lstPagos.Where(n => n.Estado == filterDto.estado).ToList();
+                }
+            }
+            if (filterDto.idCliente != null)
+            {
+                lstPagos = lstPagos.Where(n => n.IdCliente == filterDto.idCliente).ToList();
+            }
+
+            return lstPagos;
         }
         public bool UpdatePago(Pago pago)
         {
