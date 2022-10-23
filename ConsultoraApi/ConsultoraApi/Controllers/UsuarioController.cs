@@ -1,12 +1,14 @@
 using AutoMapper;
 using ConsultoraApi.Dtos.DtosCompetencias;
 using ConsultoraApi.Dtos.DtosUsuarios;
+using ConsultoraApi.Helpers;
 using ConsultoraApi.Models;
 using ConsultoraApi.Repositorios;
 using ConsultoraApi.Repositorios.IRepositorios;
 using ConsultoraApi.Resultados;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration.UserSecrets;
 
 namespace ConsultoraApi.Controllers
 {
@@ -18,18 +20,21 @@ namespace ConsultoraApi.Controllers
         private readonly ConsultoraPypContext db;
         IMapper _mapper;
         private readonly IUsuarioRepositorio _uRepo;
-        public UsuarioController(IMapper mapper, IUsuarioRepositorio uRepo, ConsultoraPypContext _db)
+        private readonly IJwtAuthenticationManager jwtAuthenticationManager;
+
+        public UsuarioController(IMapper mapper, IUsuarioRepositorio uRepo, ConsultoraPypContext _db, IJwtAuthenticationManager jwtAuthenticationManager)
         {
             _mapper = mapper;
             _uRepo = uRepo;
             db = _db;
+            this.jwtAuthenticationManager = jwtAuthenticationManager;
         }
 
         [HttpGet]
         public IActionResult Get()
         {
             var usu = db.Usuarios.ToList();
-            if(usu==null || usu.Count == 0)
+            if (usu == null || usu.Count == 0)
             {
                 return StatusCode(400, "No existe usuarios registrados");
             }
@@ -68,7 +73,7 @@ namespace ConsultoraApi.Controllers
             {
                 return StatusCode(409, "No hay competencias con esos filtros");
             }
-            
+
             return Ok(listaCompetencias);
         }
 
@@ -76,12 +81,12 @@ namespace ConsultoraApi.Controllers
         [HttpPost]
         public IActionResult CreateUsuario(UsuarioCreateDto usuarioDto)
         {
-            if(usuarioDto==null)
+            if (usuarioDto == null)
             {
                 BadRequest();
             }
             var usu = _mapper.Map<Usuario>(usuarioDto);
-            if(db.Usuarios.Any(x=>x.NombreUsuario== usu.NombreUsuario))
+            if (db.Usuarios.Any(x => x.NombreUsuario == usu.NombreUsuario))
             {
                 return StatusCode(409, "Ya existe el mismo nombre de usuario");
             }
@@ -94,11 +99,11 @@ namespace ConsultoraApi.Controllers
             }
 
             return Ok($"Usuario {usu.NombreUsuario} creado con exito");
-        } 
+        }
         [HttpPut("{idUsuario:int}", Name = "UpdateUsuario")]
         public IActionResult UpdateUsuario(int idUsuario, [FromBody] UpdateUsuarioDto usuarioUpdateDto)
         {
-            if(usuarioUpdateDto == null || idUsuario != usuarioUpdateDto.IdUsuario)
+            if (usuarioUpdateDto == null || idUsuario != usuarioUpdateDto.IdUsuario)
             {
                 BadRequest();
             }
@@ -107,7 +112,7 @@ namespace ConsultoraApi.Controllers
 
             if (usuario == null)
             {
-                return  StatusCode(400, "El usuario no existe");
+                return StatusCode(400, "El usuario no existe");
             }
 
             if (db.Usuarios.Any(u => u.NombreUsuario == usuarioUpdateDto.NombreUsuario && u.IdUsuario != idUsuario))
@@ -133,12 +138,12 @@ namespace ConsultoraApi.Controllers
                 return StatusCode(500, $"Algo salió mal actualizando el registro {usuario.NombreUsuario}");
             }
 
-            return Ok($"Usuario {usuario.NombreUsuario} modificado con exito");         
+            return Ok($"Usuario {usuario.NombreUsuario} modificado con exito");
         }
-         [HttpDelete("{idUsuario:int}", Name = "BajaUsuario")]
+        [HttpDelete("{idUsuario:int}", Name = "BajaUsuario")]
         public IActionResult DeleteUsuario(int idUsuario)
         {
-            if(idUsuario == null)
+            if (idUsuario == null)
             {
                 BadRequest();
             }
@@ -147,7 +152,7 @@ namespace ConsultoraApi.Controllers
 
             if (usuario == null)
             {
-                return  StatusCode(400, "El usuario no existe");
+                return StatusCode(400, "El usuario no existe");
             }
 
             var usu = _mapper.Map<Usuario>(usuario);
@@ -158,9 +163,66 @@ namespace ConsultoraApi.Controllers
                 return StatusCode(500, $"Algo salió mal dando de baja el usuario {usu.NombreUsuario}");
             }
 
-            return Ok($"Usuario {usu.NombreUsuario} dado de baja con exito");         
+            return Ok($"Usuario {usu.NombreUsuario} dado de baja con exito");
         }
-        
 
+        [HttpPost]
+        [Route("login")]
+        public IActionResult Login([FromBody] LoginUsuarioDto comando)
+        {
+            var token = jwtAuthenticationManager.Authenticate(comando.nombreUsuario, comando.password);
+
+            if (string.IsNullOrEmpty(comando.nombreUsuario))
+            {
+                return StatusCode(400, "No se ingreso el nombre");
+            }
+            if (string.IsNullOrEmpty(comando.password))
+            {
+                return StatusCode(400, "No se ingreso la contraseña");
+            }
+            var result = db.Usuarios.FirstOrDefault(x => x.NombreUsuario == comando.nombreUsuario && x.Password == comando.password);
+
+            if (result == null)
+            {
+                return StatusCode(404, "Usuario y/o contraseña incorrecta");
+            }
+            else
+            {
+                if (token == null)
+                {
+                    return Unauthorized();
+                }
+                else if (result != null)
+                {
+                    //db.Entry(result).Reference(x => x.UsuariosXroles).Load();
+                    var hash = HashHelper.Hash(result.Password);
+
+                    result.Password = hash.Password;
+
+                    login lg = new login(result.NombreUsuario, result.Mail, token);
+
+                    return Ok(lg);
+                }
+                else
+                {
+                    return StatusCode(403, "Usuario o contraseña no válida");
+                }
+            }
+        }
+        [HttpGet]
+        [Route("login")]
+        public IActionResult getLogin([FromQuery] string nombreUsuario)
+        {
+            var usu = db.Usuarios.FirstOrDefault(x => x.NombreUsuario == nombreUsuario);
+
+            if (usu == null)
+            {
+                return StatusCode(409);
+            }
+            else
+            {
+                return Ok(usu);
+            }
+        }
     }
 }

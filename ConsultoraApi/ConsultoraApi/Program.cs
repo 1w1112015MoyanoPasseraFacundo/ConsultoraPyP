@@ -77,7 +77,7 @@ builder.Services.AddAuthentication(x =>
         ValidateAudience = false
     };
 });
-//builder.Services.AddSingleton<IJwtAuthenticationManager>(new JwtAuthenticationManager(key));
+builder.Services.AddSingleton<IJwtAuthenticationManager>(new JwtAuthenticationManager(key));
 
 
 

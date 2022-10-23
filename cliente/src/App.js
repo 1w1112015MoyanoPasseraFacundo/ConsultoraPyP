@@ -25,19 +25,16 @@ import EditarPago from "./components/Pagos/EditarPago";
 import SideBar from "./components/SideBar";
 import Login from "./login/Login";
 import Dashboard from "./components/Dashboard";
+import RutaPrivada from "./components/RutaPrivada";
 function App() {
   return (
     <Router>
-      <Routes>
-        <Route exact path="/login" element={<Login />} />
-      </Routes>
-      <Header />
-      <SideBar />
       <Provider store={store}>
-        <div className="container cont mt-5">
-          <Routes>
+        {/* <div className="container cont mt-5"> */}
+        <Routes>
+          <Route exact path="/login" element={<Login />} />
+          <Route exact path="/" element={<RutaPrivada />}>
             <Route exact path="/" element={<Dashboard />} />
-
             <Route exact path="/candidatos" element={<Candidatos />} />
             <Route
               exact
@@ -84,8 +81,9 @@ function App() {
             <Route exact path="/pagos" element={<Pagos />} />
             <Route exact path="/pagos/nuevo" element={<NuevoPago />} />
             <Route exact path="/pagos/editar/:id" element={<EditarPago />} />
-          </Routes>
-        </div>
+          </Route>
+        </Routes>
+        {/* </div> */}
       </Provider>
     </Router>
   );

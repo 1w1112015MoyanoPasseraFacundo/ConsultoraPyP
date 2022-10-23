@@ -1,13 +1,54 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { iniciarSesion } from "./authActions";
 import "./login.css";
+import Swal from "sweetalert2";
+
 const Login = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const autenticado = useSelector((state) => state.login.autenticado);
+  const mensaje = useSelector((state) => state.login.mensaje);
+  useEffect(() => {
+    if (autenticado) {
+      navigate("/");
+    }
+    if (mensaje!==null) {
+      Swal.fire(mensaje, "Intenta de nuevo", "error");
+    }
+  }, [autenticado, mensaje]);
+
+  const [usuario, guardarUsuario] = useState({
+    nombreUsuario: "",
+    password: "",
+  });
+
+  const { nombreUsuario, password } = usuario;
+
+  const onChange = (e) => {
+    guardarUsuario({
+      ...usuario,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+
+    //validar campos vacios
+    if (nombreUsuario.trim() === "" || password.trim() === "") {
+      Swal.fire("Todos los campos son obligatorios", "Intenta de nuevo", "error");
+    }
+
+    dispatch(iniciarSesion({ nombreUsuario, password }));
+  };
   return (
     <section id="wrapper" className="login-register login-sidebar login-bg-img">
       <div className="d-flex flex-column image-box justify-content-between align-items-center">
         <div className="text-center d-flex flex-column m-t-20">
           <img
             height="200px"
-            // src={require("../assets/logo.png")}
             alt="Home"
             className="logp my-4 display-responsive"
           />
@@ -20,28 +61,16 @@ const Login = () => {
 
           <h5 className="text-info my-4 display-responsive">v.1.0.0</h5>
         </div>
-        {/* <img
-          className="m-b-20 display-responsive"
-          src="./src/assets/logo.png"
-        /> */}
+
       </div>
       <div className="login-box card px-2">
         <div className="card-body d-flex justify-content-center align-items-center flex-responsive">
-          {/* <img
-            // src=" ../assets/images/logo-wf.svg"
-            // alt="Home"
-            className="my-2 login-box-icon"
-          /> */}
-          {/* <img
-            // src="../../../assets/images/bandeja-de-documentos.png"
-            className="my-4 login-box-icon bandeja-imagen-hv"
-          /> */}
 
           <form
             className="form-horizontal form-material w-100"
             id="loginform"
             autocomplete="off"
-          >
+            onSubmit={onSubmit}>
             <div className="form-group m-t-30">
               <h3 className="box-title m-t-20 m-b-30 title-decorator">
                 Iniciar sesión
@@ -50,8 +79,11 @@ const Login = () => {
                 <input
                   className="form-control"
                   type="text"
-                  placeholder="Usuario"
-                />
+                  placeholder="Nombre de Usuario"
+                  id="nombreUsuario"
+                  name="nombreUsuario"
+                  value={nombreUsuario}
+                  onChange={onChange}/>
               </div>
             </div>
             <div className="form-group">
@@ -59,8 +91,12 @@ const Login = () => {
                 <input
                   className="form-control"
                   type="password"
+                  id="password"
+                  name="password"
                   placeholder="Contraseña"
-                />
+              value={password}
+              onChange={onChange}
+               />
               </div>
             </div>
             <div className="form-group row">
@@ -89,19 +125,7 @@ const Login = () => {
                 </button>
               </div>
             </div>
-            <div className="form-group row">
-              <div className="col-md-12">
-                <a> ¿No tienes una cuenta?</a>
-                <a
-                  id="to-recover"
-                  className="text-dark pull-right link-wf"
-                  href="/"
-                >
-                  <i className="fa fa-lock m-r-5"></i>
-                  Registrarme
-                </a>
-              </div>
-            </div>
+
           </form>
         </div>
 

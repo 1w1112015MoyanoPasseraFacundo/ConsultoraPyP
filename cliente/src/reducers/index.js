@@ -1,4 +1,5 @@
 import { combineReducers } from "redux";
+import authReducer from "../login/authReducer";
 import candidatosReducer from "./candidatosReducer";
 import clientesReducer from "./clientesReducer";
 import competenciasReducer from "./competenciasReducer";
@@ -13,4 +14,5 @@ export default combineReducers({
   clientes: clientesReducer,
   empleos: empleosReducer,
   pagos: pagosReducer,
+  login: authReducer,
 });
