@@ -45,85 +45,79 @@ const Candidatos = () => {
   return (
     <Fragment>
       <h3 className="title-decorator">Candidatos</h3>
-      <div class="row">
-        <div class="col-lg-12">
-          <div class="card card-form alert-dismissible">
-            <div class="card-body card-body-custom">
-              <form class="form-horizontal p-t-20" onSubmit={filtrar}>
-                <div class="row">
-                  <div class="col-md-3">
-                    <div class="form-group">
-                      <input
-                        type="text"
-                        class="form-control"
-                        id={nombre}
-                        placeholder="Nombre del candidato"
-                        name="nombre"
-                        onChange={(e) => guardarNombre(e.target.value)}
-                      />
-                    </div>
-                  </div>
-                  <div class="col-md-3">
-                    <div class="form-group">
-                      <input
-                        type="text"
-                        class="form-control"
-                        id={apellido}
-                        placeholder="Apellido del candidato"
-                        name="apellido"
-                        onChange={(e) => guardarApellido(e.target.value)}
-                      />
-                    </div>
-                  </div>
-                  <div class="col-md-3">
-                    <div class="form-group">
-                      <select
-                        type="text"
-                        class="form-control"
-                        name="estado"
-                        value={estado}
-                        onChange={(e) => guardarEstado(e.target.value)}
-                      >
-                        <option hidden value="" disabled selected>
-                          ESTADO
-                        </option>
-                        <option>TODOS</option>
-                        <option>Postulado</option>
-                        <option>Preseleccionado</option>
-                        <option>En proceso</option>
-                        <option>En base</option>
-                        <option>Seleccionado</option>
-                        <option>Descartado</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="col-md-3">
-                    <div class="pull-right text-right">
-                      <button type="submit" class="btn btn-primary">
-                        <i class="mx-1 mr-2">
-                          <BsSearch />
-                        </i>
-                        <span> Buscar</span>
-                      </button>
-                      &nbsp;
-                      <button
-                        type="button"
-                        class="btn btn-dark"
-                        onClick={nuevo}
-                      >
-                        <i class="mx-1 mr-2">
-                          <BsPlusLg />
-                        </i>
-                        <span> Nuevo</span>
-                      </button>
-                    </div>
-                  </div>
+
+      <div class="card card-form">
+        <div class="card-body card-body-custom">
+          <form class="form-horizontal p-t-20" onSubmit={filtrar}>
+            <div class="row">
+              <div class="col-md-3">
+                <div class="form-group">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id={nombre}
+                    placeholder="Nombre del candidato"
+                    name="nombre"
+                    onChange={(e) => guardarNombre(e.target.value)}
+                  />
                 </div>
-              </form>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id={apellido}
+                    placeholder="Apellido del candidato"
+                    name="apellido"
+                    onChange={(e) => guardarApellido(e.target.value)}
+                  />
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <select
+                    type="text"
+                    class="form-control"
+                    name="estado"
+                    value={estado}
+                    onChange={(e) => guardarEstado(e.target.value)}
+                  >
+                    <option hidden value="" disabled selected>
+                      ESTADO
+                    </option>
+                    <option>TODOS</option>
+                    <option>Postulado</option>
+                    <option>Preseleccionado</option>
+                    <option>En proceso</option>
+                    <option>En base</option>
+                    <option>Seleccionado</option>
+                    <option>Descartado</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="pull-right text-right">
+                  <button type="submit" class="btn btn-primary">
+                    <i class="mx-1 mr-2">
+                      <BsSearch />
+                    </i>
+                    <span> Buscar</span>
+                  </button>
+                  &nbsp;
+                  <button type="button" class="btn btn-dark" onClick={nuevo}>
+                    <i class="mx-1 mr-2">
+                      <BsPlusLg />
+                    </i>
+                    <span> Nuevo</span>
+                  </button>
+                </div>
+              </div>
             </div>
-          </div>
+          </form>
         </div>
       </div>
+
       <div class="card custom-card-shadow">
         <div class="row">
           <div class="col-lg-12">

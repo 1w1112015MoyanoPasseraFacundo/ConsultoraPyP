@@ -82,8 +82,9 @@
 
   .menu-item{
     padding: 30px 35px 8px 15px;
-                display: block;
-                font-size: 20px;
-                font-weight: 400;
+    display: block;
+    font-size: 20px;
+    font-weight: 400;
+    cursor: pointer;            
 
   }

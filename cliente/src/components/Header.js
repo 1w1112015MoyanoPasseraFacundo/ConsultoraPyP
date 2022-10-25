@@ -1,20 +1,70 @@
 import React from "react";
+import {
+  BsArrowDown,
+  BsArrowDownShort,
+  BsChevronDown,
+  BsCircle,
+  BsPersonCircle,
+  BsRecord,
+  BsRecordFill,
+} from "react-icons/bs";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { cerrarSesion } from "../login/authActions";
 const Header = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const onSubmit = () => {
+    dispatch(cerrarSesion);
+    navigate("/login");
+  };
+  const usuario = useSelector((state) => state.login.login);
+  const autenticado = useSelector((state) => state.login.autenticado);
+  console.log(autenticado);
+
   return (
     <nav className="navbar navbar-expand-lg navbar-dark justify-content-between header">
       <div className="container">
-        <h1 className="titulo">
-          {/* <Link to={"/"} className="text-light"> */}
-          Consultora Pyp
-          {/* </Link> */}
-        </h1>
+        <h1 className="titulo">Consultora PP</h1>
       </div>
-      {/* <Link
-        className="btn btn-danger nuevo-post d-block d-md-inline-block"
-        to={"/productos/nuevo"}
-      >
-        Agregar Producto &#43;
-      </Link> */}
+      <div class="dropdown">
+        <span class="dropbtn">
+          <BsPersonCircle />
+          &nbsp; {usuario.nombreUsuario}
+          &nbsp;
+          <BsChevronDown />
+        </span>
+
+        <div class="dropdown-content">
+          <li href="#">
+            <small>
+              <i>
+                <BsRecord />
+              </i>
+            </small>
+            &nbsp; Perfil
+          </li>
+          <li href="#">
+            <small>
+              <i>
+                <BsRecord />
+              </i>
+            </small>
+            &nbsp; Cambiar contraseña
+          </li>
+          <li href="#">
+            <a onClick={onSubmit}>
+              <small>
+                <i>
+                  <BsRecord />
+                </i>
+              </small>
+              &nbsp; Cerrar sesión
+            </a>
+          </li>
+        </div>
+      </div>
     </nav>
   );
 };

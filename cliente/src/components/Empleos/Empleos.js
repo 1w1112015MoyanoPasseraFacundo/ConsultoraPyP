@@ -65,155 +65,138 @@ const Empleos = () => {
   return (
     <Fragment>
       <h3 className="title-decorator">Vacantes a cubrir</h3>
-      <div class="row">
-        <div class="col-lg-12">
-          <div class="card card-form alert-dismissible">
-            <div class="card-body card-body-custom">
-              <form class="form-horizontal p-t-20" onSubmit={filtrar}>
-                <div class="row">
-                  <div class="col-md-3">
-                    <div class="form-group">
-                      <input
-                        type="text"
-                        class="form-control"
-                        value={nombre}
-                        placeholder="Descripción del empleo"
-                        name="nombre"
-                        onChange={(e) => guardarNombre(e.target.value)}
-                      />
-                    </div>
-                  </div>
-                  <div class="col-md-3">
-                    <div class="form-group">
-                      <select
-                        type="text"
-                        class="form-control"
-                        value={idCliente}
-                        name="idCliente"
-                        onClick={llenarCliente}
-                        onChange={(e) => guardarCliente(e.target.value)}
-                      >
-                        <option value={empty}>Seleccione cliente...</option>
-                        {listaClientes.map((cliente) => (
-                          <option
-                            key={cliente.idCliente}
-                            value={cliente.idCliente}
-                          >
-                            {cliente.nombre}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                  </div>
-                  <div class="col-md-3">
-                    <div class="form-group">
-                      <select
-                        type="text"
-                        class="form-control"
-                        value={idRubro}
-                        name="idRubro"
-                        onClick={llenarRubro}
-                        onChange={(e) => guardarRubro(e.target.value)}
-                      >
-                        <option value={empty}>Seleccione rubro...</option>
-                        {listaRubros.map((rubro) => (
-                          <option key={rubro.idRubro} value={rubro.idRubro}>
-                            {rubro.nombre}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                  </div>
-                  <div class="col-md-3">
-                    <div class="form-group">
-                      <select
-                        type="text"
-                        class="form-control"
-                        value={idEstado}
-                        name="idEstado"
-                        onClick={llenarEstado}
-                        onChange={(e) => guardarEstado(e.target.value)}
-                      >
-                        <option value={empty}>Seleccione estado...</option>
-                        {listaEstados.map((estado) => (
-                          <option key={estado.idEstado} value={estado.idEstado}>
-                            {estado.nombre}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                  </div>
-                  <div class="col-md-12">
-                    <div class="pull-right text-right">
-                      <button type="submit" class="btn btn-primary">
-                        <i class="mx-1 mr-2">
-                          <BsSearch />
-                        </i>
-                        <span> Buscar</span>
-                      </button>
-                      &nbsp;
-                      <button
-                        type="button"
-                        class="btn btn-dark"
-                        onClick={nuevo}
-                      >
-                        <i class="mx-1 mr-2">
-                          <BsPlusLg />
-                        </i>
-                        <span> Nuevo</span>
-                      </button>
-                    </div>
-                  </div>
+
+      <div class="card card-form custom-card-shadow">
+        <div class="card-body card-body-custom ">
+          <form class="form-horizontal p-t-20" onSubmit={filtrar}>
+            <div class="row">
+              <div class="col-md-3">
+                <div class="form-group">
+                  <input
+                    type="text"
+                    class="form-control"
+                    value={nombre}
+                    placeholder="Descripción del empleo"
+                    name="nombre"
+                    onChange={(e) => guardarNombre(e.target.value)}
+                  />
                 </div>
-              </form>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <select
+                    type="text"
+                    class="form-control"
+                    value={idCliente}
+                    name="idCliente"
+                    onClick={llenarCliente}
+                    onChange={(e) => guardarCliente(e.target.value)}
+                  >
+                    <option value={empty}>Seleccione cliente...</option>
+                    {listaClientes.map((cliente) => (
+                      <option key={cliente.idCliente} value={cliente.idCliente}>
+                        {cliente.nombre}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <select
+                    type="text"
+                    class="form-control"
+                    value={idRubro}
+                    name="idRubro"
+                    onClick={llenarRubro}
+                    onChange={(e) => guardarRubro(e.target.value)}
+                  >
+                    <option value={empty}>Seleccione rubro...</option>
+                    {listaRubros.map((rubro) => (
+                      <option key={rubro.idRubro} value={rubro.idRubro}>
+                        {rubro.nombre}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <select
+                    type="text"
+                    class="form-control"
+                    value={idEstado}
+                    name="idEstado"
+                    onClick={llenarEstado}
+                    onChange={(e) => guardarEstado(e.target.value)}
+                  >
+                    <option value={empty}>Seleccione estado...</option>
+                    {listaEstados.map((estado) => (
+                      <option key={estado.idEstado} value={estado.idEstado}>
+                        {estado.nombre}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="pull-right text-right">
+                  <button type="submit" class="btn btn-primary">
+                    <i class="mx-1 mr-2">
+                      <BsSearch />
+                    </i>
+                    <span> Buscar</span>
+                  </button>
+                  &nbsp;
+                  <button type="button" class="btn btn-dark" onClick={nuevo}>
+                    <i class="mx-1 mr-2">
+                      <BsPlusLg />
+                    </i>
+                    <span> Nuevo</span>
+                  </button>
+                </div>
+              </div>
             </div>
-          </div>
+          </form>
         </div>
       </div>
 
       <div class="card custom-card-shadow">
-        <div class="row">
-          <div class="col-lg-12">
-            <table className="table table-hover">
-              <thead>
-                <tr>
-                  <th className="colu" scope="col">
-                    Descripción
-                  </th>
-                  <th className="colu" scope="col">
-                    Cliente
-                  </th>
-                  <th className="colu" scope="col">
-                    Rubro
-                  </th>
-                  <th className="colu" scope="col">
-                    Modalidad
-                  </th>
-                  <th className="colu" scope="col">
-                    Estado
-                  </th>
+        <table className="table table-hover">
+          <thead>
+            <tr>
+              <th className="colu" scope="col">
+                Descripción
+              </th>
+              <th className="colu" scope="col">
+                Cliente
+              </th>
+              <th className="colu" scope="col">
+                Rubro
+              </th>
+              <th className="colu" scope="col">
+                Modalidad
+              </th>
+              <th className="colu" scope="col">
+                Estado
+              </th>
 
-                  <th className="colu" scope="col">
-                    Acciones
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {error != null
-                  ? "No hay empleos"
-                  : empleos.map((empleo) => {
-                      console.log(empleo);
-                      return (
-                        <AccionesEmpleos
-                          key={empleo.idEmpleo}
-                          empleo={empleo}
-                        />
-                      );
-                    })}
-              </tbody>
-            </table>
-          </div>
-        </div>
+              <th className="colu" scope="col">
+                Acciones
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {error != null
+              ? "No hay empleos"
+              : empleos.map((empleo) => {
+                  console.log(empleo);
+                  return (
+                    <AccionesEmpleos key={empleo.idEmpleo} empleo={empleo} />
+                  );
+                })}
+          </tbody>
+        </table>
       </div>
       {cargando ? <Spinner /> : null}
     </Fragment>

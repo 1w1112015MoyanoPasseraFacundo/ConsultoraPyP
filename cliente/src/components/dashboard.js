@@ -2,9 +2,10 @@ import React, { Fragment } from "react";
 import "./dashboard.css";
 import { ReactComponent as YourSvg } from "../assets/dashboard-ppl.svg";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 const Dashboard = () => {
   const navigate = useNavigate();
-
+  const usuario = useSelector((state) => state.login.login);
   const cand = () => {
     navigate("/candidatos");
   };
@@ -37,7 +38,9 @@ const Dashboard = () => {
               <br></br>
 
               <p class="title-font">
-                <span>Bienvenido Usuario</span>
+                <span>
+                  Bienvenido {usuario.nombre} {usuario.apellido}
+                </span>
               </p>
               {/* <div>
                   <p class="card-body__text">
@@ -50,7 +53,11 @@ const Dashboard = () => {
                 </div> */}
             </div>
             <div class="col-md-4">
-              <YourSvg height="230px" />
+              <img
+                src={require("../assets/logoHorizonta.png")}
+                height="250px"
+              />
+              {/* <YourSvg height="230px" /> */}
             </div>
           </div>
         </div>

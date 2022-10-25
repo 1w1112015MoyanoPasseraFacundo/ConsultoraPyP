@@ -10,11 +10,12 @@ const Login = () => {
   const navigate = useNavigate();
   const autenticado = useSelector((state) => state.login.autenticado);
   const mensaje = useSelector((state) => state.login.mensaje);
+  console.log(mensaje);
   useEffect(() => {
     if (autenticado) {
       navigate("/");
     }
-    if (mensaje!==null) {
+    if (mensaje!==null && mensaje!==undefined) {
       Swal.fire(mensaje, "Intenta de nuevo", "error");
     }
   }, [autenticado, mensaje]);
@@ -49,14 +50,14 @@ const Login = () => {
         <div className="text-center d-flex flex-column m-t-20">
           <img
             height="200px"
-            alt="Home"
-            className="logp my-4 display-responsive"
+            className="logp"
           />
           <img
             height="200px"
             src={require("../assets/logo.png")}
+          
             alt="Home"
-            className="logp my-4 display-responsive"
+            className="my-4 display-responsive"
           />
 
           <h5 className="text-info my-4 display-responsive">v.1.0.0</h5>
@@ -69,7 +70,6 @@ const Login = () => {
           <form
             className="form-horizontal form-material w-100"
             id="loginform"
-            autocomplete="off"
             onSubmit={onSubmit}>
             <div className="form-group m-t-30">
               <h3 className="box-title m-t-20 m-b-30 title-decorator">

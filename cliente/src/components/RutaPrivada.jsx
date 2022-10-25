@@ -14,8 +14,14 @@ const RutaPrivada = ({ element: Component, ...props }) => {
   }, []);
   // If authorized, return an outlet that will render child elements
   // If not, return element that will navigate to login page
-  return autenticado ?<Fragment><Header />
-  <SideBar /> <Outlet /> </Fragment>: <Navigate to="/login" />;
+  return autenticado ?(
+    <Fragment>
+        <Header />
+        <SideBar /> 
+      <div className="container cont mt-5"> 
+        <Outlet /> 
+      </div>
+    </Fragment>): <Navigate to="/login" />;
 };
 
 export default RutaPrivada;

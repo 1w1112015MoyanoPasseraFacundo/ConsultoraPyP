@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Fragment, useState } from "react";
 import Header from "./components/Header";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Candidatos from "./components/Candidatos/Candidatos";
@@ -22,7 +22,6 @@ import EditarEmpleo from "./components/Empleos/EditarEmpleo";
 import Pagos from "./components/Pagos/Pagos";
 import NuevoPago from "./components/Pagos/NuevoPago";
 import EditarPago from "./components/Pagos/EditarPago";
-import SideBar from "./components/SideBar";
 import Login from "./login/Login";
 import Dashboard from "./components/Dashboard";
 import RutaPrivada from "./components/RutaPrivada";
@@ -30,7 +29,6 @@ function App() {
   return (
     <Router>
       <Provider store={store}>
-        {/* <div className="container cont mt-5"> */}
         <Routes>
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/" element={<RutaPrivada />}>
@@ -83,7 +81,6 @@ function App() {
             <Route exact path="/pagos/editar/:id" element={<EditarPago />} />
           </Route>
         </Routes>
-        {/* </div> */}
       </Provider>
     </Router>
   );

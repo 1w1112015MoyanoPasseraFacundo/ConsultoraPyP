@@ -1,5 +1,4 @@
 import clienteAxios from "../config/axios";
-import tokenAuth from "../config/token";
 import { CERRAR_SESION, LOGIN_ERROR, LOGIN_EXITOSO, OBTENER_USUARIO } from "../types";
 
 
@@ -12,7 +11,7 @@ export function usuarioAutenticado() {
       console.log(resp);
       dispatch({
         type: OBTENER_USUARIO,
-        payload: resp.data.usuario,
+        payload: resp.data,
       });
     } catch (error) {
       console.log(error);
@@ -44,7 +43,9 @@ export function usuarioAutenticado() {
       });
     }}
   };
+ 
   export function cerrarSesion() {
+    localStorage.removeItem("token");
     return  (dispatch) => {
     dispatch({
       type: CERRAR_SESION,

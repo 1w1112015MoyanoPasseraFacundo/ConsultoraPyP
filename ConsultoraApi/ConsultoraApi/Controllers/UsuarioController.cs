@@ -220,7 +220,7 @@ namespace ConsultoraApi.Controllers
                 return StatusCode(409);
             }
             else
-            {
+            {   
                 return Ok(usu);
             }
         }

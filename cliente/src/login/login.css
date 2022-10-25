@@ -17,7 +17,9 @@
     z-index: 55;
     background-color: rgba(0, 0, 0, 0.4);
   }
-  
+  .logp{
+    visibility: hidden;
+  }
   .login-register {
     background-size: cover;
     background-repeat: no-repeat;

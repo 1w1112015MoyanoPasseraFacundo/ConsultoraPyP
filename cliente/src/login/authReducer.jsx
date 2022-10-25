@@ -17,7 +17,8 @@ import {
         return {
           ...state,
           autenticado: true,
-          mensaje: action.payload,
+          login: action.payload,
+          mensaje:null
         };
       case OBTENER_USUARIO:
         return {
@@ -35,15 +36,15 @@ import {
           autenticado: false,
           mensaje: action.payload,
         };
-    //   case CERRAR_SESION:
-    //     localStorage.removeItem("token");
-    //     return {
-    //       ...state,
-    //       token: null,
-    //       login: null,
-    //       autenticado: null,
-    //       mensaje: action.payload,
-    //     };
+      case CERRAR_SESION:
+        localStorage.removeItem("token");
+        return {
+          ...state,
+          token: null,
+          login: null,
+          autenticado: false,
+          mensaje: null,
+        };
       default:
         return state;
     }

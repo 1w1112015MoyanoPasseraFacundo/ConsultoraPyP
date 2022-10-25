@@ -15,6 +15,7 @@ body {
   background-color: #1976d2;
 }
 .titulo{
+  padding-left: 5rem;
   color: rgba(255, 255, 255, 0.8);
 }
 button.nuevo{
@@ -53,7 +54,7 @@ h1 a.text-light:hover {
   color: #828385;
 }
 .table-hover tbody tr:hover {
-  background: #eff7fe;
+  background: #e9edf2;
 }
 
 .title-decorator::after {
@@ -67,7 +68,12 @@ h1 a.text-light:hover {
   border-radius: 3px;
 }
 .colu{
+  font-weight: 500px;
   color: #828385;
+}
+
+.table thead {
+  background-color: #eaeef0;
 }
 .btn {
   font-weight: bold;
@@ -98,11 +104,67 @@ h1 a.text-light:hover {
 }
 
 
-.card-form {
-  background-color: #36a1ea;
+.card-form{
     margin-bottom: 1rem;
+    border-radius: 8px;
+    background-color: #cde3f2;
+  }
+.card-body-custom{
+  background-color: #cde3f2;
+  border-radius: 8px;
+}
+.dropbtn {
+  color: white;
+  padding: 16px;
+  font-size: 22px;
+  border: none;
+  cursor: pointer;
 }
 
+.dropdown {
+  padding-right: 10rem;
+  position: relative;
+  display: inline-block;
+}
 
+.dropdown-content {
+  margin-top: 13px;
+  display: none;
+  position: absolute;
+  background-color:  #2A2E3F;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+  cursor: pointer;
+  border-radius: 8px;
+}
 
+.dropdown-content:hover{
+  background: #2a3851 !important;
+  border-radius: 8px;
+}
+
+.dropdown-content li {
+  color: #555f6d !important;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  border-radius: 8px;
+}
+
+.custom-card-shadow {
+  box-shadow: 0px 1px 3px 2px rgba(58, 58, 58, 0.15) !important;
+  border-radius: 8px !important;
+}
+
+.superbody{
+  background-color: #f4f6f9;
+}
+
+.dropdown-content li:hover {background-color: #36a1ea; color: #eeeeee !important;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
 

@@ -45,7 +45,7 @@ const Clientes = () => {
     <Fragment>
       <h3 className="title-decorator">Clientes</h3>
 
-      <div class="card card-form alert-dismissible">
+      <div class="card card-form ">
         <div class="card-body card-body-custom">
           <form class="form-horizontal p-t-20" onSubmit={filtrar}>
             <div class="row">

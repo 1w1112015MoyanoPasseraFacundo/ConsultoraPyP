@@ -48,7 +48,7 @@ const Pagos = () => {
       <h3 className="title-decorator">Pagos</h3>
       <div class="row">
         <div class="col-lg-12">
-          <div class="card card-form alert-dismissible">
+          <div class="card card-form ">
             <div class="card-body card-body-custom">
               <form class="form-horizontal p-t-20" onSubmit={filtrar}>
                 <div class="row">
