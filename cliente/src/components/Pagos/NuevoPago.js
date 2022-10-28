@@ -2,16 +2,17 @@ import React, { useState } from "react";
 import { BsCheckLg, BsReplyFill } from "react-icons/bs";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 import { crearNuevoPagoAction } from "../../actions/pagosActions";
 import clienteAxios from "../../config/axios";
 const NuevoPago = () => {
   const navigate = useNavigate();
   //state
-  const [montoPago, guardarMonto] = useState(0);
+  const [montoPago, guardarMonto] = useState("");
   const [Estado, guardarEstado] = useState(Boolean);
   const [idCliente, guardarCliente] = useState(0);
   const [listaClientes, guardarClientes] = useState([]);
-  const [fechaPago, guardarFechaPago] = useState(Date);
+  const [fechaPago, guardarFechaPago] = useState();
 
   const dispatch = useDispatch();
 
@@ -28,7 +29,8 @@ const NuevoPago = () => {
     e.preventDefault();
 
     //validar form
-    if (montoPago.trim() === "") {
+    if (montoPago.trim() === "" || idCliente === 0) {
+      Swal.fire("Debe completar todos los campos", "", "warning");
       // const alerta = {
       //   msg: "Ambos campos son obligatorios",
       //   clases: "alert alert-danger text-center text-uppercase p3",
@@ -52,7 +54,9 @@ const NuevoPago = () => {
   const cancelar = () => {
     navigate("/pagos");
   };
-
+  var curr = new Date();
+  curr.setDate(curr.getDate());
+  var date = curr.toISOString().substring(0, 10);
   return (
     <div className="row justify-content-center">
       <div className="col-md-12">
@@ -83,8 +87,9 @@ const NuevoPago = () => {
                   <label>Monto</label>
                   <input
                     type="number"
+                    prefix="$"
                     className="form-control"
-                    placeholder="Monto"
+                    placeholder="$"
                     name="montoPago"
                     value={montoPago}
                     onChange={(e) => guardarMonto(e.target.value)}
@@ -98,6 +103,7 @@ const NuevoPago = () => {
                     name="fechaPago"
                     value={fechaPago}
                     onChange={(e) => guardarFechaPago(e.target.value)}
+                    defaultValue={date}
                   />
                 </div>
               </div>

@@ -28,6 +28,7 @@ const EditarEmpleo = () => {
   const [listaClientes, guardarClientes] = useState([]);
   const [listaRubros, guardarRubros] = useState([]);
   const editar = useSelector((state) => state.empleos.editar);
+  console.log("EDITAR", editar);
   useEffect(() => {
     const consultarAPI = async () => {
       const resultado = await clienteAxios.get(`/rubros`);
@@ -39,13 +40,11 @@ const EditarEmpleo = () => {
       guardarClientes(resultado.data);
     };
     llenarClientes();
-    // const llenarCompetencias = async () => {
-    //   const resultado = await clienteAxios.get(`/competencias`);
-    //   guardarCompetencias(resultado.data);
-    // };
-    // llenarCompetencias();
+
     guardarEmpleo(editar);
   }, [editar]);
+
+  console.log("EMPLEO", empleo);
 
   const onChangeFormulario = (e) => {
     guardarEmpleo({
@@ -57,7 +56,7 @@ const EditarEmpleo = () => {
     navigate("/empleos");
   };
   const { nombre, idCliente, idEstado, idRubro, modalidad, lstCompes } = empleo;
-  console.log(empleo);
+  console.log("EMPLEO", empleo);
   const submitEditarCliente = (e) => {
     e.preventDefault();
     dispatch(editarEmpleoAction(empleo));
@@ -65,7 +64,7 @@ const EditarEmpleo = () => {
   };
 
   const [listaCompetencias, guardarCompetencias] = useState([]);
-  const { data } = useGetCompetencia();
+  const { data } = useGetCompetencia(idRubro);
 
   return (
     <div className="row justify-content-center">
@@ -104,6 +103,19 @@ const EditarEmpleo = () => {
                   </select>
                 </div>
                 <div className="form-group  col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                  <label>Modalidad</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Modalidad"
+                    name="modalidad"
+                    value={modalidad}
+                    onChange={onChangeFormulario}
+                  />
+                </div>
+              </div>
+              <div className="row p-t-20">
+                <div className="form-group col-lg-4 col-md-4 col-sm-12 col-xs-12">
                   <label>Rubro</label>
                   <select
                     className="form-control"
@@ -119,26 +131,13 @@ const EditarEmpleo = () => {
                     ))}
                   </select>
                 </div>
-              </div>
-              <div className="row p-t-20">
-                <div className="form-group col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                  <label>Modalidad</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Modalidad"
-                    name="modalidad"
-                    value={modalidad}
-                    onChange={onChangeFormulario}
-                  />
-                </div>
                 <div className="form-group col-lg-4 col-md-4 col-sm-12 col-xs-12">
                   <label>Competencias</label>
                   <Multipleselect
                     options={data ? data : []}
                     setState={guardarCompetencias}
                     defaultOption={"Seleccione Competencias"}
-                    value={lstCompes}
+                    values={lstCompes}
                   />
                 </div>
               </div>

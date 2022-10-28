@@ -52,13 +52,21 @@ namespace ConsultoraApi.Controllers
             for (int i = 0; i < empleoGetDto.Count; i++)
             {
                 List<int> empXCompe = db.EmpleosXcompetencias.Where(x => x.IdEmpleo == empleoGetDto[i].IdEmpleo).Select(x => x.IdCompetencia).ToList();
+
+                List<CompetenciaListGetDto> compe = new List<CompetenciaListGetDto>();
+                for (int j = 0; j < empXCompe.Count; j++)
+                {
+                    var compes = db.Competencias.Where(x => x.IdCompetencia == empXCompe[j]).FirstOrDefault();
+                    compe.Add(_mapper.Map<CompetenciaListGetDto>(compes));
+                }
+
                 var estado = db.Estados.Where(x => x.IdEstado == empleoGetDto[i].idEstado).FirstOrDefault();
                 var rubro = db.Rubros.Where(x => x.IdRubro == empleoGetDto[i].IdRubro).FirstOrDefault();
                 var cliente = db.Clientes.Where(x => x.IdCliente == empleoGetDto[i].IdCliente).FirstOrDefault();
                 empleoGetDto[i].nombreRubro = rubro.Nombre;
                 empleoGetDto[i].nombreEstado = estado.Nombre;
                 empleoGetDto[i].nombreCliente = cliente.Nombre;
-                empleoGetDto[i].lstCompes = empXCompe;
+                empleoGetDto[i].lstCompes = compe;
 
 
             }
@@ -192,7 +200,7 @@ namespace ConsultoraApi.Controllers
             }
 
             empl.IdEstado = 3;
-            
+
             if (!_eRepo.DarDeBajaEmpleo(empl))
             {
                 return StatusCode(500, $"Algo salió mal dando de baja el empleo {empl.Nombre}");

@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using ConsultoraApi.Dtos.DtosCompetencias;
+using ConsultoraApi.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace ConsultoraApi.Dtos.DtosEmpleos
 {
@@ -28,6 +30,6 @@ namespace ConsultoraApi.Dtos.DtosEmpleos
 
         public string? Modalidad { get; set; }
 
-        public List<int> lstCompes { get; set; }
+        public List<CompetenciaListGetDto> lstCompes { get; set; }
     }
 }

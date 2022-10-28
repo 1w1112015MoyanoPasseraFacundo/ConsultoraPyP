@@ -9,6 +9,7 @@ namespace ConsultoraApi.Repositorios.IRepositorios
         public bool Save();
         public bool UpdateCompetencia(Competencia competencia);
         public bool CreateCompetencia(Competencia competencia);
+        public ICollection<Competencia> GetCompetenciaByIdRubro(int idRubro);
         public bool DarDeBajaCompetencia(Competencia competencia);
         public ICollection<Competencia> GetFilterCompetencia(CompetenciaFilterDto filterDto);
     }

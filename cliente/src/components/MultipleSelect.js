@@ -1,11 +1,18 @@
 import React, { useEffect, useMemo, useState } from "react";
 import Select from "react-select";
 
-export const Multipleselect = ({ options, setState, defaultOption }) => {
+export const Multipleselect = ({
+  options,
+  setState,
+  defaultOption,
+  values,
+}) => {
+  console.log("VALORES", values);
   const [selectedOptions, setSelectedOptions] = useState([]);
   const optionsGeneric = useMemo(
     () =>
       options.map((e) => {
+        console.log("EEEE", e);
         return { value: e.idCompetencia, label: e.nombre };
       }),
     [options]
@@ -18,7 +25,18 @@ export const Multipleselect = ({ options, setState, defaultOption }) => {
   useEffect(() => {
     setState(selectedOptions.map((e) => e.value));
   }, [selectedOptions, setState]);
-  console.log(selectedOptions);
+
+  useEffect(() => {
+    setSelectedOptions([]);
+  }, [options]);
+
+  useEffect(() => {
+    console.log("EFFEVT", values);
+    if (values !== undefined) {
+      setSelectedOptions(values);
+    }
+  }, []);
+
   return (
     <div>
       <Select

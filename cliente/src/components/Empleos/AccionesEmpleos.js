@@ -37,7 +37,7 @@ const AccionesEmpleos = ({ empleo }) => {
   };
   const redireccionarEdicion = (empleo) => {
     dispatch(obtenerEmpleoEditar(empleo));
-    console.log(empleo);
+    console.log("DESDE EMPLEO:", empleo);
     navigate(`editar/${empleo.idEmpleo}`);
   };
   return (

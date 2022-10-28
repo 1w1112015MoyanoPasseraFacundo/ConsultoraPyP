@@ -66,7 +66,7 @@ const NuevoEmpleo = () => {
     navigate("/empleos");
   };
 
-  const { data } = useGetCompetencia();
+  const { data } = useGetCompetencia(idRubro);
 
   return (
     <div className="row justify-content-center">
@@ -106,25 +106,6 @@ const NuevoEmpleo = () => {
                   </select>
                 </div>
                 <div className="form-group  col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                  <label>Rubro</label>
-                  <select
-                    className="form-control"
-                    name="rubro"
-                    value={idRubro}
-                    onClick={consultarAPI}
-                    onChange={(e) => guardarRubro(e.target.value)}
-                  >
-                    <option>Seleccione...</option>
-                    {listaRubros.map((rubro) => (
-                      <option key={rubro.idRubro} value={rubro.idRubro}>
-                        {rubro.nombre}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-              <div className="row p-t-20">
-                <div className="form-group col-lg-4 col-md-4 col-sm-12 col-xs-12">
                   <label>Modalidad</label>
                   <input
                     type="text"
@@ -134,6 +115,25 @@ const NuevoEmpleo = () => {
                     value={modalidad}
                     onChange={(e) => guardarModalidad(e.target.value)}
                   />
+                </div>
+              </div>
+              <div className="row p-t-20">
+                <div className="form-group col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                  <label>Rubro</label>
+                  <select
+                    className="form-control"
+                    name="rubro"
+                    value={idRubro}
+                    onClick={consultarAPI}
+                    onChange={(e) => guardarRubro(e.target.value)}
+                  >
+                    <option value={0}>Seleccione...</option>
+                    {listaRubros.map((rubro) => (
+                      <option key={rubro.idRubro} value={rubro.idRubro}>
+                        {rubro.nombre}
+                      </option>
+                    ))}
+                  </select>
                 </div>
                 <div className="form-group col-lg-4 col-md-4 col-sm-12 col-xs-12">
                   <label>Competencias</label>

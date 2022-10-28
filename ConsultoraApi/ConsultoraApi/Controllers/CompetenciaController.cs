@@ -47,6 +47,30 @@ namespace ConsultoraApi.Controllers
 
             return Ok(compeGetDto);
         }
+        [HttpGet("GetCompetenciasByIdRubro")]
+        public IActionResult GetCompetenciaByIdRubro(int idRubro)
+        {
+            var compe = _uRepo.GetCompetenciaByIdRubro(idRubro);
+            if (compe == null || compe.Count == 0)
+            {
+                return StatusCode(200, compe);
+            }
+            var compeGetDto = new List<CompetenciaGetDto>();
+
+            foreach (var i in compe)
+            {
+                var rubro = db.Rubros.FirstOrDefault(x => x.IdRubro == i.IdRubro);
+
+                var dto = new CompetenciaGetDto { idRubro = i.IdRubro, IdCompetencia = i.IdCompetencia, Nombre = i.Nombre, nombreRubro = rubro.Nombre };
+                compeGetDto.Add(dto);
+            }
+            if (compeGetDto.Count == 0 || compeGetDto == null)
+            {
+                return StatusCode(409, "No hay competencias habilitadas");
+            }
+
+            return Ok(compeGetDto);
+        }
 
         [HttpGet("GetCompetenciasFilter")]
         public IActionResult GetCompetenciasFilter([FromQuery] CompetenciaFilterDto filterDto)

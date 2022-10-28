@@ -131,9 +131,9 @@ const Pagos = () => {
                   <th className="colu" scope="col">
                     Fecha
                   </th>
-                  <th className="colu" scope="col">
+                  {/* <th className="colu" scope="col">
                     Estado
-                  </th>
+                  </th> */}
                   <th className="colu" scope="col">
                     Acciones
                   </th>
