@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BsCheckLg, BsReplyFill } from "react-icons/bs";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -11,6 +11,8 @@ const NuevoPago = () => {
   const [montoPago, guardarMonto] = useState("");
   const [Estado, guardarEstado] = useState(Boolean);
   const [idCliente, guardarCliente] = useState(0);
+  const [listaEmpleos, guardarEmpleos] = useState([]);
+  const [idEmpleo, guardarEmpleo] = useState(0);
   const [listaClientes, guardarClientes] = useState([]);
   const [fechaPago, guardarFechaPago] = useState();
 
@@ -24,6 +26,17 @@ const NuevoPago = () => {
     const resultado = await clienteAxios.get(`/Clientes`);
     guardarClientes(resultado.data);
   };
+
+  useEffect(() => {
+    const llenarEmpleos = async () => {
+      const resultado = await clienteAxios.get(
+        `/Empleos/GetEmpleosByIdCliente?idCliente=${idCliente}`
+      );
+      guardarEmpleos(resultado.data);
+      console.log(resultado);
+    };
+    llenarEmpleos();
+  }, [idCliente]);
 
   const submitNuevoPago = (e) => {
     e.preventDefault();
@@ -48,6 +61,7 @@ const NuevoPago = () => {
       Estado,
       idCliente,
       fechaPago,
+      idEmpleo,
     });
     navigate("/pagos");
   };
@@ -66,7 +80,7 @@ const NuevoPago = () => {
             {/* {alerta ? <p className={alerta.clases}>{alerta.msg}</p>:null} */}
             <form>
               <div className="row p-t-20">
-                <div className="form-group col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                <div className="form-group col-lg-6 col-md-6 col-sm-12 col-xs-12">
                   <label>Cliente</label>
                   <select
                     className="form-control"
@@ -75,7 +89,7 @@ const NuevoPago = () => {
                     onClick={llenarClientes}
                     onChange={(e) => guardarCliente(e.target.value)}
                   >
-                    <option>Seleccione...</option>
+                    <option value={0}>Seleccione...</option>
                     {listaClientes.map((cliente) => (
                       <option key={cliente.idCliente} value={cliente.idCliente}>
                         {cliente.nombre}
@@ -83,7 +97,25 @@ const NuevoPago = () => {
                     ))}
                   </select>
                 </div>
-                <div className="form-group  col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                <div className="form-group col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                  <label>Empleo</label>
+                  <select
+                    className="form-control"
+                    name="empleo"
+                    value={idEmpleo}
+                    onChange={(e) => guardarEmpleo(e.target.value)}
+                  >
+                    <option value={0}>Seleccione...</option>
+                    {listaEmpleos.map((empleo) => (
+                      <option key={empleo.idEmpleo} value={empleo.idEmpleo}>
+                        {empleo.nombre}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              <div className="row p-t-20">
+                <div className="form-group col-lg-6 col-md-6 col-sm-12 col-xs-12">
                   <label>Monto</label>
                   <input
                     type="number"
@@ -95,7 +127,7 @@ const NuevoPago = () => {
                     onChange={(e) => guardarMonto(e.target.value)}
                   />
                 </div>
-                <div className="form-group  col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                <div className="form-group col-lg-6 col-md-6 col-sm-12 col-xs-12">
                   <label>Fecha de pago</label>
                   <input
                     type="date"

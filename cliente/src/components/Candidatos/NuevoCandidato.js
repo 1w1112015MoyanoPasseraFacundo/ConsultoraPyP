@@ -83,7 +83,7 @@ const NuevoCandidato = () => {
   const cancelar = () => {
     navigate("/candidatos");
   };
-
+  console.log(idRubro);
   const { data } = useGetCompetencia(idRubro);
 
   return (
@@ -182,7 +182,7 @@ const NuevoCandidato = () => {
                     onClick={consultarAPI}
                     onChange={(e) => guardarRubro(e.target.value)}
                   >
-                    <option>Seleccione...</option>
+                    <option value={0}>Seleccione...</option>
                     {listaRubros.map((rubro) => (
                       <option key={rubro.idRubro} value={rubro.idRubro}>
                         {rubro.nombre}
@@ -233,18 +233,6 @@ const NuevoCandidato = () => {
               <h4 className="card-subtitle font-italic">Datos opcionales</h4>
               <hr />
               <div className="row">
-                <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                  <div className="form-group">
-                    <label className="form-label"> Estado Civil </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      name="estadoCivil"
-                      value={estadoCivil}
-                      onChange={(e) => guardarEstadoCivil(e.target.value)}
-                    />
-                  </div>
-                </div>
                 <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                   <div className="form-group">
                     <label className="form-label"> Teléfono </label>

@@ -135,14 +135,42 @@ const editarEmpleoError = () => ({
   payload: true,
 });
 
-//dar de baja empleo
+//cancelar empleo
 export function darDeBajaEmpleo(idEmpleo) {
   return async (dispatch) => {
     dispatch(obtenerEmpleoBaja(idEmpleo));
     try {
-      await clienteAxios.delete(`/Empleos/${idEmpleo}`);
+      await clienteAxios.put(`/Empleos/CancelarEmpleo?idEmpleo=${idEmpleo}`);
       dispatch(eliminarEmpleoExito());
-      Swal.fire("Eliminado!", "El empleo ha sido dado de baja", "success");
+      Swal.fire("Eliminado!", "El empleo ha sido cancelado", "success");
+    } catch (error) {
+      dispatch(eliminarEmpleoError());
+    }
+  };
+}
+
+//suspender empleo
+export function suspenderEmpleo(idEmpleo) {
+  return async (dispatch) => {
+    dispatch(obtenerEmpleoBaja(idEmpleo));
+    try {
+      await clienteAxios.put(`/Empleos/SuspenderEmpleo?idEmpleo=${idEmpleo}`);
+      dispatch(eliminarEmpleoExito());
+      Swal.fire("Eliminado!", "El empleo ha sido suspendido", "success");
+    } catch (error) {
+      dispatch(eliminarEmpleoError());
+    }
+  };
+}
+
+//reanudar empleo
+export function reanudarEmpleo(idEmpleo) {
+  return async (dispatch) => {
+    dispatch(obtenerEmpleoBaja(idEmpleo));
+    try {
+      await clienteAxios.put(`/Empleos/ReanudarEmpleo?idEmpleo=${idEmpleo}`);
+      dispatch(eliminarEmpleoExito());
+      Swal.fire("Eliminado!", "El empleo ha sido reanudado", "success");
     } catch (error) {
       dispatch(eliminarEmpleoError());
     }

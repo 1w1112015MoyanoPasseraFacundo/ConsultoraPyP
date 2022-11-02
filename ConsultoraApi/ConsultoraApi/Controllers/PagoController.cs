@@ -19,12 +19,14 @@ namespace ConsultoraApi.Controllers
         private readonly ConsultoraPypContext db = new ConsultoraPypContext();
         IMapper _mapper;
         private readonly IPagoRepositorio _pRepo;
+        private readonly IEmpleoRepositorio _eRepo;
 
-        public PagoController(ConsultoraPypContext _db, IMapper mapper, IPagoRepositorio uRepo)
+        public PagoController(ConsultoraPypContext _db, IMapper mapper, IPagoRepositorio uRepo, IEmpleoRepositorio eRepo)
         {
             db = _db;
             _mapper = mapper;
             _pRepo = uRepo;
+            _eRepo = eRepo; 
         }
         [HttpGet]
         public IActionResult Get()
@@ -46,7 +48,9 @@ namespace ConsultoraApi.Controllers
             for (int i = 0; i < pagoGetDto.Count; i++)
             {
                 var cliente = db.Clientes.Where(x => x.IdCliente == pagoGetDto[i].IdCliente).FirstOrDefault();
+                var empleo = db.Empleos.Where(x => x.IdEmpleo == pagoGetDto[i].IdEmpleo).FirstOrDefault();
                 pagoGetDto[i].nombreCliente = cliente.Nombre;
+                pagoGetDto[i].nombreEmpleo = empleo.Nombre;
             }
 
             return Ok(pagoGetDto);
@@ -70,6 +74,8 @@ namespace ConsultoraApi.Controllers
                 listaPagosDto.Add(_mapper.Map<PagoGetDto>(item));
                 var cliente = db.Clientes.FirstOrDefault(x => x.IdCliente == item.IdCliente);
                 listaPagosDto[i].nombreCliente = cliente.Nombre;
+                var emp = db.Empleos.FirstOrDefault(x => x.IdEmpleo == item.IdEmpleo);
+                listaPagosDto[i].nombreEmpleo = emp.Nombre;
                 i++;
             }
             return Ok(listaPagosDto);
@@ -91,7 +97,11 @@ namespace ConsultoraApi.Controllers
             {
                 return StatusCode(500, $"Algo salió mal creando el pago {pago.IdPago} ");
             }
-
+            Empleo emp = _eRepo.GetEmpleo(pagoDto.IdEmpleo);
+            emp.IdEstado = 1002;
+            if (!_eRepo.UpdateEmpleo(emp)){
+                return StatusCode(500, $"Algo salió mal actualizando el empleo {emp.Nombre} ");
+            }
             return Ok($"Pago {pago.IdPago}  creado con exito");
         }
         [HttpPut("{idPago:int}", Name = "UpdatePago")]
@@ -112,6 +122,7 @@ namespace ConsultoraApi.Controllers
 
 
             pago.IdCliente = pagoUpdateDto.IdCliente;
+            pago.IdEmpleo = pagoUpdateDto.IdEmpleo;
             pago.MontoPago = pagoUpdateDto.montoPago;
             pago.FechaPago = pagoUpdateDto.fechaPago;
 
@@ -148,8 +159,6 @@ namespace ConsultoraApi.Controllers
             {
                 return StatusCode(500, $"Algo salió mal dando de baja el pago {pago.IdPago}");
             }
-
-
             return Ok($"Pago {pago.IdPago} dado de baja con exito");
         }
     }

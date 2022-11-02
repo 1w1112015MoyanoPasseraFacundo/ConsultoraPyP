@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+using System;
 using System.Collections.Generic;
 
 namespace ConsultoraApi.Models
@@ -8,6 +9,7 @@ namespace ConsultoraApi.Models
         public Empleo()
         {
             EmpleosXcompetencia = new HashSet<EmpleosXcompetencia>();
+            Pagos = new HashSet<Pago>();
         }
 
         public int IdEmpleo { get; set; }
@@ -22,5 +24,7 @@ namespace ConsultoraApi.Models
         public virtual Estado IdEstadoNavigation { get; set; } = null!;
         public virtual Rubro IdRubroNavigation { get; set; } = null!;
         public virtual ICollection<EmpleosXcompetencia> EmpleosXcompetencia { get; set; }
+        public virtual ICollection<Pago> Pagos { get; set; }
+
     }
 }

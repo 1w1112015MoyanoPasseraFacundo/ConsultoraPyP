@@ -51,6 +51,18 @@ namespace ConsultoraApi.Repositorios
             return lstEmpleos;
         }
 
+        public ICollection<Empleo> GetEmpleoByIdCliente(int idCliente)
+        {
+            if (idCliente != null)
+            {
+                return db.Empleos.Where(u => u.IdCliente == idCliente).ToList();
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         public bool UpdateEmpleo(Empleo empleo)
         {
             db.Empleos.Update(empleo);

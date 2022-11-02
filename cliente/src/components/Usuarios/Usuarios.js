@@ -79,10 +79,7 @@ const Usuarios = () => {
                         value={estado}
                         onChange={(e) => guardarEstado(e.target.value)}
                       >
-                        <option hidden value="" disabled selected>
-                          VIGENCIA
-                        </option>
-                        <option>TODOS</option>
+                        <option>Seleccione vigencia...</option>
                         <option>SI</option>
                         <option>NO</option>
                       </select>
@@ -136,6 +133,9 @@ const Usuarios = () => {
                   </th>
                   <th className="colu" scope="col">
                     Teléfono
+                  </th>
+                  <th className="colu" scope="col">
+                    Vigencia
                   </th>
                   <th className="colu" scope="col">
                     Acciones

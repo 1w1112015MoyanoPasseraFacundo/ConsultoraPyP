@@ -7,12 +7,13 @@ import SideBar from "./SideBar";
 
 const RutaPrivada = ({ element: Component, ...props }) => {
     const dispatch = useDispatch();
-    const autenticado = useSelector((state) => state.login.autenticado);
-    console.log(autenticado);
+  const autenticado = useSelector((state) => state.login.autenticado);
+    
     useEffect(() => {
     dispatch(usuarioAutenticado());
-  }, []);
-  // If authorized, return an outlet that will render child elements
+    }, [autenticado]);
+  console.log(autenticado);
+    // If authorized, return an outlet that will render child elements
   // If not, return element that will navigate to login page
   return autenticado ?(
     <Fragment>

@@ -1,5 +1,5 @@
 import React from "react";
-import { BsFillPencilFill, BsTrashFill } from "react-icons/bs";
+import { BsFillPauseFill, BsFillPencilFill, BsTrashFill } from "react-icons/bs";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -7,8 +7,15 @@ import { darDeBajaPago, obtenerPagoEditar } from "../../actions/pagosActions";
 const AccionesPagos = ({ pago }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { montoPago, fechaPago, idCliente, nombreCliente, estado, idPago } =
-    pago;
+  const {
+    montoPago,
+    fechaPago,
+    idCliente,
+    nombreCliente,
+    estado,
+    idPago,
+    nombreEmpleo,
+  } = pago;
 
   const confirmarEliminar = (idPago) => {
     Swal.fire({
@@ -36,6 +43,9 @@ const AccionesPagos = ({ pago }) => {
         <span>{nombreCliente}</span>
       </td>
       <td>
+        <span>{nombreEmpleo}</span>
+      </td>
+      <td>
         <span>${montoPago}</span>
       </td>
       <td>
@@ -49,6 +59,7 @@ const AccionesPagos = ({ pago }) => {
         <button
           type="button"
           className="btn btn-success mr-2"
+          title="Editar"
           onClick={() => redireccionarEdicion(pago)}
         >
           <BsFillPencilFill />
@@ -56,6 +67,7 @@ const AccionesPagos = ({ pago }) => {
         <button
           type="button"
           className="btn btn-danger"
+          title="Eliminar"
           onClick={() => confirmarEliminar(idPago)}
         >
           <BsTrashFill />

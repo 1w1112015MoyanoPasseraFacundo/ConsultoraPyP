@@ -10,7 +10,9 @@ namespace ConsultoraApi.Models
         public DateTime FechaPago { get; set; }
         public bool Estado { get; set; }
         public int IdCliente { get; set; }
+        public int IdEmpleo { get; set; }
 
         public virtual Cliente IdClienteNavigation { get; set; } = null!;
+        public virtual Empleo IdEmpleoNavigation { get; set; } = null!;
     }
 }

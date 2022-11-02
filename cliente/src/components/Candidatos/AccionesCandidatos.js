@@ -71,20 +71,26 @@ const AccionesCandidatos = ({ candidato }) => {
       </td>
 
       <td className="acciones">
-        <button
-          type="button"
-          className="btn btn-success mr-2"
-          onClick={() => redireccionarEdicion(candidato)}
-        >
-          <BsFillPencilFill />
-        </button>
-        <button
-          type="button"
-          className="btn btn-danger"
-          onClick={() => confirmarEliminar(idCandidato)}
-        >
-          <BsTrashFill />
-        </button>
+        {estado == "Descartado" ? null : (
+          <button
+            type="button"
+            className="btn btn-success mr-2"
+            title="Editar"
+            onClick={() => redireccionarEdicion(candidato)}
+          >
+            <BsFillPencilFill />
+          </button>
+        )}
+        {estado == "Descartado" ? null : (
+          <button
+            type="button"
+            className="btn btn-danger"
+            title="Descartar"
+            onClick={() => confirmarEliminar(idCandidato)}
+          >
+            <BsTrashFill />
+          </button>
+        )}
       </td>
     </tr>
   );

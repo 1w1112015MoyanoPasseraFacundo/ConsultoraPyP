@@ -7,12 +7,10 @@ export const Multipleselect = ({
   defaultOption,
   values,
 }) => {
-  console.log("VALORES", values);
   const [selectedOptions, setSelectedOptions] = useState([]);
   const optionsGeneric = useMemo(
     () =>
       options.map((e) => {
-        console.log("EEEE", e);
         return { value: e.idCompetencia, label: e.nombre };
       }),
     [options]
@@ -31,7 +29,6 @@ export const Multipleselect = ({
   }, [options]);
 
   useEffect(() => {
-    console.log("EFFEVT", values);
     if (values !== undefined) {
       setSelectedOptions(values);
     }

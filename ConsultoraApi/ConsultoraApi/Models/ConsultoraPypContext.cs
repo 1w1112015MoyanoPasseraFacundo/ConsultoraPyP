@@ -374,6 +374,7 @@ namespace ConsultoraApi.Models
                     .HasColumnName("fechaPago");
 
                 entity.Property(e => e.IdCliente).HasColumnName("idCliente");
+                entity.Property(e => e.IdEmpleo).HasColumnName("idEmpleo");
 
                 entity.Property(e => e.MontoPago).HasColumnName("montoPago");
 
@@ -382,6 +383,12 @@ namespace ConsultoraApi.Models
                     .HasForeignKey(d => d.IdCliente)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("Pagos_Clientes");
+
+                entity.HasOne(d => d.IdEmpleoNavigation)
+                    .WithMany(p => p.Pagos)
+                    .HasForeignKey(d => d.IdEmpleo)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("Pagos_Empleos");
             });
 
             modelBuilder.Entity<Paise>(entity =>

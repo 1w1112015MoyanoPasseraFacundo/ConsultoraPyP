@@ -19,6 +19,7 @@ namespace ConsultoraApi.Dtos.DtosPagos
 
         [Required(ErrorMessage = "El campo Pais es obligatorio")]
         public int IdCliente { get; set; }
+        public int IdEmpleo { get; set; }
         
     }
 }

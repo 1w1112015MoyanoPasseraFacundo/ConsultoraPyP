@@ -123,7 +123,7 @@ const EditarEmpleo = () => {
                     value={idRubro}
                     onChange={onChangeFormulario}
                   >
-                    <option>Seleccione...</option>
+                    <option value={0}>Seleccione...</option>
                     {listaRubros.map((rubro) => (
                       <option key={rubro.idRubro} value={rubro.idRubro}>
                         {rubro.nombre}

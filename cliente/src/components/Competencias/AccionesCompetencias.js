@@ -44,6 +44,7 @@ const AccionesCompetencias = ({ competencia }) => {
         <button
           type="button"
           className="btn btn-success mr-2"
+          title="Editar"
           onClick={() => redireccionarEdicion(competencia)}
         >
           <BsFillPencilFill />

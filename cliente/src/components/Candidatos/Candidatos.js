@@ -83,10 +83,7 @@ const Candidatos = () => {
                     value={estado}
                     onChange={(e) => guardarEstado(e.target.value)}
                   >
-                    <option hidden value="" disabled selected>
-                      ESTADO
-                    </option>
-                    <option>TODOS</option>
+                    <option>Seleccione estado...</option>
                     <option>Postulado</option>
                     <option>Preseleccionado</option>
                     <option>En proceso</option>

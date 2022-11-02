@@ -53,6 +53,7 @@ namespace ConsultoraApi.Controllers
             var compe = _uRepo.GetCompetenciaByIdRubro(idRubro);
             if (compe == null || compe.Count == 0)
             {
+                //DEJAR EN 200 ASI DEVUELVE LISTA VACIA
                 return StatusCode(200, compe);
             }
             var compeGetDto = new List<CompetenciaGetDto>();

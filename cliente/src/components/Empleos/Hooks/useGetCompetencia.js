@@ -5,7 +5,6 @@ export const useGetCompetencia = (idRubro) => {
   const [isError, setIsError] = useState(null);
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  console.log(idRubro);
   useEffect(() => {
     setIsLoading(true);
     const obtenerCompe = async () => {
@@ -13,7 +12,6 @@ export const useGetCompetencia = (idRubro) => {
         const response = await clienteAxios.get(
           `Competencias/GetCompetenciasByIdRubro?idRubro=${idRubro}`
         );
-        console.log("RESPONDE", response);
         const dato = await response.data;
         console.log(dato);
         setData(dato);
@@ -26,6 +24,5 @@ export const useGetCompetencia = (idRubro) => {
     };
     obtenerCompe();
   }, [idRubro]);
-  console.log("DARA", data);
   return { data: data ?? [], loading: isLoading, error: isError };
 };

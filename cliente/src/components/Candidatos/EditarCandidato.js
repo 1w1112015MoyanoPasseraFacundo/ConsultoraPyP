@@ -61,7 +61,7 @@ const EditarCandidato = () => {
     idGenero,
     linkedin,
     telefono,
-    estadoCivil,
+    estado,
     lstCompes,
   } = candidato;
   console.log(candidato);
@@ -236,22 +236,25 @@ const EditarCandidato = () => {
                     <option value="1">Argentina</option>
                   </select>
                 </div>
+                <div className="form-group  col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                  <label>Estado</label>
+                  <select
+                    className="form-control"
+                    name="estado"
+                    value={estado}
+                    onChange={onChangeFormulario}
+                  >
+                    <option>Postulado</option>
+                    <option>Preseleccionado</option>
+                    <option>En proceso</option>
+                    <option>En base</option>
+                    <option>Seleccionado</option>
+                  </select>
+                </div>
               </div>
               <h4 className="card-subtitle font-italic">Datos opcionales</h4>
               <hr />
               <div className="row">
-                <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                  <div className="form-group">
-                    <label className="form-label"> Estado Civil </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      name="estadoCivil"
-                      value={estadoCivil}
-                      onChange={onChangeFormulario}
-                    />
-                  </div>
-                </div>
                 <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                   <div className="form-group">
                     <label className="form-label"> Teléfono </label>

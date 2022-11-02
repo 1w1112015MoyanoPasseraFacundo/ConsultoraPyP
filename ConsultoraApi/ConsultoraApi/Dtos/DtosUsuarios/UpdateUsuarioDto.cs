@@ -18,6 +18,7 @@ namespace ConsultoraApi.Dtos.DtosUsuarios
         public int Documento { get; set; }
         [Required(ErrorMessage = "El campo Fecha Nacimiento es obligatorio")]
         public DateTime FechaNacimiento { get; set; }
+        public DateTime? FechaSalida { get; set; }
 
         public string Telefono { get; set; }
 

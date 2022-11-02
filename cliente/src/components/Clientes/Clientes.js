@@ -83,10 +83,7 @@ const Clientes = () => {
                     value={estado}
                     onChange={(e) => guardarEstado(e.target.value)}
                   >
-                    <option hidden value="" disabled selected>
-                      VIGENCIA
-                    </option>
-                    <option>TODOS</option>
+                    <option>Seleccione vigencia...</option>
                     <option>SI</option>
                     <option>NO</option>
                   </select>
@@ -131,6 +128,9 @@ const Clientes = () => {
                   </th>
                   <th className="colu" scope="col">
                     E-mail
+                  </th>
+                  <th className="colu" scope="col">
+                    Vigente
                   </th>
                   <th className="colu" scope="col">
                     Acciones

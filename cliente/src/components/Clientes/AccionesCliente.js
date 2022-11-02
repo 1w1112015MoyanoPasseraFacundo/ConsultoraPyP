@@ -1,5 +1,11 @@
 import React from "react";
-import { BsFillPencilFill, BsTrashFill } from "react-icons/bs";
+import {
+  BsCheckCircleFill,
+  BsFillPencilFill,
+  BsFillReplyAllFill,
+  BsRecycle,
+  BsTrashFill,
+} from "react-icons/bs";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -8,7 +14,8 @@ import {
   obtenerClienteEditar,
 } from "../../actions/clientesActions";
 const AccionesCliente = ({ cliente }) => {
-  const { nombre, documento, idPais, mail, idCliente, nombrePais } = cliente;
+  const { nombre, documento, idPais, mail, idCliente, nombrePais, idEstado } =
+    cliente;
   console.log(cliente);
   const dispatch = useDispatch();
   const confirmarEliminar = (idCliente) => {
@@ -44,25 +51,42 @@ const AccionesCliente = ({ cliente }) => {
       <td>
         <span>{documento}</span>
       </td>
+
       <td>
         <span>{mail}</span>
       </td>
-
+      <td>
+        <span>{idEstado == 1 ? "Si" : "No"}</span>
+      </td>
       <td className="acciones">
         <button
           type="button"
+          title="Editar"
           className="btn btn-success mr-2"
           onClick={() => redireccionarEdicion(cliente)}
         >
           <BsFillPencilFill />
         </button>
-        <button
-          type="button"
-          className="btn btn-danger"
-          onClick={() => confirmarEliminar(idCliente)}
-        >
-          <BsTrashFill />
-        </button>
+
+        {idEstado == 1 ? (
+          <button
+            type="button"
+            title="Dar de baja"
+            className="btn btn-danger"
+            onClick={() => confirmarEliminar(idCliente)}
+          >
+            <BsTrashFill />
+          </button>
+        ) : (
+          <button
+            type="button"
+            title="Dar de alta"
+            className="btn btn-warning"
+            onClick={() => confirmarEliminar(idCliente)}
+          >
+            <BsRecycle />
+          </button>
+        )}
       </td>
     </tr>
   );

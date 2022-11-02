@@ -65,7 +65,7 @@ const NuevoEmpleo = () => {
   const cancelar = () => {
     navigate("/empleos");
   };
-
+  console.log(idRubro);
   const { data } = useGetCompetencia(idRubro);
 
   return (

@@ -17,6 +17,7 @@ const AccionesUsuarios = ({ usuario }) => {
     documento,
     idUsuario,
     nombreUsuario,
+    fechaSalida,
   } = usuario;
   const dispatch = useDispatch();
   const confirmarEliminar = (idUsuario) => {
@@ -60,12 +61,16 @@ const AccionesUsuarios = ({ usuario }) => {
         <span>{mail}</span>
       </td>
       <td>
+        <span>{fechaSalida ? "NO" : "SI"}</span>
+      </td>
+      <td>
         <span>{telefono}</span>
       </td>
       <td className="acciones">
         <button
           type="button"
           className="btn btn-success mr-2"
+          title="Editar"
           onClick={() => redireccionarEdicion(usuario)}
         >
           <BsFillPencilFill />
@@ -73,6 +78,7 @@ const AccionesUsuarios = ({ usuario }) => {
         <button
           type="button"
           className="btn btn-danger"
+          title="Dar de baja"
           onClick={() => confirmarEliminar(idUsuario)}
         >
           <BsTrashFill />

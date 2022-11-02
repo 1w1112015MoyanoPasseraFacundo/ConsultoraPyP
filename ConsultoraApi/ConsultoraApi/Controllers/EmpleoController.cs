@@ -39,7 +39,7 @@ namespace ConsultoraApi.Controllers
             for (int i = 0; i < empleo.Count; i++)
             {
 
-                if (empleo[i].IdEstado != 3)
+                if (empleo[i].IdEstado == 1)
                 {
 
                     empleoGetDto.Add(_mapper.Map<EmpleoGetDto>(empleo[i]));
@@ -98,6 +98,32 @@ namespace ConsultoraApi.Controllers
                 i++;
             }
             return Ok(listaEmpleosDto);
+        }
+
+        [HttpGet("GetEmpleosByIdCliente")]
+        public IActionResult GetEmpleosByIdCliente(int idCliente)
+        {
+            var emple = _eRepo.GetEmpleoByIdCliente(idCliente).Where(x=>x.IdEstado==1).ToList();
+            if (emple == null || emple.Count == 0)
+            {
+                //DEJAR EN 200 ASI DEVUELVE LISTA VACIA
+                return StatusCode(200, emple);
+            }
+            var empleGetDto = new List<EmpleoGetDto>();
+
+            foreach (var i in emple)
+            {
+                var clien = db.Clientes.FirstOrDefault(x => x.IdCliente == i.IdCliente);
+
+                var dto = new EmpleoGetDto { IdEmpleo = i.IdEmpleo, IdCliente = i.IdCliente, Nombre = i.Nombre};
+                empleGetDto.Add(dto);
+            }
+            if (empleGetDto.Count == 0 || empleGetDto == null)
+            {
+                return StatusCode(409, "No hay competencias habilitadas");
+            }
+
+            return Ok(empleGetDto);
         }
 
         [HttpPost]
@@ -216,5 +242,77 @@ namespace ConsultoraApi.Controllers
 
             return Ok($"Empleo {empl.Nombre} dado de baja con exito");
         }
+
+        [HttpPut("SuspenderEmpleo")]
+        public IActionResult SuspenderEmpleo(int idEmpleo)
+        {
+            if (idEmpleo == null)
+            {
+                BadRequest();
+            }
+            var empl = _eRepo.GetEmpleo(idEmpleo);
+
+
+            if (empl == null)
+            {
+                return StatusCode(400, "El candidato no existe");
+            }
+
+            empl.IdEstado = 2;
+
+            if (!_eRepo.UpdateEmpleo(empl))
+            {
+                return StatusCode(500, $"Algo salió mal suspendiendo el empleo {empl.Nombre}");
+            }
+            return Ok($"Empleo {empl.Nombre} suspendido con exito");
+        }
+        [HttpPut("ReanudarEmpleo")]
+        public IActionResult ReanudarEmpleo(int idEmpleo)
+        {
+            if (idEmpleo == null)
+            {
+                BadRequest();
+            }
+            var empl = _eRepo.GetEmpleo(idEmpleo);
+
+
+            if (empl == null)
+            {
+                return StatusCode(400, "El candidato no existe");
+            }
+
+            empl.IdEstado = 1;
+
+            if (!_eRepo.UpdateEmpleo(empl))
+            {
+                return StatusCode(500, $"Algo salió mal reanudando el empleo {empl.Nombre}");
+            }
+            return Ok($"Empleo {empl.Nombre} reanudado con exito");
+        }
+        [HttpPut("CancelarEmpleo")]
+        public IActionResult CancelarEmpleo(int idEmpleo)
+        {
+            if (idEmpleo == null)
+            {
+                BadRequest();
+            }
+            var empl = _eRepo.GetEmpleo(idEmpleo);
+
+
+            if (empl == null)
+            {
+                return StatusCode(400, "El candidato no existe");
+            }
+
+            empl.IdEstado = 3;
+
+            if (!_eRepo.UpdateEmpleo(empl))
+            {
+                return StatusCode(500, $"Algo salió mal cancelando el empleo {empl.Nombre}");
+            }
+            return Ok($"Empleo {empl.Nombre} cancelado con exito");
+        }
+
+       
     }
 }

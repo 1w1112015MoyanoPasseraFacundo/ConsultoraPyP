@@ -62,7 +62,7 @@ const Pagos = () => {
                         onClick={llenarCliente}
                         onChange={(e) => guardarCliente(e.target.value)}
                       >
-                        <option value={empty}>Seleccione...</option>
+                        <option value={empty}>Seleccione cliente...</option>
                         {listaClientes.map((cliente) => (
                           <option
                             key={cliente.idCliente}
@@ -126,6 +126,9 @@ const Pagos = () => {
                     Cliente
                   </th>
                   <th className="colu" scope="col">
+                    Empleo
+                  </th>
+                  <th className="colu" scope="col">
                     Monto
                   </th>
                   <th className="colu" scope="col">
@@ -143,6 +146,7 @@ const Pagos = () => {
                 {error !== null
                   ? "No hay pagos"
                   : pagos.map((pago) => {
+                      console.log(pago);
                       let fecha = pago.fechaPago.split("T");
                       pago.fechaPago = fecha[0];
                       return <AccionesPagos key={pago.idPago} pago={pago} />;
