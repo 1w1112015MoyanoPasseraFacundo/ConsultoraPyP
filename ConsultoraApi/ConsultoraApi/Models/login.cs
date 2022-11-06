@@ -2,7 +2,7 @@
 {
     public class login
     {
-        public login(string usuario, string mail, string token/*, string rol*/)
+        public login(string usuario, string mail, string token, string rol)
         {
             this.Usuario = usuario;
             this.Mail = mail;

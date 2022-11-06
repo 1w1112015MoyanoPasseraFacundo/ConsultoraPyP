@@ -6,6 +6,7 @@ using ConsultoraApi.Repositorios.IRepositorios;
 using ConsultoraApi.Resultados;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using System.Numerics;
 
 namespace ConsultoraApi.Controllers
 
@@ -62,6 +63,39 @@ namespace ConsultoraApi.Controllers
         {
             var listaCandidatos = _uRepo.GetFilterCandidato(filterDto);
 
+            if (listaCandidatos.Count == 0)
+            {
+                return StatusCode(409, "No hay candidatos con esos filtros");
+            }
+
+            return Ok(listaCandidatos);
+        }
+
+        [HttpGet("GetCandidatosByCompes")]
+        public IActionResult GetCandidatosByCompes([FromQuery] List<int> idsCompes)
+        {
+            var listaCandidatos = new List<CandidatoUpdateDto>();
+            for (int j = 0; j < idsCompes.Count; j++)
+            {
+
+                var listaCandxCompes = _CXCRepo.GetCandsByIdCompes(idsCompes[j]);
+                for (int i = 0; i < listaCandxCompes.Count; i++)
+                {
+                    var candidatos = _uRepo.GetCandidato(listaCandxCompes[i].IdCandidato);
+                    if (listaCandidatos.Count!=0)
+                    {
+                        if (listaCandidatos.Last().IdCandidato != candidatos.IdCandidato&& listaCandidatos.First().IdCandidato != candidatos.IdCandidato)
+                        {
+                            listaCandidatos.Add(_mapper.Map<CandidatoUpdateDto>(candidatos));
+                        }
+                    }
+                    else
+                    {
+                        listaCandidatos.Add(_mapper.Map<CandidatoUpdateDto>(candidatos));
+                    }
+
+                }
+            }
             if (listaCandidatos.Count == 0)
             {
                 return StatusCode(409, "No hay candidatos con esos filtros");

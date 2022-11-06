@@ -56,6 +56,34 @@ namespace ConsultoraApi.Controllers
             return Ok(pagoGetDto);
 
         }
+        [HttpGet("GetPagosReporte")]
+        public IActionResult GetPagosReporte(DateTime fecha1, DateTime fecha2)
+        {
+            var pago = db.Pagos.Where(x=>x.FechaPago>=fecha1 && x.FechaPago <= fecha2).ToList();
+            if (pago == null || pago.Count == 0)
+            {
+                return StatusCode(400, "No existe ningún pago registrado");
+            }
+            var pagoGetDto = new List<PagoGetDto>();
+            for (int i = 0; i < pago.Count; i++)
+            {
+                pagoGetDto.Add(_mapper.Map<PagoGetDto>(pago[i]));
+            }
+            if (pagoGetDto == null)
+            {
+                return StatusCode(409, "No existe ningún pago activo actualmente");
+            }
+            for (int i = 0; i < pagoGetDto.Count; i++)
+            {
+                var cliente = db.Clientes.Where(x => x.IdCliente == pagoGetDto[i].IdCliente).FirstOrDefault();
+                var empleo = db.Empleos.Where(x => x.IdEmpleo == pagoGetDto[i].IdEmpleo).FirstOrDefault();
+                pagoGetDto[i].nombreCliente = cliente.Nombre;
+                pagoGetDto[i].nombreEmpleo = empleo.Nombre;
+            }
+
+            return Ok(pagoGetDto);
+
+        }
 
         [HttpGet("GetPagosFilter")]
         public IActionResult GetPagosFilter([FromQuery] PagoFilterDto filterDto)

@@ -51,7 +51,7 @@ const NuevaCompetencia = () => {
   return (
     <div className="row justify-content-center">
       <div className="col-md-12">
-        <h3 className="title-decorator">Nueva competencia</h3>
+        <h3 className="title-decorator">Nueva habilidad</h3>
         <div className="card">
           <div className="card-body">
             {/* {alerta ? <p className={alerta.clases}>{alerta.msg}</p>:null} */}

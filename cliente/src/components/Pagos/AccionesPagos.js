@@ -45,15 +45,12 @@ const AccionesPagos = ({ pago }) => {
       <td>
         <span>{nombreEmpleo}</span>
       </td>
-      <td>
-        <span>${montoPago}</span>
+      <td width="40px">
+        <span className="monto">${montoPago}</span>
       </td>
-      <td>
+      <td align="center">
         <span>{fechaPago}</span>
       </td>
-      {/* <td>
-        <span>{estado ? "Completo" : "Parcial"}</span>
-      </td> */}
 
       <td className="acciones">
         <button

@@ -16,12 +16,14 @@ namespace ConsultoraApi.Controllers
         private readonly ConsultoraPypContext db = new ConsultoraPypContext();
         IMapper _mapper;
         private readonly ICompetenciaRepositorio _uRepo;
+        private readonly IEmpleoXCompetenciaRepositorio _EXCRepo;
 
-        public CompetenciaController(ConsultoraPypContext _db, IMapper mapper, ICompetenciaRepositorio uRepo)
+        public CompetenciaController(ConsultoraPypContext _db, IMapper mapper, ICompetenciaRepositorio uRepo, IEmpleoXCompetenciaRepositorio eXCRepo)
         {
             db = _db;
             _mapper = mapper;
             _uRepo = uRepo;
+            _EXCRepo = eXCRepo; 
         }
         [HttpGet]
         public IActionResult Get()
@@ -63,6 +65,32 @@ namespace ConsultoraApi.Controllers
                 var rubro = db.Rubros.FirstOrDefault(x => x.IdRubro == i.IdRubro);
 
                 var dto = new CompetenciaGetDto { idRubro = i.IdRubro, IdCompetencia = i.IdCompetencia, Nombre = i.Nombre, nombreRubro = rubro.Nombre };
+                compeGetDto.Add(dto);
+            }
+            if (compeGetDto.Count == 0 || compeGetDto == null)
+            {
+                return StatusCode(409, "No hay competencias habilitadas");
+            }
+
+            return Ok(compeGetDto);
+        }
+
+        [HttpGet("GetCompetenciasByIdEmpleo")]
+        public IActionResult GetCompetenciasByIdEmpleo(int idEmpleo)
+        {
+            var compes = _EXCRepo.GetEmpleosXCompes(idEmpleo);
+            if (compes == null || compes.Count == 0)
+            {
+                //DEJAR EN 200 ASI DEVUELVE LISTA VACIA
+                return StatusCode(200, compes);
+            }
+            var compeGetDto = new List<CompetenciaListGetDto>();
+
+            foreach (var i in compes)
+            {
+                var compe = db.Competencias.FirstOrDefault(x => x.IdCompetencia == i.IdCompetencia);
+
+                var dto = new CompetenciaListGetDto {IdCompetencia = i.IdCompetencia, Nombre = compe.Nombre };
                 compeGetDto.Add(dto);
             }
             if (compeGetDto.Count == 0 || compeGetDto == null)

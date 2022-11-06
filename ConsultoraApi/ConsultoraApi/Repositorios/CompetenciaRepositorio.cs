@@ -36,6 +36,7 @@ namespace ConsultoraApi.Repositorios
                 return null;
             }
         }
+
         public ICollection<Competencia> GetFilterCompetencia(CompetenciaFilterDto filterDto)
         {
             var lstCompes = db.Competencias.ToList();

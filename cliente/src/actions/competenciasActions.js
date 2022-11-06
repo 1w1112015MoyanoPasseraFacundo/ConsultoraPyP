@@ -72,7 +72,7 @@ export function crearNuevaCompetenciaAction(competencia) {
       dispatch(agregarCompetenciaExito(competencia));
       Swal.fire(
         "Correcto!",
-        "La competencia se agrego correctamente!",
+        "La habilidad se agrego correctamente!",
         "success"
       );
     } catch (error) {
@@ -117,11 +117,9 @@ export function editarCompetenciaAction(competencia) {
         `/Competencias/${competencia.idCompetencia}`,
         competencia
       );
-      console.log(competencia);
       dispatch(editarCompetenciaExito(competencia));
-      // Swal.fire("Editado!", "El competencia ha sido editado", "success");
+      Swal.fire("Editado!", "El habilidad ha sido editada", "success");
     } catch (error) {
-      console.log(error);
       dispatch(editarCompetenciaError());
     }
   };
@@ -148,7 +146,7 @@ export function darDeBajaCompetencia(idCompetencia) {
     try {
       await clienteAxios.delete(`/competencias/${idCompetencia}`);
       dispatch(eliminarCompetenciaExito());
-      Swal.fire("Eliminado!", "La competencia ha sido dado de baja", "success");
+      Swal.fire("Eliminado!", "La habilidad ha sido dado de baja", "success");
     } catch (error) {
       dispatch(eliminarCompetenciaError());
     }

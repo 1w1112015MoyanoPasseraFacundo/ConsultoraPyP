@@ -48,7 +48,7 @@ const EditarCompetencia = () => {
   return (
     <div className="row justify-content-center">
       <div className="col-md-12">
-        <h3 className="title-decorator">Editar competencia</h3>
+        <h3 className="title-decorator">Editar hablidad</h3>
         <div className="card">
           <div className="card-body">
             {/* {alerta ? <p className={alerta.clases}>{alerta.msg}</p>:null} */}

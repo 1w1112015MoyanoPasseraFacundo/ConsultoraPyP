@@ -1,8 +1,10 @@
 import React from "react";
 import { slide as Menu } from "react-burger-menu";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 const SideBar = () => {
   const navigate = useNavigate();
+  const usuario = useSelector((state) => state.login.login);
 
   const cand = () => {
     navigate("/candidatos");
@@ -22,9 +24,12 @@ const SideBar = () => {
   const emp = () => {
     navigate("/empleos");
   };
+  const repo = () => {
+    navigate("/reportes");
+  };
   return (
     <Menu width={"250px"} customCrossIcon={false}>
-      <img src={require("../assets/logo.png")} height="100px" />
+      <img src={require("../assets/logowhite.png")} height="100px" />
       <a className="menu-item" href="/">
         Inicio
       </a>
@@ -37,14 +42,20 @@ const SideBar = () => {
       <a className="menu-item" onClick={clien}>
         Clientes
       </a>
-      <a className="menu-item" onClick={pago}>
-        Pagos
-      </a>
+      {usuario.rol == "Admin" ? (
+        <a className="menu-item" onClick={pago}>
+          Cobranzas
+        </a>
+      ) : null}
+
       <a className="menu-item" onClick={compe}>
-        Competencias
+        Habilidades
       </a>
       <a className="menu-item" onClick={usu}>
         Usuarios
+      </a>
+      <a className="menu-item" onClick={repo}>
+        Reportes
       </a>
     </Menu>
   );

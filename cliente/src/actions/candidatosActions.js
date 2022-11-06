@@ -124,6 +124,25 @@ export function obtenerCandidatosFilterAction(filtros) {
   };
 }
 
+export function obtenerCandidatosByCompes(idsCompes) {
+  console.log(idsCompes);
+  return async (dispatch) => {
+    console.log(idsCompes);
+    dispatch(descargarCandidatos());
+    try {
+      const respuesta = await clienteAxios.get(
+        `/Candidatos/GetCandidatosByCompes?idsCompes=${idsCompes}`
+      );
+      console.log(respuesta);
+
+      dispatch(descargarCandidatosExitosa(respuesta.data));
+    } catch (error) {
+      console.log(error);
+      dispatch(descargarCandidatosError(error.response.data));
+    }
+  };
+}
+
 const descargarCandidatos = () => ({
   type: COMENZAR_DESCARGA_CANDIDATOS,
   payload: true,

@@ -45,7 +45,7 @@ const Pagos = () => {
   const empty = "";
   return (
     <Fragment>
-      <h3 className="title-decorator">Pagos</h3>
+      <h3 className="title-decorator">Cobranzas</h3>
       <div class="row">
         <div class="col-lg-12">
           <div class="card card-form ">
@@ -74,7 +74,7 @@ const Pagos = () => {
                       </select>
                     </div>
                   </div>
-                  <div class="col-md-4">
+                  {/* <div class="col-md-4">
                     <div class="form-group">
                       <select
                         type="text"
@@ -88,7 +88,7 @@ const Pagos = () => {
                         <option value={false}>Parcial</option>
                       </select>
                     </div>
-                  </div>
+                  </div> */}
                   <div class="col-md-4">
                     <div class="pull-right text-right">
                       <button type="submit" class="btn btn-primary">
@@ -131,7 +131,7 @@ const Pagos = () => {
                   <th className="colu" scope="col">
                     Monto
                   </th>
-                  <th className="colu" scope="col">
+                  <th align="center" className="colux" scope="col">
                     Fecha
                   </th>
                   {/* <th className="colu" scope="col">

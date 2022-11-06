@@ -71,8 +71,15 @@ h1 a.text-light:hover {
   font-weight: 500px;
   color: #828385;
 }
+.colux{
+  font-weight: 500px;
+  color: #828385;
+  text-align: center;
+}
 
-
+.monto{
+ float: right;
+}
 
 .table thead {
   background-color: #eaeef0;
@@ -84,7 +91,6 @@ h1 a.text-light:hover {
 .list-group-item {
   font-size: 1.4rem;
 }
-
 .navbar .btn {
   flex:1;
 }
@@ -168,5 +174,11 @@ h1 a.text-light:hover {
 
 .dropdown:hover .dropdown-content {
   display: block;
+}
+.visible{
+visibility: hidden!important;
+}
+.font-bold {
+  font-weight: 700;
 }
 

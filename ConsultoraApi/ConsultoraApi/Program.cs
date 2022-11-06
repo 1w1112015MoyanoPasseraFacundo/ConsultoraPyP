@@ -8,8 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
-
-
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -43,6 +42,7 @@ builder.Services.AddScoped<IClienteRepositorio, ClienteRepositorio>();
 builder.Services.AddScoped<IEmpleoRepositorio, EmpleoRepositorio>();
 builder.Services.AddScoped<IEmpleoXCompetenciaRepositorio, EmpleoXCompetenciaRepositorio>();
 builder.Services.AddScoped<IPagoRepositorio, PagoRepositorio>();
+builder.Services.AddScoped<IUsuarioXRolRepositorio, UsuarioXRolRepositorio>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -55,7 +55,8 @@ builder.Services.AddCors();
 
 builder.Services.AddHttpContextAccessor();
 
-
+//builder.Services.AddControllers().AddJsonOptions(x =>
+//                x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 // Mapper
 builder.Services.AddAutoMapper(typeof(ConsultMappers));
 

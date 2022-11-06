@@ -2,6 +2,7 @@ import React, { Fragment, useEffect, useState } from "react";
 import { BsPlusLg, BsSearch } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import SPagination from "simple-react-pagination-js";
 import {
   obtenerCompetenciasAction,
   obtenerCompetenciasFilterAction,
@@ -44,9 +45,20 @@ const Competencias = () => {
   console.log(error);
   // const cargando = useSelector((state) => state.competencias.loading);
   const empty = "";
+
+  let page = 1;
+  let size = 20;
+
+  const handleOnPageChange = (page) => {
+    this.setState({ page });
+  };
+
+  const handleOnSizeChange = (size) => {
+    this.setState({ size, page: 1 });
+  };
   return (
     <Fragment>
-      <h3 class="title-decorator">Competencias</h3>
+      <h3 class="title-decorator">Habilidades</h3>
 
       {/* {cargando ? <p className="text-center">Cargando...</p> : null} */}
       <div class="row">
@@ -61,7 +73,7 @@ const Competencias = () => {
                         type="text"
                         class="form-control"
                         value={nombre}
-                        placeholder="Nombre de la competencia"
+                        placeholder="Habilidad"
                         name="nombre"
                         onChange={(e) => guardarNombre(e.target.value)}
                       />
@@ -144,6 +156,14 @@ const Competencias = () => {
             </table>
           </div>
         </div>
+        <SPagination
+          page={page}
+          sizePerPage={size}
+          totalSize={89}
+          pagesNextToActivePage={1}
+          onPageChange={handleOnPageChange}
+          onSizeChange={handleOnSizeChange}
+        />
       </div>
     </Fragment>
   );

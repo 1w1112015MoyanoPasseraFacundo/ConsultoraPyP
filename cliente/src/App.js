@@ -25,6 +25,7 @@ import EditarPago from "./components/Pagos/EditarPago";
 import Login from "./login/Login";
 import Dashboard from "./components/Dashboard";
 import RutaPrivada from "./components/RutaPrivada";
+import Reportes from "./components/Reportes/Reportes";
 function App() {
   return (
     <Router>
@@ -33,6 +34,7 @@ function App() {
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/" element={<RutaPrivada />}>
             <Route exact path="/" element={<Dashboard />} />
+            <Route exact path="/reportes" element={<Reportes />} />
             <Route exact path="/candidatos" element={<Candidatos />} />
             <Route
               exact

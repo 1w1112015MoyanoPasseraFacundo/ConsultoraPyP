@@ -54,7 +54,7 @@ const Login = () => {
           />
           <img
             height="200px"
-            src={require("../assets/logo.png")}
+            src={require("../assets/logowhite.png")}
           
             alt="Home"
             className="my-4 display-responsive"

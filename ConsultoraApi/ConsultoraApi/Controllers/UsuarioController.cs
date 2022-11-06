@@ -20,14 +20,16 @@ namespace ConsultoraApi.Controllers
         private readonly ConsultoraPypContext db;
         IMapper _mapper;
         private readonly IUsuarioRepositorio _uRepo;
+        private readonly IUsuarioXRolRepositorio _rURepo;
         private readonly IJwtAuthenticationManager jwtAuthenticationManager;
 
-        public UsuarioController(IMapper mapper, IUsuarioRepositorio uRepo, ConsultoraPypContext _db, IJwtAuthenticationManager jwtAuthenticationManager)
+        public UsuarioController(IMapper mapper, IUsuarioRepositorio uRepo, ConsultoraPypContext _db, IJwtAuthenticationManager jwtAuthenticationManager, IUsuarioXRolRepositorio rURepo)
         {
             _mapper = mapper;
             _uRepo = uRepo;
             db = _db;
             this.jwtAuthenticationManager = jwtAuthenticationManager;
+            _rURepo = rURepo;
         }
 
         [HttpGet]
@@ -93,6 +95,12 @@ namespace ConsultoraApi.Controllers
             usu.FechaSalida = null;
             usu.FechaAlta = DateTime.Now;
             usu.Password = "awantia";
+
+            UsuariosXrole rolXUsuario = new UsuariosXrole();
+            rolXUsuario.IdUsuario = usu.IdUsuario;
+            rolXUsuario.IdRol = 2;
+
+            _rURepo.CreateRolXUsuario(rolXUsuario);
             if (!_uRepo.CreateUsuario(usu))
             {
                 return StatusCode(500, $"Algo salió mal creando el usuario {usu.NombreUsuario}");
@@ -181,6 +189,7 @@ namespace ConsultoraApi.Controllers
                 return StatusCode(400, "No se ingreso la contraseña");
             }
             var result = db.Usuarios.FirstOrDefault(x => x.NombreUsuario == comando.nombreUsuario && x.Password == comando.password);
+ 
 
             if (result == null)
             {
@@ -197,9 +206,10 @@ namespace ConsultoraApi.Controllers
                     //db.Entry(result).Reference(x => x.UsuariosXroles).Load();
                     var hash = HashHelper.Hash(result.Password);
 
-                    result.Password = hash.Password;
+                    var rolxusu = db.UsuariosXroles.FirstOrDefault(x => x.IdUsuario == result.IdUsuario);
+                    var rol = db.Roles.FirstOrDefault(x => x.IdRol == rolxusu.IdRol); result.Password = hash.Password;
 
-                    login lg = new login(result.NombreUsuario, result.Mail, token);
+                    login lg = new login(result.NombreUsuario, result.Mail, token, rol.Nombre);
 
                     return Ok(lg);
                 }
@@ -220,8 +230,11 @@ namespace ConsultoraApi.Controllers
                 return StatusCode(409);
             }
             else
-            {   
-                return Ok(usu);
+            {
+                var rolxusu = db.UsuariosXroles.FirstOrDefault(x => x.IdUsuario == usu.IdUsuario);
+                var rol = db.Roles.FirstOrDefault(x => x.IdRol == rolxusu.IdRol);
+                var dto = new GetAuthUsuarioDto { nombreUsuario = usu.NombreUsuario, nombre = usu.Nombre, apellido = usu.Apellido, rol = rol.Nombre };
+                return Ok(dto);
             }
         }
     }

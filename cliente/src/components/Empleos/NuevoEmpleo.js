@@ -65,7 +65,6 @@ const NuevoEmpleo = () => {
   const cancelar = () => {
     navigate("/empleos");
   };
-  console.log(idRubro);
   const { data } = useGetCompetencia(idRubro);
 
   return (
@@ -136,11 +135,11 @@ const NuevoEmpleo = () => {
                   </select>
                 </div>
                 <div className="form-group col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                  <label>Competencias</label>
+                  <label>Habilidades</label>
                   <Multipleselect
                     options={data ? data : []}
                     setState={guardarCompetencias}
-                    defaultOption={"Seleccione Competencias"}
+                    defaultOption={"Seleccione habilidades..."}
                   />
                 </div>
               </div>

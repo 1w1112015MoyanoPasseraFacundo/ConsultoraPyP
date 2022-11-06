@@ -20,6 +20,7 @@ const Header = () => {
     navigate("/login");
   };
   const usuario = useSelector((state) => state.login.login);
+  console.log(usuario);
   const autenticado = useSelector((state) => state.login.autenticado);
   console.log(autenticado);
 

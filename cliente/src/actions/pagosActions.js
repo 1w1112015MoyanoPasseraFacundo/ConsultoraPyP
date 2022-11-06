@@ -29,6 +29,22 @@ export function obtenerPagosAction() {
     }
   };
 }
+
+export function obtenerPagoReporte(fecha1, fecha2) {
+  return async (dispatch) => {
+    dispatch(descargarPagos());
+    try {
+      const respuesta = await clienteAxios.get(
+        `/Pagos/GetPagosReporte?fecha1=${fecha1}&fecha2=${fecha2}`
+      );
+      dispatch(descargarPagosExitosa(respuesta.data));
+      console.log(respuesta.data);
+    } catch (error) {
+      console.log(error.response.data);
+      dispatch(descargarPagosError(error.response));
+    }
+  };
+}
 export function obtenerPagosFilterAction(filtros) {
   return async (dispatch) => {
     dispatch(descargarPagos());
