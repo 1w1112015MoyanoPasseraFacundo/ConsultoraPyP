@@ -7,6 +7,7 @@ import {
 import AccionesCliente from "./AccionesCliente";
 import { BsPlusLg, BsSearch } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
+import Spinner from "../../syles/Spinner";
 
 const Clientes = () => {
   const dispatch = useDispatch();
@@ -38,7 +39,8 @@ const Clientes = () => {
   }, []);
 
   const clientes = useSelector((state) => state.clientes.clientes);
-  const error = useSelector((state) => state.clientes.error);
+const cargando = useSelector((state) => state.clientes.loading);
+const error = useSelector((state) => state.clientes.error);
   console.log(error);
   console.log(clientes);
   return (
@@ -110,7 +112,12 @@ const Clientes = () => {
           </form>
         </div>
       </div>
-
+      {error != null ? (
+        <div role="alert" className="alert text-center animated fadeIn notFound">
+          <img src={require("../../assets/documentNotFound.gif")} alt="404" />
+          <h2  >No se encontraron resultados.</h2>
+        </div>
+      ) : (
       <div class="card custom-card-shadow">
         <div class="row">
           <div class="col-lg-12">
@@ -138,9 +145,7 @@ const Clientes = () => {
                 </tr>
               </thead>
               <tbody>
-                {error != null
-                  ? "No hay candidatos"
-                  : clientes.map((cliente) => {
+                {clientes.map((cliente) => {
                       return (
                         <AccionesCliente
                           key={cliente.idCliente}
@@ -152,7 +157,10 @@ const Clientes = () => {
             </table>
           </div>
         </div>
-      </div>
+      </div>)}
+      
+  {cargando ? <Spinner /> : null}
+
     </Fragment>
   );
 };

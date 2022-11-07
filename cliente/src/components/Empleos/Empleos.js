@@ -160,7 +160,12 @@ const Empleos = () => {
           </form>
         </div>
       </div>
-
+      {error != null ? (
+        <div role="alert" className="alert text-center animated fadeIn notFound">
+          <img src={require("../../assets/documentNotFound.gif")} alt="404" />
+          <h2  >No se encontraron resultados.</h2>
+        </div>
+      ) : (
       <div class="card custom-card-shadow">
         <table className="table table-hover">
           <thead>
@@ -187,9 +192,7 @@ const Empleos = () => {
             </tr>
           </thead>
           <tbody>
-            {error != null
-              ? "No hay empleos"
-              : empleos.map((empleo) => {
+            {empleos.map((empleo) => {
                   console.log(empleo);
                   return (
                     <AccionesEmpleos key={empleo.idEmpleo} empleo={empleo} />
@@ -197,7 +200,7 @@ const Empleos = () => {
                 })}
           </tbody>
         </table>
-      </div>
+      </div>)}
       {cargando ? <Spinner /> : null}
     </Fragment>
   );

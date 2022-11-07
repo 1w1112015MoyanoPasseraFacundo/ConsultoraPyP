@@ -24,7 +24,6 @@ const initialState = {
 export default function (state = initialState, action) {
   switch (action.type) {
     case AGREGAR_PAGO:
-    case COMENZAR_DESCARGA_PAGOS:
     case PAGO_ELIMINADO_ERROR:
     case PAGO_EDITADO_ERROR:
       return {
@@ -32,6 +31,11 @@ export default function (state = initialState, action) {
         loading: false,
         error: action.payload,
       };
+      case COMENZAR_DESCARGA_PAGOS:
+        return {
+          ...state,
+          loading: action.payload,
+        };
     case DESCARGA_PAGOS_EXITOS:
       return {
         ...state,

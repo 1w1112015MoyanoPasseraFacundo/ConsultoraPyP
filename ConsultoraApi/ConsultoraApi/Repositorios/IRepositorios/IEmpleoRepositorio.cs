@@ -10,6 +10,7 @@ namespace ConsultoraApi.Repositorios.IRepositorios
         public bool UpdateEmpleo(Empleo empleo);
         public ICollection<Empleo> GetEmpleoByIdCliente(int idCliente);
         public Empleo GetEmpleo(int idEmpleo);
+        public Estado GetEstado(string nombreEstado);
         public ICollection<Empleo> GetFilterEmpleo(EmpleoFilterDto filterDto);
         public bool DarDeBajaEmpleo(Empleo empleo);
     }

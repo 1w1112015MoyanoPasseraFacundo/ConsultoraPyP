@@ -7,6 +7,7 @@ import {
   obtenerPagosFilterAction,
 } from "../../actions/pagosActions";
 import clienteAxios from "../../config/axios";
+import Spinner from "../../syles/Spinner";
 import AccionesPagos from "./AccionesPagos";
 const Pagos = () => {
   const dispatch = useDispatch();
@@ -42,6 +43,7 @@ const Pagos = () => {
   };
   const pagos = useSelector((state) => state.pagos.pagos);
   const error = useSelector((state) => state.pagos.error);
+  const cargando = useSelector((state) => state.pagos.loading);
   const empty = "";
   return (
     <Fragment>
@@ -116,7 +118,12 @@ const Pagos = () => {
           </div>
         </div>
       </div>
-      <div class="card custom-card-shadow">
+      {error != null ? (
+        <div role="alert" className="alert text-center animated fadeIn notFound">
+          <img src={require("../../assets/documentNotFound.gif")} alt="404" />
+          <h2  >No se encontraron resultados.</h2>
+        </div>
+      ) : (<div class="card custom-card-shadow">
         <div class="row">
           <div class="col-lg-12">
             <table className="table table-hover">
@@ -143,9 +150,7 @@ const Pagos = () => {
                 </tr>
               </thead>
               <tbody>
-                {error !== null
-                  ? "No hay pagos"
-                  : pagos.map((pago) => {
+                {pagos.map((pago) => {
                       console.log(pago);
                       let fecha = pago.fechaPago.split("T");
                       pago.fechaPago = fecha[0];
@@ -155,7 +160,8 @@ const Pagos = () => {
             </table>
           </div>
         </div>
-      </div>
+      </div>)}
+{cargando ? <Spinner /> : null}
     </Fragment>
   );
 };

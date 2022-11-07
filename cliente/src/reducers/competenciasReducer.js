@@ -26,7 +26,6 @@ const initialState = {
 export default function (state = initialState, action) {
   switch (action.type) {
     case AGREGAR_COMPETENCIA:
-    case COMENZAR_DESCARGA_COMPETENCIAS:
     case COMPETENCIA_ELIMINADO_ERROR:
     case COMPETENCIA_EDITADO_ERROR:
       return {
@@ -83,7 +82,11 @@ export default function (state = initialState, action) {
             : competencia
         ),
       };
-
+      case COMENZAR_DESCARGA_COMPETENCIAS:
+      return {
+        ...state,
+        loading: action.payload,
+      };
     default:
       return state;
   }

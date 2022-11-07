@@ -23,7 +23,7 @@ import Pagos from "./components/Pagos/Pagos";
 import NuevoPago from "./components/Pagos/NuevoPago";
 import EditarPago from "./components/Pagos/EditarPago";
 import Login from "./login/Login";
-import Dashboard from "./components/Dashboard";
+import Dashboard from "./components/dashboard";
 import RutaPrivada from "./components/RutaPrivada";
 import Reportes from "./components/Reportes/Reportes";
 function App() {

@@ -24,7 +24,6 @@ const initialState = {
 // eslint-disable-next-line
 export default function (state = initialState, action) {
   switch (action.type) {
-    case COMENZAR_DESCARGA_CLIENTES:
     case AGREGAR_CLIENTE:
     case CLIENTE_ELIMINADO_ERROR:
     case CLIENTE_EDITADO_ERROR:
@@ -82,6 +81,11 @@ export default function (state = initialState, action) {
         ),
         eliminar: null,
       };
+      case COMENZAR_DESCARGA_CLIENTES:
+        return {
+          ...state,
+          loading: action.payload,
+        };
     default:
       return state;
   }

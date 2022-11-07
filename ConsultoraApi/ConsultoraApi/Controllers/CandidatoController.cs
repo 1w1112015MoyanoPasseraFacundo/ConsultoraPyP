@@ -72,33 +72,34 @@ namespace ConsultoraApi.Controllers
         }
 
         [HttpGet("GetCandidatosByCompes")]
-        public IActionResult GetCandidatosByCompes([FromQuery] List<int> idsCompes)
+        public IActionResult GetCandidatosByCompes([FromQuery] string idsCompes)
         {
-            var listaCandidatos = new List<CandidatoUpdateDto>();
-            for (int j = 0; j < idsCompes.Count; j++)
+            List<string> idsCompe = new List<string>();
+            if (idsCompes != null)
             {
-
-                var listaCandxCompes = _CXCRepo.GetCandsByIdCompes(idsCompes[j]);
-                for (int i = 0; i < listaCandxCompes.Count; i++)
-                {
-                    var candidatos = _uRepo.GetCandidato(listaCandxCompes[i].IdCandidato);
-                    if (listaCandidatos.Count!=0)
-                    {
-                        if (listaCandidatos.Last().IdCandidato != candidatos.IdCandidato&& listaCandidatos.First().IdCandidato != candidatos.IdCandidato)
-                        {
-                            listaCandidatos.Add(_mapper.Map<CandidatoUpdateDto>(candidatos));
-                        }
-                    }
-                    else
-                    {
-                        listaCandidatos.Add(_mapper.Map<CandidatoUpdateDto>(candidatos));
-                    }
-
-                }
+                idsCompe = idsCompes.Split(",").ToList();
             }
-            if (listaCandidatos.Count == 0)
+            else
             {
-                return StatusCode(409, "No hay candidatos con esos filtros");
+                return StatusCode(400, "Error");
+            }
+            var listaCandidatos = new List<CandidatoUpdateDto>();
+            var cand = db.Candidatos.ToList();
+            foreach (var item in cand)
+            {
+                bool esValido = true;
+                foreach (var compes in idsCompe)
+                {   
+                    esValido = _CXCRepo.CandXCompeExists(item.IdCandidato, int.Parse(compes));
+                    if (!esValido)
+                    {
+                        break;
+                    }
+                }
+                if (esValido)
+                {
+                    listaCandidatos.Add(_mapper.Map<CandidatoUpdateDto>(item));
+                }
             }
 
             return Ok(listaCandidatos);

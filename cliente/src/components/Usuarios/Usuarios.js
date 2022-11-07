@@ -6,6 +6,7 @@ import {
   obtenerUsuariosAction,
   obtenerUsuariosFilterAction,
 } from "../../actions/usuariosActions";
+import Spinner from "../../syles/Spinner";
 import AccionesUsuarios from "./AccionesUsuarios";
 const Usuarios = () => {
   const [usuario, guardarUsuario] = useState("");
@@ -31,6 +32,7 @@ const Usuarios = () => {
     dispatch(obtenerUsuariosFilterAction(datos));
   };
   const usuarios = useSelector((state) => state.usuarios.usuarios);
+  const cargando = useSelector((state) => state.usuarios.loading);
   const error = useSelector((state) => state.usuarios.error);
   const navigate = useNavigate();
 
@@ -112,54 +114,63 @@ const Usuarios = () => {
           </div>
         </div>
       </div>
-      <div class="card custom-card-shadow">
-        <div class="row">
-          <div class="col-lg-12">
-            <table className="table table-hover">
-              <thead>
-                <tr>
-                  <th className="colu" scope="col">
-                    Nombre
-                  </th>
-                  <th className="colu" scope="col">
-                    Nombre usuario
-                  </th>
-                  <th className="colu" scope="col">
-                    Documento
-                  </th>
+      {error != null ? (
+        <div
+          role="alert"
+          className="alert text-center animated fadeIn notFound"
+        >
+          <img src={require("../../assets/documentNotFound.gif")} alt="404" />
+          <h2>No se encontraron resultados.</h2>
+        </div>
+      ) : (
+        <div class="card custom-card-shadow">
+          <div class="row">
+            <div class="col-lg-12">
+              <table className="table table-hover">
+                <thead>
+                  <tr>
+                    <th className="colu" scope="col">
+                      Nombre
+                    </th>
+                    <th className="colu" scope="col">
+                      Nombre usuario
+                    </th>
+                    <th className="colu" scope="col">
+                      Documento
+                    </th>
 
-                  <th className="colu" scope="col">
-                    Mail
-                  </th>
-                  <th className="colu" scope="col">
-                    Teléfono
-                  </th>
-                  <th className="colu" scope="col">
-                    Vigencia
-                  </th>
-                  <th className="colu" scope="col">
-                    Acciones
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {error != null
-                  ? "No hay usuarios"
-                  : usuarios.map((usuario) => {
-                      let fecha = usuario.fechaNacimiento.split("T");
-                      usuario.fechaNacimiento = fecha[0];
-                      return (
-                        <AccionesUsuarios
-                          key={usuario.idUsuario}
-                          usuario={usuario}
-                        />
-                      );
-                    })}
-              </tbody>
-            </table>
+                    <th className="colu" scope="col">
+                      Mail
+                    </th>
+                    <th className="colu" scope="col">
+                      Teléfono
+                    </th>
+                    <th className="colu" scope="col">
+                      Vigencia
+                    </th>
+                    <th className="colu" scope="col">
+                      Acciones
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {usuarios.map((usuario) => {
+                    let fecha = usuario.fechaNacimiento.split("T");
+                    usuario.fechaNacimiento = fecha[0];
+                    return (
+                      <AccionesUsuarios
+                        key={usuario.idUsuario}
+                        usuario={usuario}
+                      />
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
-      </div>
+      )}
+      {cargando ? <Spinner /> : null}
     </Fragment>
   );
 };

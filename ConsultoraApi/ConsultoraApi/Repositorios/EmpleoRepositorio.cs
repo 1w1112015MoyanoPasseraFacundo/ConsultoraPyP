@@ -25,7 +25,10 @@ namespace ConsultoraApi.Repositorios
                 return null;
             }
         }
-
+        public Estado GetEstado(string nombreEstado)
+        {
+            return db.Estados.FirstOrDefault(r => r.Nombre == nombreEstado);
+        }
         public ICollection<Empleo> GetFilterEmpleo(EmpleoFilterDto filterDto)
         {
             var lstEmpleos = db.Empleos.ToList();

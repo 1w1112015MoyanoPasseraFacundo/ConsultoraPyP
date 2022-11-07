@@ -111,6 +111,9 @@ h1 a.text-light:hover {
   flex: 1;
 }
 
+.notFound h2{
+  color: #455a64;
+}
 
 .card-form{
     margin-bottom: 1rem;

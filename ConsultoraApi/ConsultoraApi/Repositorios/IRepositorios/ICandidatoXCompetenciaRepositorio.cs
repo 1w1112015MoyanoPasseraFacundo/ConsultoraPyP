@@ -10,6 +10,7 @@ namespace ConsultoraApi.Repositorios.IRepositorios
         public bool UpdateCandXCompe(CandidatosXcompetencia candXCompe);
         public List<CandidatosXcompetencia> GetCandXCompes(int idCandidato);
         public List<CandidatosXcompetencia> GetsCandsByIdCompes(List<int> idCompetencia);
+        public bool CandXCompeExists(int idCand, int idCompe);
         public List<CandidatosXcompetencia> GetCandsByIdCompes(int idCompetencia);
         public List<CandXCompeDto> GetCandByIdCompes(List<int> idsCompes);
         public bool DeleteCandXCompe(CandidatosXcompetencia candXCompe);

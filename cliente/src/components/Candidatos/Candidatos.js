@@ -7,6 +7,7 @@ import {
   obtenerCandidatosFilterAction,
 } from "../../actions/candidatosActions";
 import { obtenerEmpleosAction } from "../../actions/empleosActions";
+import Spinner from "../../syles/Spinner";
 import AccionesCandidatos from "./AccionesCandidatos";
 const Candidatos = () => {
   const dispatch = useDispatch();
@@ -39,6 +40,7 @@ const Candidatos = () => {
     navigate("/candidatos/nuevo");
   };
 
+  const cargando = useSelector((state) => state.candidatos.loading);
   const candidatos = useSelector((state) => state.candidatos.candidatos);
   console.log(candidatos);
   const error = useSelector((state) => state.candidatos.error);
@@ -114,7 +116,12 @@ const Candidatos = () => {
           </form>
         </div>
       </div>
-
+      {error != null ? (
+        <div role="alert" className="alert text-center animated fadeIn notFound">
+          <img src={require("../../assets/documentNotFound.gif")} alt="404" />
+          <h2  >No se encontraron resultados.</h2>
+        </div>
+      ) : (
       <div class="card custom-card-shadow">
         <div class="row">
           <div class="col-lg-12">
@@ -146,9 +153,7 @@ const Candidatos = () => {
                 </tr>
               </thead>
               <tbody>
-                {error != null
-                  ? "No hay candidatos"
-                  : candidatos.map((candidato) => {
+                {candidatos.map((candidato) => {
                       let fecha = candidato.fechaNacimiento.split("T");
                       candidato.fechaNacimiento = fecha[0];
                       console.log(candidato);
@@ -163,7 +168,8 @@ const Candidatos = () => {
             </table>
           </div>
         </div>
-      </div>
+      </div>)}
+  {cargando ? <Spinner /> : null}
     </Fragment>
   );
 };

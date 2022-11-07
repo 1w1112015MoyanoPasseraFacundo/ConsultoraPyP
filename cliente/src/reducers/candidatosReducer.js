@@ -25,13 +25,17 @@ const initialState = {
 export default function (state = initialState, action) {
   switch (action.type) {
     case AGREGAR_CANDIDATO:
-    case COMENZAR_DESCARGA_CANDIDATOS:
     case CANDIDATO_ELIMINADO_ERROR:
     case CANDIDATO_EDITADO_ERROR:
       return {
         ...state,
         loading: false,
         error: action.payload,
+      };
+      case COMENZAR_DESCARGA_CANDIDATOS:
+      return {
+        ...state,
+        loading: action.payload,
       };
     case AGREGAR_CANDIDATO_EXITO:
       return {

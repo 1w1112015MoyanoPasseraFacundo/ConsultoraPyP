@@ -137,6 +137,11 @@ namespace ConsultoraApi.Repositorios
                 return null;
             }
         }
+
+        public bool CandXCompeExists(int idCand, int idCompe)
+        {
+            return db.CandidatosXcompetencias.Any(x=>x.IdCandidato==idCand && x.IdCompetencia==idCompe);
+        }
         public bool UpdateCandXCompe(CandidatosXcompetencia candXCompe)
         {
             db.CandidatosXcompetencias.Add(candXCompe);

@@ -26,7 +26,6 @@ const initialState = {
 export default function (state = initialState, action) {
   switch (action.type) {
     case AGREGAR_USUARIO:
-    case COMENZAR_DESCARGA_USUARIOS:
     case USUARIO_ELIMINADO_ERROR:
     case USUARIO_EDITADO_ERROR:
       return {
@@ -34,6 +33,11 @@ export default function (state = initialState, action) {
         loading: false,
         error: action.payload,
       };
+      case COMENZAR_DESCARGA_USUARIOS:
+        return {
+          ...state,
+          loading: action.payload,
+        };
     case AGREGAR_USUARIO_EXITO:
       return {
         ...state,

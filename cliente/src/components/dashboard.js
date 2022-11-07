@@ -41,7 +41,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     const cargarCandidatos = () =>
-      dispatch(obtenerCandidatosByCompes(lstCompes[0]));
+      dispatch(obtenerCandidatosByCompes(lstCompes));
     cargarCandidatos();
     const getEmpleos = async () => {
       const resultado = await clienteAxios.get(`/empleos`);

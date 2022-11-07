@@ -123,3 +123,6 @@ D:\Usuario\Documents\TUP - FRC\TESIS\ConsultoraPyp\ConsultoraApi\ConsultoraApi\o
 D:\Usuario\Documents\TUP - FRC\TESIS\ConsultoraPyp\ConsultoraApi\ConsultoraApi\obj\Debug\net6.0\ConsultoraApi.genruntimeconfig.cache
 D:\Usuario\Documents\TUP - FRC\TESIS\ConsultoraPyp\ConsultoraApi\ConsultoraApi\bin\Debug\net6.0\ConsultoraApi.pdb
 D:\Usuario\Documents\TUP - FRC\TESIS\ConsultoraPyp\ConsultoraApi\ConsultoraApi\obj\Debug\net6.0\ref\ConsultoraApi.dll
+C:\Users\fmoyano\Documents\tesis\ConsultoraPyP\ConsultoraApi\ConsultoraApi\bin\Debug\net6.0\AutoMapper.dll
+C:\Users\fmoyano\Documents\tesis\ConsultoraPyP\ConsultoraApi\ConsultoraApi\bin\Debug\net6.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+C:\Users\fmoyano\Documents\tesis\ConsultoraPyP\ConsultoraApi\ConsultoraApi\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll

@@ -8,6 +8,7 @@ import {
   obtenerCompetenciasFilterAction,
 } from "../../actions/competenciasActions";
 import clienteAxios from "../../config/axios";
+import Spinner from "../../syles/Spinner";
 import AccionesCompetencias from "./AccionesCompetencias";
 const Competencias = () => {
   const dispatch = useDispatch();
@@ -56,6 +57,8 @@ const Competencias = () => {
   const handleOnSizeChange = (size) => {
     this.setState({ size, page: 1 });
   };
+  const cargando = useSelector((state) => state.competencias.loading);
+  
   return (
     <Fragment>
       <h3 class="title-decorator">Habilidades</h3>
@@ -126,6 +129,12 @@ const Competencias = () => {
           </div>
         </div>
       </div>
+      {error != null ? (
+        <div role="alert" className="alert text-center animated fadeIn notFound">
+          <img src={require("../../assets/documentNotFound.gif")} alt="404" />
+          <h2  >No se encontraron resultados.</h2>
+        </div>
+      ) : (
       <div class="card custom-card-shadow">
         <div class="row">
           <div class="col-lg-12">
@@ -144,9 +153,7 @@ const Competencias = () => {
                 </tr>
               </thead>
               <tbody>
-                {error != null
-                  ? "No hay Competencias"
-                  : competencias.map((competencia) => (
+                {competencias.map((competencia) => (
                       <AccionesCompetencias
                         key={competencia.idCompetencia}
                         competencia={competencia}
@@ -164,7 +171,9 @@ const Competencias = () => {
           onPageChange={handleOnPageChange}
           onSizeChange={handleOnSizeChange}
         />
-      </div>
+      </div>)}
+{cargando ? <Spinner /> : null}
+
     </Fragment>
   );
 };

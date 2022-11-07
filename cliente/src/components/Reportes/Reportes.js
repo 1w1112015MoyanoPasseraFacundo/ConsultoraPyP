@@ -1,13 +1,12 @@
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
-import { Fragment } from "react";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 import { BsDownload, BsSearch } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { obtenerPagoReporte } from "../../actions/pagosActions";
-import clienteAxios from "../../config/axios";
 import AccionesReporte from "./AccionesReporte";
-import Portfolio from "./Portfolio";
 const Reportes = () => {
   const dispatch = useDispatch();
 
@@ -28,7 +27,33 @@ const Reportes = () => {
   for (let index = 0; index < pagos.length; index++) {
     monto += pagos[index].montoPago;
   }
-  console.log("MONTO", monto);
+  const exportPDF = () => {
+    const unit = "pt";
+    const size = "A4"; // Use A1, A2, A3 or A4
+    const orientation = "portrait"; // portrait or landscape
+
+    const marginLeft = 40;
+    const doc = new jsPDF(orientation, unit, size);
+
+    doc.setFontSize(15);
+
+    const title = `Empleos abonados entre ${fecha1} y ${fecha2}`;
+    const headers = [["Cliente", "Empleo", "Monto", "Fecha"]];
+
+    const data = pagos.map(elt=> [elt.nombreCliente, elt.nombreEmpleo,"$"+elt.montoPago, elt.fechaPago]);
+
+    let content = {
+      startY: 50,
+      head: headers,
+      body: data
+    };
+
+    doc.text(title, marginLeft, 40);
+    doc.autoTable(content);
+    doc.save("EmpleosPorFecha.pdf")
+  }
+
+
   return (
     <div class="card custom-card-shadow">
       <div class="card-body">
@@ -105,7 +130,7 @@ const Reportes = () => {
               <tfoot>
                 <div class="row">
                   <div className="col-md-8">
-                    <button type="submit" class="btn btn-success">
+                    <button type="submit" class="btn btn-success" onClick={exportPDF}>
                       {/* <i class="mx-1 mr-2"> */}
                       <BsDownload />
                       {/* </i> */}

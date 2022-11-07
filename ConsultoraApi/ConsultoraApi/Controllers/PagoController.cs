@@ -119,14 +119,15 @@ namespace ConsultoraApi.Controllers
             var pago = _mapper.Map<Pago>(pagoDto);
 
             pago.Estado = true;
-            pago.FechaPago = DateTime.Now;
+            pago.FechaPago = pagoDto.fechaPago;
 
             if (!_pRepo.CreatePago(pago))
             {
                 return StatusCode(500, $"Algo salió mal creando el pago {pago.IdPago} ");
             }
             Empleo emp = _eRepo.GetEmpleo(pagoDto.IdEmpleo);
-            emp.IdEstado = 1002;
+            Estado est = _eRepo.GetEstado("Finalizado");
+            emp.IdEstado = est.IdEstado;
             if (!_eRepo.UpdateEmpleo(emp)){
                 return StatusCode(500, $"Algo salió mal actualizando el empleo {emp.Nombre} ");
             }
