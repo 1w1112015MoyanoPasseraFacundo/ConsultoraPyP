@@ -31,8 +31,8 @@ namespace ConsultoraApi.Dtos.DtosUsuarios
         public string Cuil { get; set; }
 
         public string? Direccion { get; set; }
+        public string Password { get; set; }
 
-        [Required(ErrorMessage = "El campo Genero es obligatorio")]
         public int IdGenero { get; set; }
 
     }

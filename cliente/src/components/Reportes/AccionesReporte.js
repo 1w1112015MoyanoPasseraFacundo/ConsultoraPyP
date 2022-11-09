@@ -9,6 +9,7 @@ const AccionesReporte = ({ pago }) => {
     idPago,
     nombreEmpleo,
   } = pago;
+
   return (
     <tr>
       <td>

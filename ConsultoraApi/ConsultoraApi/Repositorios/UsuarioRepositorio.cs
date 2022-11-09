@@ -68,7 +68,18 @@ namespace ConsultoraApi.Repositorios
             db.Usuarios.Add(usuario);
             return Save();
         }
-
+        public bool UsuarioExists(string NombreUsuario)
+        {
+            return db.Usuarios.Any(u => u.NombreUsuario.ToLower() == NombreUsuario.ToLower());
+        }
+        public bool MailExists(string mail)
+        {
+            return db.Usuarios.Any(u => u.Mail.ToLower() == mail.ToLower());
+        }
+        public bool NumeroDocumentoExists(int NumeroDocumento)
+        {
+            return db.Usuarios.Any(u => u.Documento == NumeroDocumento);
+        }
         public bool UpdateUsuario(Usuario usuario)
         {
             db.Usuarios.Update(usuario);

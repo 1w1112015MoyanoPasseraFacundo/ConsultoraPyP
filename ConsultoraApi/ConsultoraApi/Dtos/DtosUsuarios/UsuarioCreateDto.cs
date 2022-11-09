@@ -34,8 +34,8 @@ namespace ConsultoraApi.Dtos.DtosUsuarios
         public int IdGenero { get; set; }
 
 
-        //[Required(ErrorMessage = "El campo password es obligatorio")]
-        //public string? Password { get; set; }
+        [Required(ErrorMessage = "El campo password es obligatorio")]
+        public string Password { get; set; }
 
         //[Required(ErrorMessage = "El campo Fecha Entrada es obligatorio")]
         //public DateTime FechaAlta { get; set; }

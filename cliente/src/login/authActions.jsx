@@ -1,9 +1,16 @@
+import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 import clienteAxios from "../config/axios";
 import { CERRAR_SESION, LOGIN_ERROR, LOGIN_EXITOSO, OBTENER_USUARIO } from "../types";
 
-
 export function usuarioAutenticado() {
     const token = localStorage.getItem("token");
+    console.log("LOCALLLMENTE2", localStorage.getItem("token"));
+    console.log("LOCALLLMENTE1", token);
+
+
+    // const token = Cookies.get("token");
     console.log(token);
     return async (dispatch) => {
     try {
@@ -24,16 +31,17 @@ export function usuarioAutenticado() {
 
   export function iniciarSesion(datos) {
     console.log(datos);
-    return async (dispatch) => {
-    
+    return async (dispatch) => {    
     try {
       const resp = await clienteAxios.post("/Usuarios/login", datos);
-      console.log(resp);
+      console.log("RESP", resp);
       dispatch({
         type: LOGIN_EXITOSO,
         payload: resp.data,
       });
+      // Cookies.set("token", resp.data.usuario);
       localStorage.setItem("token", resp.data.usuario);
+      console.log("LOCALLL", localStorage.getItem("token"));
       usuarioAutenticado();
     } catch (error) {
         console.log(error.response);
@@ -41,10 +49,18 @@ export function usuarioAutenticado() {
         type: LOGIN_ERROR,
         payload: error.response.data,
       });
+      if (error.response.data!==null && error.response.data!==undefined) {
+        if(error.response.data.includes("System.InvalidOperationException")){
+        Swal.fire("Error de conexión", "Intenta de nuevo", "error");
+        }else{
+          Swal.fire(error.response.data, "Intenta de nuevo", "error");
+        }
+      }
     }}
   };
  
   export function cerrarSesion() {
+    // Cookies.remove("token");
     localStorage.removeItem("token");
     return  (dispatch) => {
     dispatch({

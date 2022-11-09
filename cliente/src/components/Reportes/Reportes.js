@@ -40,19 +40,23 @@ const Reportes = () => {
     const title = `Empleos abonados entre ${fecha1} y ${fecha2}`;
     const headers = [["Cliente", "Empleo", "Monto", "Fecha"]];
 
-    const data = pagos.map(elt=> [elt.nombreCliente, elt.nombreEmpleo,"$"+elt.montoPago, elt.fechaPago]);
+    const data = pagos.map((elt) => [
+      elt.nombreCliente,
+      elt.nombreEmpleo,
+      "$" + elt.montoPago,
+      elt.fechaPago,
+    ]);
 
     let content = {
       startY: 50,
       head: headers,
-      body: data
+      body: data,
     };
 
     doc.text(title, marginLeft, 40);
     doc.autoTable(content);
-    doc.save("EmpleosPorFecha.pdf")
-  }
-
+    doc.save("EmpleosPorFecha.pdf");
+  };
 
   return (
     <div class="card custom-card-shadow">
@@ -97,55 +101,66 @@ const Reportes = () => {
             </div>
           </div>
         </div>
-        <div class="row">
-          <div class="col-lg-12">
-            <table className="table table-hover">
-              <thead>
-                <tr>
-                  <th className="colu" scope="col">
-                    Cliente
-                  </th>
-                  <th className="colu" scope="col">
-                    Empleo
-                  </th>
-                  <th className="colu" scope="col">
-                    Monto
-                  </th>
-                  <th align="center" className="colux" scope="col">
-                    Fecha
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {error !== null
-                  ? "No hay pagos"
-                  : pagos.map((pago) => {
-                      console.log(pago);
-                      let fecha = pago.fechaPago.split("T");
-                      pago.fechaPago = fecha[0];
-                      return <AccionesReporte key={pago.idPago} pago={pago} />;
-                    })}
-              </tbody>
-              <br />
-              <tfoot>
-                <div class="row">
-                  <div className="col-md-8">
-                    <button type="submit" class="btn btn-success" onClick={exportPDF}>
-                      {/* <i class="mx-1 mr-2"> */}
-                      <BsDownload />
-                      {/* </i> */}
-                      <span> Descargar</span>
-                    </button>
+        {error !== null ? // <div
+        //   role="alert"
+        //   className="alert text-center animated fadeIn notFound"
+        // >
+        //   <img src={require("../../assets/documentNotFound.gif")} alt="404" />
+        //   <h2>No se encontraron resultados.</h2>
+        // </div>
+        null : (
+          <div class="row">
+            <div class="col-lg-12">
+              <table className="table table-hover">
+                <thead>
+                  <tr>
+                    <th className="colu" scope="col">
+                      Cliente
+                    </th>
+                    <th className="colu" scope="col">
+                      Empleo
+                    </th>
+                    <th className="colu" scope="col">
+                      Monto
+                    </th>
+                    <th align="center" className="colux" scope="col">
+                      Fecha
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {pagos.map((pago) => {
+                    console.log(pago);
+                    let fecha = pago.fechaPago.split("T");
+                    pago.fechaPago = fecha[0];
+                    return <AccionesReporte key={pago.idPago} pago={pago} />;
+                  })}
+                </tbody>
+                <br />
+                <tfoot>
+                  <div class="row">
+                    <div className="col-md-8">
+                      <button
+                        type="submit"
+                        class="btn btn-success"
+                        onClick={exportPDF}
+                      >
+                        {/* <i class="mx-1 mr-2"> */}
+                        <BsDownload />
+                        {/* </i> */}
+                        <span> Descargar</span>
+                      </button>
+                    </div>
+                    <div className="col-md-4 pull-right">
+                      <h2 className=" gx-font-weight-medium">$ {monto}</h2>
+                      <p className="gx-text-grey">Monto total</p>
+                    </div>
                   </div>
-                  <div className="col-md-4 pull-right">
-                    <h2 className=" gx-font-weight-medium">$ {monto}</h2>
-                    <p className="gx-text-grey">Monto total</p>
-                  </div>
-                </div>
-              </tfoot>
-            </table>
+                </tfoot>
+              </table>
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

@@ -21,6 +21,7 @@ const initialState = {
   eliminar: null,
   editar: null,
   tiposDocumentos: [],
+  mensaje: "",
 };
 // eslint-disable-next-line
 export default function (state = initialState, action) {
@@ -33,11 +34,11 @@ export default function (state = initialState, action) {
         loading: false,
         error: action.payload,
       };
-      case COMENZAR_DESCARGA_USUARIOS:
-        return {
-          ...state,
-          loading: action.payload,
-        };
+    case COMENZAR_DESCARGA_USUARIOS:
+      return {
+        ...state,
+        loading: action.payload,
+      };
     case AGREGAR_USUARIO_EXITO:
       return {
         ...state,
@@ -45,12 +46,18 @@ export default function (state = initialState, action) {
         usuarios: [...state.usuarios, action.payload],
         error: null,
       };
-    case AGREGAR_USUARIO_ERROR:
     case DESCARGA_USUARIOS_ERROR:
       return {
         ...state,
         loading: false,
         error: action.payload,
+      };
+    case AGREGAR_USUARIO_ERROR:
+      return {
+        ...state,
+        loading: false,
+        error: true,
+        mensaje: action.payload,
       };
     case DESCARGA_USUARIOS_EXITOS:
       return {

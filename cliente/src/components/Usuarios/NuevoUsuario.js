@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import { BsCheckLg, BsReplyFill } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { crearNuevoUsuarioAction } from "../../actions/usuariosActions";
+import Swal from "sweetalert2";
+import {
+  crearNuevoUsuarioAction,
+  obtenerUsuariosFilterAction,
+} from "../../actions/usuariosActions";
 import clienteAxios from "../../config/axios";
 const NuevoUsuario = () => {
   //state
@@ -14,14 +18,22 @@ const NuevoUsuario = () => {
   const [listaTiposDocs, guardarTiposDocs] = useState([]);
   const [listaGeneros, guardarGeneros] = useState([]);
   const [documento, guardarDocumento] = useState("");
-  const [cuil, guardarCuil] = useState("");
+  const [password, guardarContraseña] = useState("");
   const [fechaNacimiento, guardarFecha] = useState("");
   const [nombreUsuario, guardarNombreUsuario] = useState("");
-  const [idGenero, guardarGenero] = useState(0);
+  // const [idGenero, guardarGenero] = useState(0);
   const [direccion, guardarDireccion] = useState("");
   const [telefono, guardarTelefono] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const error = useSelector((state) => state.usuarios.error);
+  const mensaje = useSelector((state) => state.usuarios.mensaje);
+  useEffect(() => {
+    if (error == true) {
+      Swal.fire(mensaje, "Intenta de nuevo", "error");
+    }
+    return;
+  }, [error, mensaje]);
   //llama UsuarioAction
   const agregarUsuario = (usuario) =>
     dispatch(crearNuevoUsuarioAction(usuario));
@@ -31,30 +43,27 @@ const NuevoUsuario = () => {
     console.log(resultado);
     guardarTiposDocs(resultado.data);
   };
-  const llenarGenero = async () => {
-    const resultado = await clienteAxios.get(`/Generos`);
-    guardarGeneros(resultado.data);
-  };
-
-  // const alerta = useSelector(state => state.alerta.alerta);
 
   const submitNuevoUsuario = (e) => {
     e.preventDefault();
-    console.log(fechaNacimiento);
     //validar form
-    if (nombre.trim() === "" || apellido.trim() === "") {
-      const alerta = {
-        msg: "Ambos campos son obligatorios",
-        clases: "alert alert-danger text-center text-uppercase p3",
-      };
-
-      //   dispatch(mostrarAlerta(alerta));
-
+    if (
+      nombre.trim() === "" ||
+      apellido.trim() === "" ||
+      idTipoDocumento === 0 ||
+      mail.trim() === "" ||
+      documento.trim() === "" ||
+      nombreUsuario.trim() === "" ||
+      password.trim() === "" ||
+      fechaNacimiento.trim() === ""
+    ) {
+      Swal.fire("Llene los campos obligatorios", "", "warning");
       return;
     }
 
-    // dispatch(ocultarAlertaAction());
-
+    //harcorde some data
+    const idGenero = 1;
+    const cuil = documento;
     agregarUsuario({
       nombre,
       apellido,
@@ -65,10 +74,10 @@ const NuevoUsuario = () => {
       fechaNacimiento,
       nombreUsuario,
       idGenero,
+      password,
       direccion,
       telefono,
     });
-    navigate("/usuarios");
   };
   const cancelar = () => {
     navigate("/usuarios");
@@ -150,19 +159,6 @@ const NuevoUsuario = () => {
                   />
                 </div>
                 <div className="form-group  col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                  <label>Cuil</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Cuil"
-                    name="Cuil"
-                    value={cuil}
-                    onChange={(e) => guardarCuil(e.target.value)}
-                  />
-                </div>
-              </div>
-              <div className="row p-t-20">
-                <div className="form-group col-lg-4 col-md-4 col-sm-12 col-xs-12">
                   <label>Fecha de nacimiento</label>
                   <input
                     type="date"
@@ -172,7 +168,9 @@ const NuevoUsuario = () => {
                     onChange={(e) => guardarFecha(e.target.value)}
                   />
                 </div>
-                <div className="form-group  col-lg-4 col-md-4 col-sm-12 col-xs-12">
+              </div>
+              <div className="row p-t-20">
+                <div className="form-group col-lg-4 col-md-4 col-sm-12 col-xs-12">
                   <label>Nombre de usuario</label>
                   <input
                     type="text"
@@ -184,22 +182,18 @@ const NuevoUsuario = () => {
                   />
                 </div>
                 <div className="form-group  col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                  <label>Género</label>
-                  <select
+                  <label>Contraseña</label>
+                  <input
                     className="form-control"
-                    name="genero"
-                    value={idGenero}
-                    onClick={llenarGenero}
-                    onChange={(e) => guardarGenero(e.target.value)}
-                  >
-                    <option>Seleccione...</option>
-                    {listaGeneros.map((genero) => (
-                      <option key={genero.idGenero} value={genero.idGenero}>
-                        {genero.nombre}
-                      </option>
-                    ))}
-                  </select>
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Contraseña"
+                    value={password}
+                    onChange={(e) => guardarContraseña(e.target.value)}
+                  />
                 </div>
+                <div className="form-group  col-lg-4 col-md-4 col-sm-12 col-xs-12"></div>
               </div>
               <h4 className="card-subtitle font-italic">Datos opcionales</h4>
               <hr />

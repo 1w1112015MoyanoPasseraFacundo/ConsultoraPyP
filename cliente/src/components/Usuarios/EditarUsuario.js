@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { BsCheckLg, BsReplyFill } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 import { editarUsuarioAction } from "../../actions/usuariosActions";
 import clienteAxios from "../../config/axios";
 const EditarUsuario = () => {
@@ -17,10 +18,9 @@ const EditarUsuario = () => {
     mail: "",
     idTipoDocumento: 0,
     documento: "",
-    cuil: "",
+    password: "",
     fechaNacimiento: "",
     nombreUsuario: "",
-    idGenero: 0,
     direccion: "",
     telefono: "",
   });
@@ -56,16 +56,30 @@ const EditarUsuario = () => {
     mail,
     idTipoDocumento,
     documento,
-    cuil,
+    password,
     fechaNacimiento,
     nombreUsuario,
-    idGenero,
     direccion,
     telefono,
   } = usuario;
 
   const submitEditarUsuario = (e) => {
     e.preventDefault();
+    //validar form
+    if (
+      nombre.trim() === "" ||
+      apellido.trim() === "" ||
+      idTipoDocumento === 0 ||
+      mail.trim() === "" ||
+      documento === "" ||
+      nombreUsuario.trim() === "" ||
+      password.trim() === "" ||
+      fechaNacimiento.trim() === ""
+    ) {
+      Swal.fire("Llene los campos obligatorios", "", "warning");
+      return;
+    }
+
     dispatch(editarUsuarioAction(usuario));
     console.log(usuario);
     navigate("/usuarios");
@@ -156,19 +170,6 @@ const EditarUsuario = () => {
                   />
                 </div>
                 <div className="form-group  col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                  <label>Cuil</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Cuil"
-                    name="Cuil"
-                    value={cuil}
-                    onChange={onChangeFormulario}
-                  />
-                </div>
-              </div>
-              <div className="row p-t-20">
-                <div className="form-group col-lg-4 col-md-4 col-sm-12 col-xs-12">
                   <label>Fecha de nacimiento</label>
                   <input
                     type="date"
@@ -178,7 +179,9 @@ const EditarUsuario = () => {
                     onChange={onChangeFormulario}
                   />
                 </div>
-                <div className="form-group  col-lg-4 col-md-4 col-sm-12 col-xs-12">
+              </div>
+              <div className="row p-t-20">
+                <div className="form-group col-lg-4 col-md-4 col-sm-12 col-xs-12">
                   <label>Nombre de usuario</label>
                   <input
                     type="text"
@@ -190,21 +193,18 @@ const EditarUsuario = () => {
                   />
                 </div>
                 <div className="form-group  col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                  <label>Género</label>
-                  <select
+                  <label>Contraseña</label>
+                  <input
                     className="form-control"
-                    name="idGenero"
-                    value={idGenero}
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Contraseña"
+                    value={password}
                     onChange={onChangeFormulario}
-                  >
-                    <option>Seleccione...</option>
-                    {listaGeneros.map((genero) => (
-                      <option key={genero.idGenero} value={genero.idGenero}>
-                        {genero.nombre}
-                      </option>
-                    ))}
-                  </select>
+                  />
                 </div>
+                <div className="form-group  col-lg-4 col-md-4 col-sm-12 col-xs-12"></div>
               </div>
               <h4 className="card-subtitle font-italic">Datos opcionales</h4>
               <hr />

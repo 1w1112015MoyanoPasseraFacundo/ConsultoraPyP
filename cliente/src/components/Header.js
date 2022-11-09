@@ -1,4 +1,5 @@
 import React from "react";
+import { useEffect } from "react";
 import {
   BsArrowDown,
   BsArrowDownShort,
@@ -10,18 +11,20 @@ import {
 } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { cerrarSesion } from "../login/authActions";
+import { cerrarSesion, usuarioAutenticado } from "../login/authActions";
 const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  const autenticado = useSelector((state) => state.login.autenticado);
+  useEffect(() => {
+    dispatch(usuarioAutenticado());
+  }, [autenticado]);
   const onSubmit = () => {
-    dispatch(cerrarSesion);
     navigate("/login");
+    dispatch(cerrarSesion);
   };
   const usuario = useSelector((state) => state.login.login);
   console.log(usuario);
-  const autenticado = useSelector((state) => state.login.autenticado);
   console.log(autenticado);
 
   return (

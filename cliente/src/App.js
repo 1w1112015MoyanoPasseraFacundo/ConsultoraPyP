@@ -26,6 +26,7 @@ import Login from "./login/Login";
 import Dashboard from "./components/dashboard";
 import RutaPrivada from "./components/RutaPrivada";
 import Reportes from "./components/Reportes/Reportes";
+import { usuarioAutenticado } from "./login/authActions";
 function App() {
   return (
     <Router>

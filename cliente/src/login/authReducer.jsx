@@ -1,3 +1,4 @@
+import Cookies from "js-cookie";
 import {
     LOGIN_ERROR,
     LOGIN_EXITOSO,
@@ -6,6 +7,7 @@ import {
   } from "../types/index";
   const initialState = {
     login: [],
+    // token: Cookies.get("token"),
     token: localStorage.getItem("token"),
     autenticado: false,
     mensaje: null
@@ -13,6 +15,7 @@ import {
   export default function (state = initialState, action) {
     switch (action.type) {
       case LOGIN_EXITOSO:
+        // Cookies.set("token", action.payload.token);
         localStorage.setItem("token", action.payload.token);
         return {
           ...state,
@@ -28,7 +31,8 @@ import {
         };
   
       case LOGIN_ERROR:
-        localStorage.removeItem("token");
+    // Cookies.remove("token");
+    localStorage.removeItem("token");
         return {
           ...state,
           token: null,
@@ -37,7 +41,8 @@ import {
           mensaje: action.payload,
         };
       case CERRAR_SESION:
-        localStorage.removeItem("token");
+    // Cookies.remove("token");
+    localStorage.removeItem("token");
         return {
           ...state,
           token: null,

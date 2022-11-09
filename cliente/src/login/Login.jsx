@@ -4,21 +4,21 @@ import { useNavigate } from "react-router-dom";
 import { iniciarSesion } from "./authActions";
 import "./login.css";
 import Swal from "sweetalert2";
+import Cookies from "js-cookie";
 
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const autenticado = useSelector((state) => state.login.autenticado);
+  // const autenticado = useSelector((state) => state.login.autenticado);
+  const token = localStorage.getItem("token");
+  console.log(token);
   const mensaje = useSelector((state) => state.login.mensaje);
   console.log(mensaje);
   useEffect(() => {
-    if (autenticado) {
-      navigate("/");
+    if (token) {
+      navigate("/", {replace:true});
     }
-    if (mensaje!==null && mensaje!==undefined) {
-      Swal.fire(mensaje, "Intenta de nuevo", "error");
-    }
-  }, [autenticado, mensaje]);
+  }, [token]);
 
   const [usuario, guardarUsuario] = useState({
     nombreUsuario: "",
@@ -36,13 +36,21 @@ const Login = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-
+    // try{
     //validar campos vacios
     if (nombreUsuario.trim() === "" || password.trim() === "") {
       Swal.fire("Todos los campos son obligatorios", "Intenta de nuevo", "error");
     }
 
-    dispatch(iniciarSesion({ nombreUsuario, password }));
+     dispatch(iniciarSesion({ nombreUsuario, password }));
+      //  navigate("/", {replace:true});
+
+    // }catch(error){
+
+    // }
+
+
+
   };
   return (
     <section id="wrapper" className="login-register login-sidebar login-bg-img">
@@ -69,8 +77,7 @@ const Login = () => {
 
           <form
             className="form-horizontal form-material w-100"
-            id="loginform"
-            onSubmit={onSubmit}>
+            id="loginform">
             <div className="form-group m-t-30">
               <h3 className="box-title m-t-20 m-b-30 title-decorator">
                 Iniciar sesión
@@ -115,6 +122,7 @@ const Login = () => {
                 <button
                   className="btn btn-info btn-block m-b-20 p-10 btn-block waves-effect waves-light"
                   type="submit"
+                  onClick={onSubmit}
                 >
                   {/* {{ loading: "Iniciar sesión" }} */}
                   Iniciar sesión

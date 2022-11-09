@@ -17,6 +17,7 @@ import {
   USUARIO_ELIMINADO_EXITO,
 } from "../types";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 //crear nuevos usuarios
 export function crearNuevoUsuarioAction(usuario) {
@@ -29,8 +30,8 @@ export function crearNuevoUsuarioAction(usuario) {
       dispatch(agregarUsuarioExito(usuario));
       Swal.fire("Correcto!", "El usuario se agrego correctamente!", "success");
     } catch (error) {
-      dispatch(agregarUsuarioError(true));
-      Swal.fire("Hubo un error!", "Intenta de nuevo", "error");
+      dispatch(agregarUsuarioError(error.response.data));
+      return;
     }
   };
 }
@@ -144,6 +145,7 @@ export function editarUsuarioAction(usuario) {
       // Swal.fire("Editado!", "El usuario ha sido editado", "success");
     } catch (error) {
       console.log(error);
+      Swal.fire(error.response.data, "Intenta de nuevo", "error");
       dispatch(editarUsuarioError());
     }
   };

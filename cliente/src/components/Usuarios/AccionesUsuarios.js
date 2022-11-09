@@ -18,6 +18,7 @@ const AccionesUsuarios = ({ usuario }) => {
     idUsuario,
     nombreUsuario,
     fechaSalida,
+    password,
   } = usuario;
   const dispatch = useDispatch();
   const confirmarEliminar = (idUsuario) => {
@@ -41,6 +42,7 @@ const AccionesUsuarios = ({ usuario }) => {
   const navigate = useNavigate();
 
   const redireccionarEdicion = (usuario) => {
+    console.log(usuario);
     dispatch(obtenerUsuarioEditar(usuario));
     navigate(`editar/${usuario.idUsuario}`);
   };

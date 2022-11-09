@@ -9,12 +9,16 @@ import {
 } from "../../actions/competenciasActions";
 import clienteAxios from "../../config/axios";
 import Spinner from "../../syles/Spinner";
+import Pagination from "../Pagination";
 import AccionesCompetencias from "./AccionesCompetencias";
 const Competencias = () => {
   const dispatch = useDispatch();
   const [nombre, guardarNombre] = useState("");
   const [idRubro, guardarRubro] = useState("");
   const [listaRubros, guardarRubros] = useState([]);
+  const value = localStorage.getItem("appointments_current_page") || "1";
+
+  const [actualPage, setActualPage] = useState(parseInt(value) || 1);
 
   useEffect(() => {
     const cargarCompetencias = () => dispatch(obtenerCompetenciasAction());
@@ -58,7 +62,17 @@ const Competencias = () => {
     this.setState({ size, page: 1 });
   };
   const cargando = useSelector((state) => state.competencias.loading);
-  
+  const lastClear = parseInt?.(localStorage.getItem("lastClear") || "1");
+  const timeNow = new Date().getTime();
+  useEffect(() => {
+    // setAppointment(data?.data);
+    if (timeNow - lastClear > 3600000) {
+      localStorage.setItem("appointments_current_page", "1");
+      localStorage.setItem("lastClear", timeNow.toString());
+    } else {
+      localStorage.setItem("appointments_current_page", actualPage.toString());
+    }
+  }, []);
   return (
     <Fragment>
       <h3 class="title-decorator">Habilidades</h3>
@@ -130,50 +144,63 @@ const Competencias = () => {
         </div>
       </div>
       {error != null ? (
-        <div role="alert" className="alert text-center animated fadeIn notFound">
+        <div
+          role="alert"
+          className="alert text-center animated fadeIn notFound"
+        >
           <img src={require("../../assets/documentNotFound.gif")} alt="404" />
-          <h2  >No se encontraron resultados.</h2>
+          <h2>No se encontraron resultados.</h2>
         </div>
       ) : (
-      <div class="card custom-card-shadow">
-        <div class="row">
-          <div class="col-lg-12">
-            <table class="table table-hover">
-              <thead>
-                <tr>
-                  <th class="colu" scope="col">
-                    Nombre
-                  </th>
-                  <th class="colu" scope="col">
-                    Rubro
-                  </th>
-                  <th class="colu" scope="col">
-                    Acciones
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {competencias.map((competencia) => (
-                      <AccionesCompetencias
-                        key={competencia.idCompetencia}
-                        competencia={competencia}
-                      />
-                    ))}
-              </tbody>
-            </table>
+        <div class="card custom-card-shadow">
+          <div class="row">
+            <div class="col-lg-12">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th class="colu" scope="col">
+                      Nombre
+                    </th>
+                    <th class="colu" scope="col">
+                      Rubro
+                    </th>
+                    <th class="colu" scope="col">
+                      Acciones
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {competencias.map((competencia) => (
+                    <AccionesCompetencias
+                      key={competencia.idCompetencia}
+                      competencia={competencia}
+                    />
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
-        <SPagination
+          {/* <SPagination
           page={page}
           sizePerPage={size}
           totalSize={89}
           pagesNextToActivePage={1}
           onPageChange={handleOnPageChange}
           onSizeChange={handleOnSizeChange}
-        />
-      </div>)}
-{cargando ? <Spinner /> : null}
-
+        /> */}
+          <Pagination
+            setActualPage={setActualPage}
+            actualPage={actualPage}
+            totalPages={5}
+            numberPage={5}
+            // setActualPage={setActualPage}
+            // actualPage={actualPage}
+            // totalPages={data?.pagination.totalPages}
+            // numberPage={data?.pagination.numberPage}
+          />
+        </div>
+      )}
+      {cargando ? <Spinner /> : null}
     </Fragment>
   );
 };

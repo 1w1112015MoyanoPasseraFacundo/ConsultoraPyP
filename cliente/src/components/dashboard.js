@@ -82,7 +82,6 @@ const Dashboard = () => {
             <div className="col-md-6">
               <h3 className="title-decorator">Búsqueda avanzada</h3>
               <br />
-              <br />
               <form class="form-horizontal p-t-20">
                 <div class="row">
                   <div class="col-md-6">
@@ -113,67 +112,56 @@ const Dashboard = () => {
                       />
                     </div>
                   </div>
-                  {/* <div class="col-md-3">
-                  <div class="pull-right text-right">
-                    <button type="submit" class="btn btn-primary">
-                      <i class="mx-1 mr-2">
-                        <BsSearch />
-                      </i>
-                      <span> Buscar</span>
-                    </button>
-                  </div>
-                </div> */}
                 </div>
               </form>
             </div>
             <img
               class="col-md-6"
               src={require("../assets/logoHorizonta.png")}
-              height="250px"
+              height="240px"
             />
           </div>
+          {error != null ? null : (
+            <div class="row">
+              <div class="col-lg-12">
+                <table className="table table-hover">
+                  <thead>
+                    <tr>
+                      <th className="colu" scope="col">
+                        Candidato
+                      </th>
+                      <th className="colu" scope="col">
+                        E-mail
+                      </th>
+                      <th className="colu" scope="col">
+                        Teléfono
+                      </th>
 
-          <div class="row">
-            <div class="col-lg-12">
-              <table className="table table-hover">
-                <thead>
-                  <tr>
-                    <th className="colu" scope="col">
-                      Candidato
-                    </th>
-                    <th className="colu" scope="col">
-                      E-mail
-                    </th>
-                    <th className="colu" scope="col">
-                      Teléfono
-                    </th>
-
-                    <th className="colu" scope="col">
-                      Linkedin
-                    </th>
-                    <th className="colu" scope="col">
-                      Estado
-                    </th>
-                    <th className="colu" scope="col">
-                      Ver
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {error != null
-                    ? "No hay candidatos"
-                    : candidatos.map((candidato) => {
-                        return (
-                          <AccionesDashboard
-                            key={candidato.idCandidato}
-                            candidato={candidato}
-                          />
-                        );
-                      })}
-                </tbody>
-              </table>
+                      <th className="colu" scope="col">
+                        Linkedin
+                      </th>
+                      <th className="colu" scope="col">
+                        Estado
+                      </th>
+                      <th className="colu" scope="col">
+                        Ver
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {candidatos.map((candidato) => {
+                      return (
+                        <AccionesDashboard
+                          key={candidato.idCandidato}
+                          candidato={candidato}
+                        />
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </Fragment>

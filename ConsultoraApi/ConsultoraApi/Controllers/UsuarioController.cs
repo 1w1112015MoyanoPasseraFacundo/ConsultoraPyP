@@ -73,7 +73,7 @@ namespace ConsultoraApi.Controllers
 
             if (listaCompetencias.Count == 0)
             {
-                return StatusCode(409, "No hay competencias con esos filtros");
+                return StatusCode(409, "No hay usuarios con esos filtros");
             }
 
             return Ok(listaCompetencias);
@@ -88,22 +88,33 @@ namespace ConsultoraApi.Controllers
                 BadRequest();
             }
             var usu = _mapper.Map<Usuario>(usuarioDto);
-            if (db.Usuarios.Any(x => x.NombreUsuario == usu.NombreUsuario))
+            if (_uRepo.UsuarioExists(usuarioDto.NombreUsuario))
             {
                 return StatusCode(409, "Ya existe el mismo nombre de usuario");
             }
+            if (_uRepo.NumeroDocumentoExists(usuarioDto.Documento))
+            {
+                return StatusCode(409, "Ya existe un usuario registrado con ese número de documento");
+            }
+            if (_uRepo.MailExists(usuarioDto.Mail))
+            {
+                return StatusCode(409, "Ya existe un usuario registrado con ese e-mail");
+            }
             usu.FechaSalida = null;
             usu.FechaAlta = DateTime.Now;
-            usu.Password = "awantia";
 
-            UsuariosXrole rolXUsuario = new UsuariosXrole();
-            rolXUsuario.IdUsuario = usu.IdUsuario;
-            rolXUsuario.IdRol = 2;
+         
 
-            _rURepo.CreateRolXUsuario(rolXUsuario);
             if (!_uRepo.CreateUsuario(usu))
             {
                 return StatusCode(500, $"Algo salió mal creando el usuario {usu.NombreUsuario}");
+            }
+            UsuariosXrole rolXUsuario = new UsuariosXrole();
+            rolXUsuario.IdUsuario = usu.IdUsuario;
+            rolXUsuario.IdRol = 2;
+            if (!_rURepo.CreateRolXUsuario(rolXUsuario))
+            {
+                return StatusCode(500, $"Algo salió mal creando el Usuario {rolXUsuario.IdUsuario} X Rol {rolXUsuario.IdRol}");
             }
 
             return Ok($"Usuario {usu.NombreUsuario} creado con exito");
@@ -122,10 +133,17 @@ namespace ConsultoraApi.Controllers
             {
                 return StatusCode(400, "El usuario no existe");
             }
-
-            if (db.Usuarios.Any(u => u.NombreUsuario == usuarioUpdateDto.NombreUsuario && u.IdUsuario != idUsuario))
+            if (_uRepo.UsuarioExists(usuarioUpdateDto.NombreUsuario))
             {
-                return StatusCode(409, "El nombre de usuario ya existe");
+                return StatusCode(409, "Ya existe el mismo nombre de usuario");
+            }
+            if (_uRepo.NumeroDocumentoExists(usuarioUpdateDto.Documento))
+            {
+                return StatusCode(409, "Ya existe un usuario registrado con ese número de documento");
+            }
+            if (_uRepo.MailExists(usuarioUpdateDto.Mail))
+            {
+                return StatusCode(409, "Ya existe un usuario registrado con ese e-mail");
             }
 
             usuario.NombreUsuario = usuarioUpdateDto.NombreUsuario;
@@ -138,7 +156,7 @@ namespace ConsultoraApi.Controllers
             usuario.Direccion = usuarioUpdateDto.Direccion;
             usuario.FechaNacimiento = usuarioUpdateDto.FechaNacimiento;
             usuario.Mail = usuarioUpdateDto.Mail;
-            usuario.IdGenero = usuarioUpdateDto.IdGenero;
+            usuario.IdGenero =  usuarioUpdateDto.IdGenero;
 
 
             if (!_uRepo.UpdateUsuario(usuario))
