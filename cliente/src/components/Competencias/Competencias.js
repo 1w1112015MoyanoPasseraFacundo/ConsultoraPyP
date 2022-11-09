@@ -1,24 +1,20 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { BsPlusLg, BsSearch } from "react-icons/bs";
+import ReactPaginate from "react-paginate";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import SPagination from "simple-react-pagination-js";
 import {
   obtenerCompetenciasAction,
   obtenerCompetenciasFilterAction,
 } from "../../actions/competenciasActions";
 import clienteAxios from "../../config/axios";
 import Spinner from "../../syles/Spinner";
-import Pagination from "../Pagination";
 import AccionesCompetencias from "./AccionesCompetencias";
 const Competencias = () => {
   const dispatch = useDispatch();
   const [nombre, guardarNombre] = useState("");
   const [idRubro, guardarRubro] = useState("");
   const [listaRubros, guardarRubros] = useState([]);
-  const value = localStorage.getItem("appointments_current_page") || "1";
-
-  const [actualPage, setActualPage] = useState(parseInt(value) || 1);
 
   useEffect(() => {
     const cargarCompetencias = () => dispatch(obtenerCompetenciasAction());
@@ -51,28 +47,22 @@ const Competencias = () => {
   // const cargando = useSelector((state) => state.competencias.loading);
   const empty = "";
 
-  let page = 1;
-  let size = 20;
-
-  const handleOnPageChange = (page) => {
-    this.setState({ page });
-  };
-
-  const handleOnSizeChange = (size) => {
-    this.setState({ size, page: 1 });
-  };
   const cargando = useSelector((state) => state.competencias.loading);
-  const lastClear = parseInt?.(localStorage.getItem("lastClear") || "1");
   const timeNow = new Date().getTime();
-  useEffect(() => {
-    // setAppointment(data?.data);
-    if (timeNow - lastClear > 3600000) {
-      localStorage.setItem("appointments_current_page", "1");
-      localStorage.setItem("lastClear", timeNow.toString());
-    } else {
-      localStorage.setItem("appointments_current_page", actualPage.toString());
-    }
-  }, []);
+  const itemsPerPage = 5;
+  const [itemOffset, setItemOffset] = useState(0);
+  const endOffset = itemOffset + itemsPerPage;
+  console.log(`Loading items from ${itemOffset} to ${endOffset}`);
+  const currentItems = competencias.slice(itemOffset, endOffset);
+  // Invoke when user click to request another page.
+  const handlePageClick = (event) => {
+    const newOffset = (event.selected * itemsPerPage) % competencias.length;
+    console.log(
+      `User requested page number ${event.selected}, which is offset ${newOffset}`
+    );
+    setItemOffset(newOffset);
+  };
+  const pageCount = Math.ceil(competencias.length / itemsPerPage);
   return (
     <Fragment>
       <h3 class="title-decorator">Habilidades</h3>
@@ -170,7 +160,7 @@ const Competencias = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {competencias.map((competencia) => (
+                  {currentItems.map((competencia) => (
                     <AccionesCompetencias
                       key={competencia.idCompetencia}
                       competencia={competencia}
@@ -180,23 +170,24 @@ const Competencias = () => {
               </table>
             </div>
           </div>
-          {/* <SPagination
-          page={page}
-          sizePerPage={size}
-          totalSize={89}
-          pagesNextToActivePage={1}
-          onPageChange={handleOnPageChange}
-          onSizeChange={handleOnSizeChange}
-        /> */}
-          <Pagination
-            setActualPage={setActualPage}
-            actualPage={actualPage}
-            totalPages={5}
-            numberPage={5}
-            // setActualPage={setActualPage}
-            // actualPage={actualPage}
-            // totalPages={data?.pagination.totalPages}
-            // numberPage={data?.pagination.numberPage}
+          <ReactPaginate
+            previousLabel="Anterior"
+            nextLabel="Siguiente"
+            pageClassName="page-item"
+            pageLinkClassName="page-link"
+            previousClassName="page-item"
+            previousLinkClassName="page-link"
+            nextClassName="page-item"
+            nextLinkClassName="page-link"
+            breakLabel="..."
+            breakClassName="page-item"
+            breakLinkClassName="page-link"
+            pageCount={pageCount}
+            marginPagesDisplayed={2}
+            pageRangeDisplayed={5}
+            onPageChange={handlePageClick}
+            containerClassName="pagination"
+            activeClassName="active"            
           />
         </div>
       )}

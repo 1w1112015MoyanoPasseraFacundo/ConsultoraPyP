@@ -1,5 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { BsPlusLg, BsSearch } from "react-icons/bs";
+import ReactPaginate from "react-paginate";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
@@ -39,6 +40,21 @@ const Usuarios = () => {
   const nuevo = () => {
     navigate("/usuarios/nuevo");
   };
+
+  const itemsPerPage = 5;
+  const [itemOffset, setItemOffset] = useState(0);
+  const endOffset = itemOffset + itemsPerPage;
+  console.log(`Loading items from ${itemOffset} to ${endOffset}`);
+  const currentItems = usuarios.slice(itemOffset, endOffset);
+  // Invoke when user click to request another page.
+  const handlePageClick = (event) => {
+    const newOffset = (event.selected * itemsPerPage) % usuarios.length;
+    console.log(
+      `User requested page number ${event.selected}, which is offset ${newOffset}`
+    );
+    setItemOffset(newOffset);
+  };
+  const pageCount = Math.ceil(usuarios.length / itemsPerPage);
   return (
     <Fragment>
       <h3 className="title-decorator">Usuarios</h3>
@@ -154,7 +170,7 @@ const Usuarios = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {usuarios.map((usuario) => {
+                  {currentItems.map((usuario) => {
                     console.log(usuario);
                     let fecha = usuario.fechaNacimiento.split("T");
                     usuario.fechaNacimiento = fecha[0];
@@ -169,6 +185,25 @@ const Usuarios = () => {
               </table>
             </div>
           </div>
+          <ReactPaginate
+            previousLabel="Anterior"
+            nextLabel="Siguiente"
+            pageClassName="page-item"
+            pageLinkClassName="page-link"
+            previousClassName="page-item"
+            previousLinkClassName="page-link"
+            nextClassName="page-item"
+            nextLinkClassName="page-link"
+            breakLabel="..."
+            breakClassName="page-item"
+            breakLinkClassName="page-link"
+            pageCount={pageCount}
+            marginPagesDisplayed={2}
+            pageRangeDisplayed={5}
+            onPageChange={handlePageClick}
+            containerClassName="pagination"
+            activeClassName="active"            
+          />
         </div>
       )}
       {cargando ? <Spinner /> : null}

@@ -8,6 +8,7 @@ import AccionesCliente from "./AccionesCliente";
 import { BsPlusLg, BsSearch } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import Spinner from "../../syles/Spinner";
+import ReactPaginate from "react-paginate";
 
 const Clientes = () => {
   const dispatch = useDispatch();
@@ -43,6 +44,20 @@ const cargando = useSelector((state) => state.clientes.loading);
 const error = useSelector((state) => state.clientes.error);
   console.log(error);
   console.log(clientes);
+  const itemsPerPage = 5;
+  const [itemOffset, setItemOffset] = useState(0);
+  const endOffset = itemOffset + itemsPerPage;
+  console.log(`Loading items from ${itemOffset} to ${endOffset}`);
+  const currentItems = clientes.slice(itemOffset, endOffset);
+  // Invoke when user click to request another page.
+  const handlePageClick = (event) => {
+    const newOffset = (event.selected * itemsPerPage) % clientes.length;
+    console.log(
+      `User requested page number ${event.selected}, which is offset ${newOffset}`
+    );
+    setItemOffset(newOffset);
+  };
+  const pageCount = Math.ceil(clientes.length / itemsPerPage);
   return (
     <Fragment>
       <h3 className="title-decorator">Clientes</h3>
@@ -145,7 +160,7 @@ const error = useSelector((state) => state.clientes.error);
                 </tr>
               </thead>
               <tbody>
-                {clientes.map((cliente) => {
+                {currentItems.map((cliente) => {
                       return (
                         <AccionesCliente
                           key={cliente.idCliente}
@@ -157,7 +172,26 @@ const error = useSelector((state) => state.clientes.error);
             </table>
           </div>
         </div>
-      </div>)}
+        <ReactPaginate
+            previousLabel="Anterior"
+            nextLabel="Siguiente"
+            pageClassName="page-item"
+            pageLinkClassName="page-link"
+            previousClassName="page-item"
+            previousLinkClassName="page-link"
+            nextClassName="page-item"
+            nextLinkClassName="page-link"
+            breakLabel="..."
+            breakClassName="page-item"
+            breakLinkClassName="page-link"
+            pageCount={pageCount}
+            marginPagesDisplayed={2}
+            pageRangeDisplayed={5}
+            onPageChange={handlePageClick}
+            containerClassName="pagination"
+            activeClassName="active"            
+          />
+          </div>)}
       
   {cargando ? <Spinner /> : null}
 

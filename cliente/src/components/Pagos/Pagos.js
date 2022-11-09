@@ -1,5 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { BsPlusLg, BsSearch } from "react-icons/bs";
+import ReactPaginate from "react-paginate";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
@@ -45,6 +46,20 @@ const Pagos = () => {
   const error = useSelector((state) => state.pagos.error);
   const cargando = useSelector((state) => state.pagos.loading);
   const empty = "";
+  const itemsPerPage = 5;
+  const [itemOffset, setItemOffset] = useState(0);
+  const endOffset = itemOffset + itemsPerPage;
+  console.log(`Loading items from ${itemOffset} to ${endOffset}`);
+  const currentItems = pagos.slice(itemOffset, endOffset);
+  // Invoke when user click to request another page.
+  const handlePageClick = (event) => {
+    const newOffset = (event.selected * itemsPerPage) % pagos.length;
+    console.log(
+      `User requested page number ${event.selected}, which is offset ${newOffset}`
+    );
+    setItemOffset(newOffset);
+  };
+  const pageCount = Math.ceil(pagos.length / itemsPerPage);
   return (
     <Fragment>
       <h3 className="title-decorator">Cobranzas</h3>
@@ -150,7 +165,7 @@ const Pagos = () => {
                 </tr>
               </thead>
               <tbody>
-                {pagos.map((pago) => {
+                {currentItems.map((pago) => {
                       console.log(pago);
                       let fecha = pago.fechaPago.split("T");
                       pago.fechaPago = fecha[0];
@@ -160,6 +175,25 @@ const Pagos = () => {
             </table>
           </div>
         </div>
+        <ReactPaginate
+            previousLabel="Anterior"
+            nextLabel="Siguiente"
+            pageClassName="page-item"
+            pageLinkClassName="page-link"
+            previousClassName="page-item"
+            previousLinkClassName="page-link"
+            nextClassName="page-item"
+            nextLinkClassName="page-link"
+            breakLabel="..."
+            breakClassName="page-item"
+            breakLinkClassName="page-link"
+            pageCount={pageCount}
+            marginPagesDisplayed={2}
+            pageRangeDisplayed={5}
+            onPageChange={handlePageClick}
+            containerClassName="pagination"
+            activeClassName="active"            
+          />
       </div>)}
 {cargando ? <Spinner /> : null}
     </Fragment>
