@@ -32,7 +32,7 @@ export default function (state = initialState, action) {
         loading: false,
         error: action.payload,
       };
-      case COMENZAR_DESCARGA_CANDIDATOS:
+    case COMENZAR_DESCARGA_CANDIDATOS:
       return {
         ...state,
         loading: action.payload,
@@ -42,7 +42,7 @@ export default function (state = initialState, action) {
         ...state,
         loading: false,
         candidatos: [...state.candidatos, action.payload],
-        error: null,
+        error: false,
       };
     case AGREGAR_CANDIDATO_ERROR:
     case DESCARGA_CANDIDATOS_ERROR:
@@ -80,6 +80,7 @@ export default function (state = initialState, action) {
       return {
         ...state,
         editar: null,
+        error: false,
         candidatos: state.candidatos.map((candidato) =>
           candidato.idCandidato === action.payload.idCandidato
             ? (candidato = action.payload)

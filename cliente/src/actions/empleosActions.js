@@ -71,11 +71,10 @@ export function crearNuevoEmpleoAction(empleo) {
       //insertar en la API
       await clienteAxios.post("/empleos", empleo);
       dispatch(agregarEmpleoExito(empleo));
-      Swal.fire("Correcto!", "El empleo se agrego correctamente!", "success");
     } catch (error) {
       console.log(error);
       dispatch(agregarEmpleoError(true));
-      Swal.fire("Hubo un error!", "Intenta de nuevo", "error");
+      Swal.fire(error.response.data, "Intenta de nuevo", "error");
     }
   };
 }
@@ -111,11 +110,10 @@ export function editarEmpleoAction(empleo) {
     dispatch(editarEmpleo());
     try {
       await clienteAxios.put(`/empleos/${empleo.idEmpleo}`, empleo);
-      console.log(empleo);
       dispatch(editarEmpleoExito(empleo));
       Swal.fire("Editado!", "El empleo ha sido editado", "success");
     } catch (error) {
-      console.log(error);
+      Swal.fire(error.response.data, "Intenta de nuevo", "error");
       dispatch(editarEmpleoError());
     }
   };

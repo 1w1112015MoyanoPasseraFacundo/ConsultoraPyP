@@ -37,7 +37,7 @@ export default function (state = initialState, action) {
         ...state,
         loading: false,
         clientes: [...state.clientes, action.payload],
-        error: null,
+        error: false,
       };
     case DESCARGA_CLIENTES_EXITOS:
       return {
@@ -62,6 +62,7 @@ export default function (state = initialState, action) {
       return {
         ...state,
         editar: null,
+        error: false,
         clientes: state.clientes.map((cliente) =>
           cliente.idCliente === action.payload.idCliente
             ? (cliente = action.payload)
@@ -81,11 +82,11 @@ export default function (state = initialState, action) {
         ),
         eliminar: null,
       };
-      case COMENZAR_DESCARGA_CLIENTES:
-        return {
-          ...state,
-          loading: action.payload,
-        };
+    case COMENZAR_DESCARGA_CLIENTES:
+      return {
+        ...state,
+        loading: action.payload,
+      };
     default:
       return state;
   }

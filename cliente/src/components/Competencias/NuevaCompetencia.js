@@ -1,20 +1,42 @@
 import React, { useState } from "react";
+import { useEffect } from "react";
 import { BsCheckLg, BsReplyFill } from "react-icons/bs";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 import { crearNuevaCompetenciaAction } from "../../actions/competenciasActions";
 import clienteAxios from "../../config/axios";
 const NuevaCompetencia = () => {
   const [nombre, guardarNombre] = useState("");
   const [idRubro, guardarRubro] = useState(0);
   const [listaRubros, guardarRubros] = useState([]);
+  const error = useSelector((state) => state.competencias.error);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  //SETIAR A 0 idRubro
+  useEffect(() => {
+    if (listaRubros.length === 0) {
+      guardarRubro(0);
+    }
+  }, [listaRubros]);
+
+  useEffect(() => {
+    if (error === false) {
+      Swal.fire(
+        "Correcto!",
+        "El usuario se agrego correctamente!",
+        "success"
+      ).then((result) => {
+        if (result.isConfirmed) {
+          navigate("/competencias");
+        }
+      });
+    }
+  }, [error]);
   const agregarCompetencia = (competencia) => {
     dispatch(crearNuevaCompetenciaAction(competencia));
-    navigate("/competencias");
   };
 
   const llenarRubro = async () => {
@@ -23,26 +45,18 @@ const NuevaCompetencia = () => {
   };
   const submitNuevaCompetencia = (e) => {
     e.preventDefault();
-
     //validar form
-    if (nombre.trim() === "") {
-      // const alerta = {
-      //   msg: "Ambos campos son obligatorios",
-      //   clases: "alert alert-danger text-center text-uppercase p3",
-      // };
-
-      //   dispatch(mostrarAlerta(alerta));
-
+    console.log(idRubro);
+    if (nombre.trim() === "" || idRubro === 0 || idRubro === "0") {
+      Swal.fire("Llene todos los campos", "", "warning");
+      console.log(idRubro);
       return;
     }
-
-    // dispatch(ocultarAlertaAction());
 
     agregarCompetencia({
       nombre,
       idRubro,
     });
-    navigate("/competencias");
   };
 
   const cancelar = () => {
@@ -77,7 +91,7 @@ const NuevaCompetencia = () => {
                     value={idRubro}
                     onChange={(e) => guardarRubro(e.target.value)}
                   >
-                    <option>Seleccione...</option>
+                    <option value={0}>Seleccione...</option>
                     {listaRubros.map((rubro) => (
                       <option key={rubro.idRubro} value={rubro.idRubro}>
                         {rubro.nombre}

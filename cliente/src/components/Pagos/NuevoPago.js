@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { BsCheckLg, BsReplyFill } from "react-icons/bs";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { crearNuevoPagoAction } from "../../actions/pagosActions";
@@ -14,11 +14,24 @@ const NuevoPago = () => {
   const [listaEmpleos, guardarEmpleos] = useState([]);
   const [idEmpleo, guardarEmpleo] = useState(0);
   const [listaClientes, guardarClientes] = useState([]);
-  const [fechaPago, guardarFechaPago] = useState();
+  const [fechaPago, guardarFechaPago] = useState("");
 
   const dispatch = useDispatch();
+  const error = useSelector((state) => state.pagos.error);
+  useEffect(() => {
+    if (error === false) {
+      Swal.fire(
+        "Correcto!",
+        "El pago se agrego correctamente!",
+        "success"
+      ).then((result) => {
+        if (result.isConfirmed) {
+          navigate("/pagos");
+        }
+      });
+    }
+  }, [error]);
 
-  // const alerta = useSelector((state) => state.alerta.alerta);
   //llama PagoAction
   const agregarPago = (pago) => dispatch(crearNuevoPagoAction(pago));
 
@@ -33,29 +46,32 @@ const NuevoPago = () => {
         `/Empleos/GetEmpleosByIdCliente?idCliente=${idCliente}`
       );
       guardarEmpleos(resultado.data);
-      console.log(resultado);
     };
     llenarEmpleos();
   }, [idCliente]);
 
+  //SETIAR A 0 IDEMPLEO CUANDO CAMBIA CLIENTE
+  useEffect(() => {
+    if (listaEmpleos.length === 0) {
+      guardarEmpleo(0);
+    }
+  }, [listaEmpleos, idCliente]);
+
   const submitNuevoPago = (e) => {
     e.preventDefault();
-
     //validar form
-    if (montoPago.trim() === "" || idCliente === 0) {
-      Swal.fire("Debe completar todos los campos", "", "warning");
-      // const alerta = {
-      //   msg: "Ambos campos son obligatorios",
-      //   clases: "alert alert-danger text-center text-uppercase p3",
-      // };
+    if (
+      montoPago === "" ||
+      idCliente === 0 ||
+      idEmpleo === 0 ||
+      fechaPago === "" ||
+      montoPago.includes("-")
+    ) {
+      console.log(fechaPago);
 
-      //   dispatch(mostrarAlerta(alerta));
-
+      Swal.fire("Llene todos los campos obligatorios", "", "warning");
       return;
     }
-
-    // dispatch(ocultarAlertaAction());
-
     agregarPago({
       montoPago,
       Estado,
@@ -63,18 +79,18 @@ const NuevoPago = () => {
       fechaPago,
       idEmpleo,
     });
-    navigate("/pagos");
   };
   const cancelar = () => {
     navigate("/pagos");
   };
   var curr = new Date();
   curr.setDate(curr.getDate());
-  var date = curr.toISOString().substring(0, 10);
+  var date = curr.toISOString().substring(0, 10).toString();
+
   return (
     <div className="row justify-content-center">
       <div className="col-md-12">
-        <h3 className="title-decorator">Nuevo Pago</h3>
+        <h3 className="title-decorator">Nuevo cobro</h3>
         <div className="card">
           <div className="card-body">
             {/* {alerta ? <p className={alerta.clases}>{alerta.msg}</p>:null} */}
@@ -122,13 +138,14 @@ const NuevoPago = () => {
                     prefix="$"
                     className="form-control"
                     placeholder="$"
+                    min="0"
                     name="montoPago"
                     value={montoPago}
                     onChange={(e) => guardarMonto(e.target.value)}
                   />
                 </div>
                 <div className="form-group col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                  <label>Fecha de pago</label>
+                  <label>Fecha de cobro</label>
                   <input
                     type="date"
                     className="form-control"

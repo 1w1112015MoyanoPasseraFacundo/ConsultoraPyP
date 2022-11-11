@@ -131,9 +131,9 @@ namespace ConsultoraApi.Controllers
                 BadRequest();
             }
             var compe = _mapper.Map<Competencia>(competenciaDto);
-            if (db.Competencias.Any(x => x.Nombre == compe.Nombre))
+            if (_uRepo.CompetenciaExists(competenciaDto.Nombre) && _uRepo.CompetenciaExists(competenciaDto.IdRubro))
             {
-                return StatusCode(409, "Ya existe un competencia con ese nombre");
+                return StatusCode(409, "Ya existe una habilidad idéntica");
             }
             compe.InicioVigencia = DateTime.Now;
 
@@ -152,6 +152,12 @@ namespace ConsultoraApi.Controllers
             {
                 BadRequest();
             }
+
+            if (_uRepo.CompetenciaExists(competenciaUpdateDto.IdCompetencia,competenciaUpdateDto.Nombre) && _uRepo.CompetenciaExists(competenciaUpdateDto.IdCompetencia, competenciaUpdateDto.IdRubro))
+            {
+                return StatusCode(409, "Ya existe una habilidad idéntica");
+            }
+
             var compe = _uRepo.GetCompetencia(idCompetencia);
 
 

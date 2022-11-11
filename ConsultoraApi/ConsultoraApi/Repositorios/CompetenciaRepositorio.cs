@@ -58,6 +58,26 @@ namespace ConsultoraApi.Repositorios
             return Save();
         }
 
+        public bool CompetenciaExists(string competencia)
+        {
+            return db.Competencias.Any(u => u.Nombre.ToLower() == competencia.ToLower());
+        }
+
+        public bool CompetenciaExists(int idRubro)
+        {
+            return db.Competencias.Any(u => u.IdRubro == idRubro);
+        }
+
+        public bool CompetenciaExists(int idCompetencia, string competencia)
+        {
+            return db.Competencias.Any(u => u.IdCompetencia != idCompetencia && u.Nombre.ToLower() == competencia.ToLower());
+        }
+
+        public bool CompetenciaExists(int idCompetencia, int idRubro)
+        {
+            return db.Competencias.Any(u => u.IdCompetencia != idCompetencia && u.IdRubro == idRubro);
+        }
+
         public bool DarDeBajaCompetencia(Competencia competencia)
         {
             db.Competencias.Update(competencia);

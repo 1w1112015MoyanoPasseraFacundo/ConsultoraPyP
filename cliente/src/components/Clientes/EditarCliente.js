@@ -7,7 +7,13 @@ import clienteAxios from "../../config/axios";
 const EditarCliente = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const error = useSelector((state) => state.clientes.error);
 
+  useEffect(() => {
+    if (error === false) {
+      navigate("/clientes");
+    }
+  }, [error]);
   const [cliente, guardarCliente] = useState({
     nombre: "",
     nombreFantasia: "",
@@ -129,6 +135,9 @@ const EditarCliente = () => {
                     className="form-control"
                     placeholder="Documento"
                     name="documento"
+                    min="0"
+                    minLength={11}
+                    maxLength={11}
                     value={documento}
                     onChange={onChangeFormulario}
                   />
@@ -169,6 +178,7 @@ const EditarCliente = () => {
                     <label className="form-label"> Teléfono </label>
                     <input
                       type="Number"
+                      min="0"
                       className="form-control"
                       name="telefono"
                       value={telefono}

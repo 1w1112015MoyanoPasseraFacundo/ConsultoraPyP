@@ -28,8 +28,9 @@ export function crearNuevoUsuarioAction(usuario) {
       //insertar en la API
       await clienteAxios.post("/Usuarios", usuario);
       dispatch(agregarUsuarioExito(usuario));
-      Swal.fire("Correcto!", "El usuario se agrego correctamente!", "success");
     } catch (error) {
+      Swal.fire(error.response.data, "Intenta de nuevo", "error");
+
       dispatch(agregarUsuarioError(error.response.data));
       return;
     }
@@ -142,7 +143,7 @@ export function editarUsuarioAction(usuario) {
       await clienteAxios.put(`/usuarios/${usuario.idUsuario}`, usuario);
       console.log(usuario);
       dispatch(editarUsuarioExito(usuario));
-      // Swal.fire("Editado!", "El usuario ha sido editado", "success");
+      Swal.fire("Editado!", "El usuario ha sido editado", "success");
     } catch (error) {
       console.log(error);
       Swal.fire(error.response.data, "Intenta de nuevo", "error");

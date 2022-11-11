@@ -9,6 +9,7 @@ import React, { useEffect, useState } from "react";
 import { BsCheckLg, BsReplyFill } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 import { editarCandidatoAction } from "../../actions/candidatosActions";
 import clienteAxios from "../../config/axios";
 import { useGetCompetencia } from "../Empleos/Hooks/useGetCompetencia";
@@ -65,6 +66,13 @@ const EditarCandidato = () => {
     lstCompes,
   } = candidato;
   console.log(candidato);
+  const error = useSelector((state) => state.candidatos.error);
+
+  useEffect(() => {
+    if (error === false) {
+      navigate("/candidatos");
+    }
+  }, [error]);
   useEffect(() => {
     const consultarAPI = async () => {
       const resultado = await clienteAxios.get(`/rubros`);
@@ -90,6 +98,28 @@ const EditarCandidato = () => {
 
   const submitEditarCandidato = (e) => {
     e.preventDefault();
+    //validar form
+    if (
+      nombre.trim() === "" ||
+      apellido.trim() === "" ||
+      idTipoDocumento === 0 ||
+      idTipoDocumento === "0" ||
+      mail.trim() === "" ||
+      documento === "" ||
+      idRubro === "0" ||
+      idRubro === 0 ||
+      idGenero === "0" ||
+      idGenero === 0 ||
+      idPais === "0" ||
+      idPais === 0 ||
+      fechaNacimiento.trim() === "" ||
+      lstCompes.length === 0 ||
+      documento.toString().includes("-") ||
+      telefono.includes("-")
+    ) {
+      Swal.fire("Llene los campos obligatorios", "", "warning");
+      return;
+    }
     dispatch(editarCandidatoAction(candidato));
     navigate("/candidatos");
   };

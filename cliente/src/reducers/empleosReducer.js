@@ -50,7 +50,7 @@ export default function (state = initialState, action) {
         ...state,
         loading: false,
         empleos: [...state.empleos, action.payload],
-        error: null,
+        error: false,
       };
     case OBTENER_EMPLEO_EDITAR:
       return {
@@ -61,6 +61,7 @@ export default function (state = initialState, action) {
       return {
         ...state,
         editar: null,
+        error: false,
         empleos: state.empleos.map((empleo) =>
           empleo.idEmpleo === action.payload.idEmpleo
             ? (empleo = action.payload)

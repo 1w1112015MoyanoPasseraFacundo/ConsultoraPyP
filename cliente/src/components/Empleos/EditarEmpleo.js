@@ -9,6 +9,7 @@ import React, { useEffect, useState } from "react";
 import { BsCheckLg, BsReplyFill } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 import { editarEmpleoAction } from "../../actions/empleosActions";
 import clienteAxios from "../../config/axios";
 import { Multipleselect } from "../MultipleSelect";
@@ -28,7 +29,13 @@ const EditarEmpleo = () => {
   const [listaClientes, guardarClientes] = useState([]);
   const [listaRubros, guardarRubros] = useState([]);
   const editar = useSelector((state) => state.empleos.editar);
-  console.log("EDITAR", editar);
+  const error = useSelector((state) => state.empleos.error);
+
+  useEffect(() => {
+    if (error === false) {
+      navigate("/empleos");
+    }
+  }, [error]);
   useEffect(() => {
     const consultarAPI = async () => {
       const resultado = await clienteAxios.get(`/rubros`);
@@ -56,9 +63,22 @@ const EditarEmpleo = () => {
     navigate("/empleos");
   };
   const { nombre, idCliente, idEstado, idRubro, modalidad, lstCompes } = empleo;
-  console.log("EMPLEO", empleo);
   const submitEditarCliente = (e) => {
     e.preventDefault();
+    console.log(lstCompes);
+    //validar form
+    if (
+      nombre === "" ||
+      idCliente === 0 ||
+      idCliente === "0" ||
+      modalidad === "" ||
+      idRubro === 0 ||
+      idRubro === "0"
+      // || lstCompes.length === 0
+    ) {
+      Swal.fire("Llene todos los campos obligatorios", "", "warning");
+      return;
+    }
     dispatch(editarEmpleoAction(empleo));
     navigate("/empleos");
   };
@@ -94,7 +114,7 @@ const EditarEmpleo = () => {
                     value={idCliente}
                     onChange={onChangeFormulario}
                   >
-                    <option>Seleccione...</option>
+                    <option value={0}>Seleccione...</option>
                     {listaClientes.map((cliente) => (
                       <option key={cliente.idCliente} value={cliente.idCliente}>
                         {cliente.nombre}

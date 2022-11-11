@@ -78,7 +78,7 @@ export function crearNuevaCompetenciaAction(competencia) {
     } catch (error) {
       console.log(error);
       dispatch(agregarCompetenciaError(true));
-      Swal.fire("Hubo un error!", "Intenta de nuevo", "error");
+      Swal.fire(error.response.data, "Intenta de nuevo", "error");
     }
   };
 }
@@ -120,6 +120,7 @@ export function editarCompetenciaAction(competencia) {
       dispatch(editarCompetenciaExito(competencia));
       Swal.fire("Editado!", "El habilidad ha sido editada", "success");
     } catch (error) {
+      Swal.fire(error.response.data, "Intenta de nuevo", "error");
       dispatch(editarCompetenciaError());
     }
   };

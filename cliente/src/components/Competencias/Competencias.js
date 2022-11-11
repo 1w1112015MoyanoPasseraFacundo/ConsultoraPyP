@@ -3,6 +3,7 @@ import { BsPlusLg, BsSearch } from "react-icons/bs";
 import ReactPaginate from "react-paginate";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 import {
   obtenerCompetenciasAction,
   obtenerCompetenciasFilterAction,
@@ -12,16 +13,19 @@ import Spinner from "../../syles/Spinner";
 import AccionesCompetencias from "./AccionesCompetencias";
 const Competencias = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [nombre, guardarNombre] = useState("");
   const [idRubro, guardarRubro] = useState("");
   const [listaRubros, guardarRubros] = useState([]);
-
+  const competencias = useSelector((state) => state.competencias.competencias);
+  const error = useSelector((state) => state.competencias.error);
+  const cargando = useSelector((state) => state.competencias.loading);
   useEffect(() => {
     const cargarCompetencias = () => dispatch(obtenerCompetenciasAction());
     cargarCompetencias();
     // eslint-disable-next-line
   }, []);
-  const navigate = useNavigate();
+
   const buscar = (datos) => {
     console.log(datos);
     dispatch(obtenerCompetenciasFilterAction(datos));
@@ -40,15 +44,8 @@ const Competencias = () => {
     const resultado = await clienteAxios.get(`/rubros`);
     guardarRubros(resultado.data);
   };
-  const competencias = useSelector((state) => state.competencias.competencias);
-  console.log(competencias);
-  const error = useSelector((state) => state.competencias.error);
-  console.log(error);
-  // const cargando = useSelector((state) => state.competencias.loading);
   const empty = "";
 
-  const cargando = useSelector((state) => state.competencias.loading);
-  const timeNow = new Date().getTime();
   const itemsPerPage = 5;
   const [itemOffset, setItemOffset] = useState(0);
   const endOffset = itemOffset + itemsPerPage;
@@ -57,9 +54,6 @@ const Competencias = () => {
   // Invoke when user click to request another page.
   const handlePageClick = (event) => {
     const newOffset = (event.selected * itemsPerPage) % competencias.length;
-    console.log(
-      `User requested page number ${event.selected}, which is offset ${newOffset}`
-    );
     setItemOffset(newOffset);
   };
   const pageCount = Math.ceil(competencias.length / itemsPerPage);
@@ -187,7 +181,7 @@ const Competencias = () => {
             pageRangeDisplayed={5}
             onPageChange={handlePageClick}
             containerClassName="pagination"
-            activeClassName="active"            
+            activeClassName="active"
           />
         </div>
       )}

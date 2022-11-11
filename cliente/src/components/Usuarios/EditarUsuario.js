@@ -26,6 +26,13 @@ const EditarUsuario = () => {
   });
 
   const editar = useSelector((state) => state.usuarios.editar);
+  const error = useSelector((state) => state.usuarios.error);
+
+  useEffect(() => {
+    if (error === false) {
+      navigate("/usuarios");
+    }
+  }, [error]);
   // console.log(editar);
   useEffect(() => {
     const consultarAPI = async () => {
@@ -74,15 +81,15 @@ const EditarUsuario = () => {
       documento === "" ||
       nombreUsuario.trim() === "" ||
       password.trim() === "" ||
-      fechaNacimiento.trim() === ""
+      fechaNacimiento.trim() === "" ||
+      documento.includes("-") ||
+      telefono.includes("-")
     ) {
       Swal.fire("Llene los campos obligatorios", "", "warning");
       return;
     }
 
     dispatch(editarUsuarioAction(usuario));
-    console.log(usuario);
-    navigate("/usuarios");
   };
   const cancelar = () => {
     navigate("/usuarios");
@@ -165,6 +172,9 @@ const EditarUsuario = () => {
                     className="form-control"
                     placeholder="Documento"
                     name="documento"
+                    min="0"
+                    minLength={8}
+                    maxLength={8}
                     value={documento}
                     onChange={onChangeFormulario}
                   />
@@ -228,6 +238,8 @@ const EditarUsuario = () => {
                       type="Number"
                       className="form-control"
                       name="telefono"
+                      min="0"
+                      minLength={8}
                       value={telefono}
                       onChange={onChangeFormulario}
                     />

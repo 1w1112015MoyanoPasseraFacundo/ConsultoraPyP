@@ -1,7 +1,9 @@
 import React, { useState } from "react";
+import { useEffect } from "react";
 import { BsCheckLg, BsReplyFill } from "react-icons/bs";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 import { crearNuevoClienteAction } from "../../actions/clientesActions";
 import clienteAxios from "../../config/axios";
 
@@ -20,8 +22,22 @@ const NuevoCliente = () => {
   const [idPais, guardarPais] = useState(0);
   const [telefono, guardarTelefono] = useState("");
   const dispatch = useDispatch();
+  const error = useSelector((state) => state.clientes.error);
+  useEffect(() => {
+    console.log(error);
+    if (error === false) {
+      Swal.fire(
+        "Correcto!",
+        "El cliente se agrego correctamente!",
+        "success"
+      ).then((result) => {
+        if (result.isConfirmed) {
+          navigate("/clientes");
+        }
+      });
+    }
+  }, [error]);
 
-  // const alerta = useSelector((state) => state.alerta.alerta);
   //llama clienteAction
   const agregarCliente = (cliente) =>
     dispatch(crearNuevoClienteAction(cliente));
@@ -39,32 +55,35 @@ const NuevoCliente = () => {
     e.preventDefault();
 
     //validar form
-    if (nombre.trim() === "") {
-      // const alerta = {
-      //   msg: "Ambos campos son obligatorios",
-      //   clases: "alert alert-danger text-center text-uppercase p3",
-      // };
-
-      //   dispatch(mostrarAlerta(alerta));
-
+    if (
+      nombre.trim() === "" ||
+      nombreFantasia.trim() === "" ||
+      mail.trim() === "" ||
+      idPais === 0 ||
+      idPais === "0" ||
+      documento === "" ||
+      idRubro === "0" ||
+      idRubro === 0 ||
+      direccion.trim() === "" ||
+      telefono === "" ||
+      documento.includes("-") ||
+      telefono.includes("-")
+    ) {
+      console.log(idRubro);
+      Swal.fire("Llene todos los campos obligatorios", "", "warning");
       return;
     }
-
-    // dispatch(ocultarAlertaAction());
 
     agregarCliente({
       nombre,
       nombreFantasia,
       mail,
-      //   idTipoDocumento,
       documento,
       telefono,
-      //   idGenero,
       idPais,
       idRubro,
       direccion,
     });
-    navigate("/clientes");
   };
   const cancelar = () => {
     navigate("/clientes");
@@ -122,7 +141,7 @@ const NuevoCliente = () => {
                     onClick={llenarPais}
                     onChange={(e) => guardarPais(e.target.value)}
                   >
-                    <option>Seleccione...</option>
+                    <option value={0}>Seleccione...</option>
                     {listaPaises.map((pais) => (
                       <option key={pais.idPais} value={pais.idPais}>
                         {pais.nombre}
@@ -133,9 +152,12 @@ const NuevoCliente = () => {
                 <div className="form-group col-lg-4 col-md-4 col-sm-12 col-xs-12">
                   <label>CUIT</label>
                   <input
-                    type="text"
+                    type="number"
                     className="form-control"
-                    placeholder="Documento"
+                    placeholder="Cuit"
+                    min="0"
+                    minLength={11}
+                    maxLength="11"
                     name="documento"
                     value={documento}
                     onChange={(e) => guardarDocumento(e.target.value)}
@@ -150,7 +172,7 @@ const NuevoCliente = () => {
                     onClick={consultarAPI}
                     onChange={(e) => guardarRubro(e.target.value)}
                   >
-                    <option>Seleccione...</option>
+                    <option value={0}>Seleccione...</option>
                     {listaRubros.map((rubro) => (
                       <option key={rubro.idRubro} value={rubro.idRubro}>
                         {rubro.nombre}
@@ -178,6 +200,7 @@ const NuevoCliente = () => {
                     <label className="form-label"> Teléfono </label>
                     <input
                       type="Number"
+                      min="0"
                       className="form-control"
                       name="telefono"
                       value={telefono}

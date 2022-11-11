@@ -84,18 +84,23 @@ namespace ConsultoraApi.Controllers
                 BadRequest();
             }
             var clien = _mapper.Map<Cliente>(clienteDto);
-            if (db.Clientes.Any(x => x.Documento == clien.Documento))
+            if (_cRepo.MailExists(clienteDto.Mail))
             {
-                return StatusCode(409, "Ya existe un Cliente con ese documento");
-            } 
-            if (db.Clientes.Any(x => x.NombreFantasia == clien.NombreFantasia))
-            {
-                return StatusCode(409, "Ya existe un Cliente con esa razón");
+                return StatusCode(409, "Ya existe un cliente registrado con ese e-mail");
             }
-            if (db.Clientes.Any(x => x.Nombre == clien.Nombre))
+            if (_cRepo.RazonExists(clienteDto.nombreFantasia))
             {
-                return StatusCode(409, "Ya existe un Cliente con ese nombre");
+                return StatusCode(409, "Ya existe un cliente registrado con esa razón");
             }
+            if (_cRepo.CuitExists(clienteDto.Documento))
+            {
+                return StatusCode(409, "Ya existe un cliente registrado con ese CUIT");
+            }
+            if (_cRepo.TelefonoExists(clienteDto.Telefono))
+            {
+                return StatusCode(409, "Ya existe un cliente registrado con ese teléfono");
+            }
+
             clien.IdEstado = 1;
             clien.FechaAlta = DateTime.Now;
             clien.IdGenero = 1;
@@ -122,17 +127,21 @@ namespace ConsultoraApi.Controllers
             }
             //var cliente = _cRepo.GetCliente(idCliente);
             var clien = _mapper.Map<Cliente>(clienteUpdateDto);
-            if (db.Clientes.Any(x => x.Documento == clien.Documento && x.IdCliente!=clien.IdCliente))
+            if (_cRepo.MailExists(clienteUpdateDto.IdCliente,clienteUpdateDto.Mail))
             {
-                return StatusCode(409, "Ya existe un Cliente con ese documento");
+                return StatusCode(409, "Ya existe un cliente registrado con ese e-mail");
             }
-            if (db.Clientes.Any(x => x.NombreFantasia == clien.NombreFantasia && x.IdCliente != clien.IdCliente))
+            if (_cRepo.RazonExists(clienteUpdateDto.IdCliente,clienteUpdateDto.nombreFantasia))
             {
-                return StatusCode(409, "Ya existe un Cliente con esa razón");
+                return StatusCode(409, "Ya existe un cliente registrado con esa razón");
             }
-            if (db.Clientes.Any(x => x.Nombre == clien.Nombre && x.IdCliente != clien.IdCliente))
+            if (_cRepo.CuitExists(clienteUpdateDto.IdCliente,clienteUpdateDto.Documento))
             {
-                return StatusCode(409, "Ya existe un Cliente con ese nombre");
+                return StatusCode(409, "Ya existe un cliente registrado con ese CUIT");
+            }
+            if (_cRepo.TelefonoExists(clienteUpdateDto.IdCliente,clienteUpdateDto.Telefono))
+            {
+                return StatusCode(409, "Ya existe un cliente registrado con ese teléfono");
             }
 
             if (!_cRepo.UpdateCliente(clien))

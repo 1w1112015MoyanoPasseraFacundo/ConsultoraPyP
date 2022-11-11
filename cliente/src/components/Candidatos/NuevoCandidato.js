@@ -6,6 +6,8 @@ import clienteAxios from "../../config/axios";
 import { BsCheckLg, BsReplyFill } from "react-icons/bs";
 import { Multipleselect } from "../MultipleSelect";
 import { useGetCompetencia } from "../Empleos/Hooks/useGetCompetencia";
+import { useEffect } from "react";
+import Swal from "sweetalert2";
 const NuevoCandidato = () => {
   const navigate = useNavigate();
   //state
@@ -27,8 +29,21 @@ const NuevoCandidato = () => {
   const [telefono, guardarTelefono] = useState("");
   const [lstCompes, guardarCompetencias] = useState([]);
   const dispatch = useDispatch();
+  const error = useSelector((state) => state.candidatos.error);
+  useEffect(() => {
+    if (error === false) {
+      Swal.fire(
+        "Correcto!",
+        "El candidato se agrego correctamente!",
+        "success"
+      ).then((result) => {
+        if (result.isConfirmed) {
+          navigate("/candidatos");
+        }
+      });
+    }
+  }, [error]);
 
-  // const alerta = useSelector((state) => state.alerta.alerta);
   //llama candidatoAction
   const agregarCandidato = (candidato) =>
     dispatch(crearNuevoCandidatoAction(candidato));
@@ -47,20 +62,28 @@ const NuevoCandidato = () => {
   };
   const submitNuevoCandidato = (e) => {
     e.preventDefault();
-
     //validar form
-    if (nombre.trim() === "") {
-      // const alerta = {
-      //   msg: "Ambos campos son obligatorios",
-      //   clases: "alert alert-danger text-center text-uppercase p3",
-      // };
-
-      //   dispatch(mostrarAlerta(alerta));
-
+    if (
+      nombre.trim() === "" ||
+      apellido.trim() === "" ||
+      idTipoDocumento === 0 ||
+      idTipoDocumento === "0" ||
+      mail.trim() === "" ||
+      documento.trim() === "" ||
+      idRubro === "0" ||
+      idRubro === 0 ||
+      idGenero === "0" ||
+      idGenero === 0 ||
+      idPais === "0" ||
+      idPais === 0 ||
+      fechaNacimiento.trim() === "" ||
+      lstCompes.length === 0 ||
+      documento.includes("-") ||
+      telefono.includes("-")
+    ) {
+      Swal.fire("Llene los campos obligatorios", "", "warning");
       return;
     }
-
-    // dispatch(ocultarAlertaAction());
 
     agregarCandidato({
       nombre,
@@ -78,7 +101,6 @@ const NuevoCandidato = () => {
       estadoCivil,
       lstCompes,
     });
-    navigate("/candidatos");
   };
   const cancelar = () => {
     navigate("/candidatos");
@@ -139,7 +161,7 @@ const NuevoCandidato = () => {
                     onClick={llenarTipoDoc}
                     onChange={(e) => guardarTipoDocumento(e.target.value)}
                   >
-                    <option>Seleccione...</option>
+                    <option value={0}>Seleccione...</option>
                     {listaTiposDocs.map((tipoDocumento) => (
                       <option
                         key={tipoDocumento.idTipoDocumento}
@@ -155,6 +177,9 @@ const NuevoCandidato = () => {
                   <input
                     type="text"
                     className="form-control"
+                    min="0"
+                    maxLength={8}
+                    minLength={8}
                     placeholder="Documento"
                     name="documento"
                     value={documento}
@@ -207,7 +232,7 @@ const NuevoCandidato = () => {
                     value={idGenero}
                     onChange={(e) => guardarGenero(e.target.value)}
                   >
-                    <option>Seleccione...</option>
+                    <option value={0}>Seleccione...</option>
                     {listaGeneros.map((genero) => (
                       <option key={genero.idGenero} value={genero.idGenero}>
                         {genero.nombre}
@@ -240,6 +265,7 @@ const NuevoCandidato = () => {
                       type="Number"
                       className="form-control"
                       name="telefono"
+                      min="0"
                       value={telefono}
                       onChange={(e) => guardarTelefono(e.target.value)}
                     />

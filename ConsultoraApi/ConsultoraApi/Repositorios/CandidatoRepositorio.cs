@@ -71,7 +71,22 @@ namespace ConsultoraApi.Repositorios
             db.Candidatos.Update(candidato);
             return Save();
         }
-
+        public bool MailExists(string mail)
+        {
+            return db.Candidatos.Any(u => u.Mail.ToLower() == mail.ToLower());
+        }
+        public bool MailExists(int idCandidato, string mail)
+        {
+            return db.Candidatos.Any(u => u.IdCandidato != idCandidato && u.Mail.ToLower() == mail.ToLower());
+        }
+        public bool CandidatoExists(int documento)
+        {
+            return db.Candidatos.Any(u => u.Documento== documento);
+        }
+        public bool CandidatoExists(int idCandidato, int documento)
+        {
+            return db.Candidatos.Any(u => u.IdCandidato != idCandidato && u.Documento == documento);
+        }
         public bool DarDeBajaCandidato(Candidato candidato)
         {
             db.Candidatos.Update(candidato);

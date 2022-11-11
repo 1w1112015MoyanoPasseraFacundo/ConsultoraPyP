@@ -24,15 +24,9 @@ export function crearNuevoCandidatoAction(candidato) {
       //insertar en la API
       await clienteAxios.post("/candidatos", candidato);
       dispatch(agregarCandidatoExito(candidato));
-      Swal.fire(
-        "Correcto!",
-        "El candidato se agrego correctamente!",
-        "success"
-      );
     } catch (error) {
-      console.log(error);
+      Swal.fire(error.response.data, "Intenta de nuevo", "error");
       dispatch(agregarCandidatoError(true));
-      Swal.fire("Hubo un error!", "Intenta de nuevo", "error");
     }
   };
 }
@@ -70,9 +64,9 @@ export function editarCandidatoAction(candidato) {
       await clienteAxios.put(`/candidatos/${candidato.idCandidato}`, candidato);
       console.log(candidato);
       dispatch(editarCandidatoExito(candidato));
-      // Swal.fire("Editado!", "El candidato ha sido editado", "success");
+      Swal.fire("Editado!", "El candidato ha sido editado", "success");
     } catch (error) {
-      console.log(error);
+      Swal.fire(error.response.data, "Intenta de nuevo", "error");
       dispatch(editarCandidatoError());
     }
   };

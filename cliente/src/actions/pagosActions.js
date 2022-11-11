@@ -84,10 +84,9 @@ export function crearNuevoPagoAction(pago) {
       await clienteAxios.post("/Pagos", pago);
       console.log(pago);
       dispatch(agregarPagoExito(pago));
-      Swal.fire("Correcto!", "El pago se agrego correctamente!", "success");
     } catch (error) {
+      Swal.fire(error.response.data, "Intenta de nuevo", "error");
       dispatch(agregarPagoError(true));
-      Swal.fire("Hubo un error!", "Intenta de nuevo", "error");
     }
   };
 }
@@ -124,11 +123,10 @@ export function editarPagoAction(pago) {
     dispatch(editarPago());
     try {
       await clienteAxios.put(`/Pagos/${pago.idPago}`, pago);
-      console.log(pago);
       dispatch(editarPagoExito(pago));
       Swal.fire("Editado!", "El pago ha sido editado", "success");
     } catch (error) {
-      console.log(error);
+      Swal.fire(error.response.data, "Intenta de nuevo", "error");
       dispatch(editarPagoError());
     }
   };

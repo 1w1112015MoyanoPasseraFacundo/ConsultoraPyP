@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { BsCheckLg, BsReplyFill } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 import { editarCompetenciaAction } from "../../actions/competenciasActions";
 import clienteAxios from "../../config/axios";
 const EditarCompetencia = () => {
@@ -13,7 +14,13 @@ const EditarCompetencia = () => {
     idRubro: 0,
   });
   const editar = useSelector((state) => state.competencias.editar);
-  // console.log(editar);
+  const error = useSelector((state) => state.competencias.error);
+
+  useEffect(() => {
+    if (error === false) {
+      navigate("/competencias");
+    }
+  }, [error]);
   useEffect(() => {
     guardarCompetencia(editar);
   }, [editar]);
@@ -26,12 +33,24 @@ const EditarCompetencia = () => {
   };
 
   const { nombre, idRubro } = competencia;
-
+  //SETIAR A 0 IDEMPLEO CUANDO CAMBIA CLIENTE
+  useEffect(() => {
+    if (idRubro === 0) {
+      competencia.nombreRubro = "";
+    }
+  }, [idRubro, competencia.nombreRubro]);
   const submitEditarCompetencia = (e) => {
     e.preventDefault();
-    dispatch(editarCompetenciaAction(competencia));
+    console.log(idRubro);
     console.log(competencia);
-    navigate("/competencias");
+
+    //validar form
+    if (nombre.trim() === "" || idRubro === 0 || idRubro === "0") {
+      console.log(idRubro);
+      Swal.fire("Llene los campos obligatorios", "", "warning");
+      return;
+    }
+    dispatch(editarCompetenciaAction(competencia));
   };
   const [listaRubros, guardarRubros] = useState([]);
   useEffect(() => {

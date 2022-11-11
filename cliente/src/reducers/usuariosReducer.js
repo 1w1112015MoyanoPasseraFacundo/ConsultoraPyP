@@ -44,7 +44,7 @@ export default function (state = initialState, action) {
         ...state,
         loading: false,
         usuarios: [...state.usuarios, action.payload],
-        error: null,
+        error: false,
       };
     case DESCARGA_USUARIOS_ERROR:
       return {
@@ -88,6 +88,7 @@ export default function (state = initialState, action) {
       return {
         ...state,
         editar: null,
+        error: false,
         usuarios: state.usuarios.map((usuario) =>
           usuario.idUsuario === action.payload.idUsuario
             ? (usuario = action.payload)

@@ -9,13 +9,18 @@ import Cookies from "js-cookie";
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  // const autenticado = useSelector((state) => state.login.autenticado);
   const token = localStorage.getItem("token");
+  const autenticado = useSelector((state) => state.login.autenticado);
+  console.log("Auten", autenticado);
+  
   console.log(token);
   const mensaje = useSelector((state) => state.login.mensaje);
   console.log(mensaje);
   useEffect(() => {
-    if (token) {
+    // if(autenticado===true){
+    //   navigate("/", {replace:true});
+    // }
+    if (token!=null) {
       navigate("/", {replace:true});
     }
   }, [token]);
@@ -36,8 +41,8 @@ const Login = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    // try{
-    //validar campos vacios
+    try{
+    // validar campos vacios
     if (nombreUsuario.trim() === "" || password.trim() === "") {
       Swal.fire("Todos los campos son obligatorios", "Intenta de nuevo", "error");
     }
@@ -45,9 +50,9 @@ const Login = () => {
      dispatch(iniciarSesion({ nombreUsuario, password }));
       //  navigate("/", {replace:true});
 
-    // }catch(error){
+    }catch(error){
 
-    // }
+    }
 
 
 

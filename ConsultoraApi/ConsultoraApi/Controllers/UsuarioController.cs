@@ -100,6 +100,14 @@ namespace ConsultoraApi.Controllers
             {
                 return StatusCode(409, "Ya existe un usuario registrado con ese e-mail");
             }
+            if (_uRepo.validarEdad(usuarioDto.FechaNacimiento) < 18)
+            {
+                return StatusCode(409, "El usuario debe ser mayor de edad");
+            }
+            if (!_uRepo.IsValid(usuarioDto.Mail))
+            {
+                return StatusCode(409, "El mail ingresado no contiene el formato esperado");
+            }
             usu.FechaSalida = null;
             usu.FechaAlta = DateTime.Now;
 
@@ -129,21 +137,25 @@ namespace ConsultoraApi.Controllers
             var usuario = _uRepo.GetUsuario(idUsuario);
 
 
-            if (usuario == null)
-            {
-                return StatusCode(400, "El usuario no existe");
-            }
-            if (_uRepo.UsuarioExists(usuarioUpdateDto.NombreUsuario))
+            if (_uRepo.UsuarioExists(  usuarioUpdateDto.IdUsuario, usuarioUpdateDto.NombreUsuario))
             {
                 return StatusCode(409, "Ya existe el mismo nombre de usuario");
             }
-            if (_uRepo.NumeroDocumentoExists(usuarioUpdateDto.Documento))
+            if (_uRepo.NumeroDocumentoExists(usuarioUpdateDto.IdUsuario, usuarioUpdateDto.Documento))
             {
                 return StatusCode(409, "Ya existe un usuario registrado con ese número de documento");
             }
-            if (_uRepo.MailExists(usuarioUpdateDto.Mail))
+            if (_uRepo.MailExists(usuarioUpdateDto.IdUsuario, usuarioUpdateDto.Mail))
             {
                 return StatusCode(409, "Ya existe un usuario registrado con ese e-mail");
+            }
+            if (_uRepo.validarEdad(usuarioUpdateDto.FechaNacimiento) < 18)
+            {
+                return StatusCode(409, "El usuario debe ser mayor de edad");
+            }
+            if (!_uRepo.IsValid(usuarioUpdateDto.Mail))
+            {
+                return StatusCode(409, "El mail ingresado no contiene el formato esperado");
             }
 
             usuario.NombreUsuario = usuarioUpdateDto.NombreUsuario;

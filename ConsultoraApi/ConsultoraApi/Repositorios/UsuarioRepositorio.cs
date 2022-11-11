@@ -2,6 +2,7 @@
 using ConsultoraApi.Dtos.DtosUsuarios;
 using ConsultoraApi.Models;
 using ConsultoraApi.Repositorios.IRepositorios;
+using System.Text.RegularExpressions;
 
 namespace ConsultoraApi.Repositorios
 {
@@ -75,6 +76,52 @@ namespace ConsultoraApi.Repositorios
         public bool MailExists(string mail)
         {
             return db.Usuarios.Any(u => u.Mail.ToLower() == mail.ToLower());
+        }
+         public bool UsuarioExists(int idUsuario, string NombreUsuario)
+        {
+            return db.Usuarios.Any(u => u.IdUsuario != idUsuario && u.NombreUsuario.ToLower() == NombreUsuario.ToLower());
+        }
+        public bool MailExists(int idUsuario, string mail)
+        {
+            return db.Usuarios.Any(u => u.IdUsuario != idUsuario && u.Mail.ToLower() == mail.ToLower());
+        }
+
+        public bool NumeroDocumentoExists(int idUsuario, int NumeroDocumento)
+        {
+            return db.Usuarios.Any(u => u.IdUsuario != idUsuario && u.Documento == NumeroDocumento);
+        }
+        public bool IsValid(string emailaddress)
+        {
+            var regex = @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,7})+)$";
+            bool isValid = Regex.IsMatch(emailaddress, regex, RegexOptions.IgnoreCase);
+            return isValid;
+        }
+        public int validarEdad(DateTime fechaNac)
+        {
+            DateTime fechaHoy = DateTime.Now;
+            int diaActual = fechaHoy.DayOfYear;
+            int diaNac = fechaNac.DayOfYear;
+
+            //SI NACIO UN DIA DEL AÑO ANTERIOR AL DIA DEL AÑO ACTUAL, RESTAR LOS AÑOS COMUNMENTE 
+            int edad = fechaHoy.Year - fechaNac.Year;
+
+
+            //VALIDAR SI LOS AÑOS SON BISIESTOS
+            if (fechaHoy.Year % 4 == 0 && fechaHoy.Year % 100 != 0 || fechaHoy.Year % 400 == 0)
+            {
+                diaActual--;
+            }
+            if (fechaNac.Year % 4 == 0 && fechaNac.Year % 100 != 0 || fechaNac.Year % 400 == 0)
+            {
+                diaNac--;
+            }
+
+            //SI NACIO UN DIA DEL AÑO POSTERIOR AL DIA DEL AÑO ACTUAL, RESTAR UN AÑO AL RESULTADO DE LA RESTA DE AÑOS COMUN 
+            if (diaActual < diaNac)
+            {
+                edad--;
+            }
+            return edad;
         }
         public bool NumeroDocumentoExists(int NumeroDocumento)
         {

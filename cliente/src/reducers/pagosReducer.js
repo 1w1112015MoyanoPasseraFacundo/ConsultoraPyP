@@ -31,11 +31,11 @@ export default function (state = initialState, action) {
         loading: false,
         error: action.payload,
       };
-      case COMENZAR_DESCARGA_PAGOS:
-        return {
-          ...state,
-          loading: action.payload,
-        };
+    case COMENZAR_DESCARGA_PAGOS:
+      return {
+        ...state,
+        loading: action.payload,
+      };
     case DESCARGA_PAGOS_EXITOS:
       return {
         ...state,
@@ -55,7 +55,7 @@ export default function (state = initialState, action) {
         ...state,
         loading: false,
         pagos: [...state.pagos, action.payload],
-        error: null,
+        error: false,
       };
     case OBTENER_PAGO_EDITAR:
       return {
@@ -66,6 +66,7 @@ export default function (state = initialState, action) {
       return {
         ...state,
         editar: null,
+        error: false,
         pagos: state.pagos.map((pago) =>
           pago.idPago === action.payload.idPago ? (pago = action.payload) : pago
         ),

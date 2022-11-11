@@ -1,7 +1,8 @@
 import React, { useMemo, useState, useEffect } from "react";
 import { BsCheckLg, BsReplyFill } from "react-icons/bs";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 import { obtenerCompetenciasAction } from "../../actions/competenciasActions";
 import { crearNuevoEmpleoAction } from "../../actions/empleosActions";
 import clienteAxios from "../../config/axios";
@@ -21,8 +22,20 @@ const NuevoEmpleo = () => {
   const [lstCompes, guardarCompetencias] = useState([]);
   const dispatch = useDispatch();
 
-  // const alerta = useSelector((state) => state.alerta.alerta);
-  //llama empleoAction
+  const error = useSelector((state) => state.empleos.error);
+  useEffect(() => {
+    if (error === false) {
+      Swal.fire(
+        "Correcto!",
+        "El empleo se agrego correctamente!",
+        "success"
+      ).then((result) => {
+        if (result.isConfirmed) {
+          navigate("/empleos");
+        }
+      });
+    }
+  }, [error]); //llama empleoAction
   const agregarEmpleo = (empleo) => dispatch(crearNuevoEmpleoAction(empleo));
 
   const consultarAPI = async () => {
@@ -38,18 +51,18 @@ const NuevoEmpleo = () => {
     e.preventDefault();
 
     //validar form
-    if (nombre.trim() === "") {
-      // const alerta = {
-      //   msg: "Ambos campos son obligatorios",
-      //   clases: "alert alert-danger text-center text-uppercase p3",
-      // };
-
-      //   dispatch(mostrarAlerta(alerta));
-
+    if (
+      nombre === "" ||
+      idCliente === 0 ||
+      idCliente === "0" ||
+      modalidad === "" ||
+      idRubro === 0 ||
+      idRubro === "0" ||
+      lstCompes.length === 0
+    ) {
+      Swal.fire("Llene todos los campos obligatorios", "", "warning");
       return;
     }
-
-    // dispatch(ocultarAlertaAction());
 
     agregarEmpleo({
       nombre,
@@ -60,7 +73,6 @@ const NuevoEmpleo = () => {
       modalidad,
       lstCompes,
     });
-    navigate("/empleos");
   };
   const cancelar = () => {
     navigate("/empleos");
@@ -96,7 +108,7 @@ const NuevoEmpleo = () => {
                     onClick={llenarClientes}
                     onChange={(e) => guardarCliente(e.target.value)}
                   >
-                    <option>Seleccione...</option>
+                    <option value={0}>Seleccione...</option>
                     {listaClientes.map((cliente) => (
                       <option key={cliente.idCliente} value={cliente.idCliente}>
                         {cliente.nombre}

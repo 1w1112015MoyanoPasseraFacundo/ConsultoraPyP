@@ -114,9 +114,13 @@ namespace ConsultoraApi.Controllers
                 BadRequest();
             }
             var cand = _mapper.Map<Candidato>(candidatoDto);
-            if (db.Candidatos.Any(x => x.Documento == cand.Documento))
+            if (_uRepo.MailExists(candidatoDto.Mail))
             {
-                return StatusCode(409, "Ya existe un candidato con ese documento");
+                return StatusCode(409, "Ya existe un candidato registrado con ese e-mail");
+            }
+            if (_uRepo.CandidatoExists(candidatoDto.Documento))
+            {
+                return StatusCode(409, "Ya existe un candidato registrado con ese documento");
             }
             cand.IdEstado = 1;
             cand.Estado = "Postulado";
@@ -154,9 +158,13 @@ namespace ConsultoraApi.Controllers
                 return StatusCode(400, "El candidato no existe");
             }
 
-            if (db.Candidatos.Any(u => u.Documento == candidatoUpdateDto.Documento && u.IdCandidato != idCandidato))
+            if (_uRepo.MailExists(candidatoUpdateDto.IdCandidato, candidatoUpdateDto.Mail))
             {
-                return StatusCode(409, "El nombre de candidato ya existe");
+                return StatusCode(409, "Ya existe un usuario registrado con ese e-mail");
+            }
+            if (_uRepo.CandidatoExists(candidatoUpdateDto.IdCandidato, candidatoUpdateDto.Documento))
+            {
+                return StatusCode(409, "Ya existe un usuario registrado con ese documento");
             }
 
             candidato.Nombre = candidatoUpdateDto.Nombre;

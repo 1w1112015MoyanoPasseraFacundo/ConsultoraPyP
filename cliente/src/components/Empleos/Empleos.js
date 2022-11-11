@@ -66,7 +66,6 @@ const Empleos = () => {
   const itemsPerPage = 5;
   const [itemOffset, setItemOffset] = useState(0);
   const endOffset = itemOffset + itemsPerPage;
-  console.log(`Loading items from ${itemOffset} to ${endOffset}`);
   const currentItems = empleos.slice(itemOffset, endOffset);
   // Invoke when user click to request another page.
   const handlePageClick = (event) => {
@@ -175,47 +174,50 @@ const Empleos = () => {
           </form>
         </div>
       </div>
-      {error != null ? (
-        <div role="alert" className="alert text-center animated fadeIn notFound">
+      {error != null || empleos.length === 0 ? (
+        <div
+          role="alert"
+          className="alert text-center animated fadeIn notFound"
+        >
           <img src={require("../../assets/documentNotFound.gif")} alt="404" />
-          <h2  >No se encontraron resultados.</h2>
+          <h2>No se encontraron resultados.</h2>
         </div>
       ) : (
-      <div class="card custom-card-shadow">
-        <table className="table table-hover">
-          <thead>
-            <tr>
-              <th className="colu" scope="col">
-                Descripción
-              </th>
-              <th className="colu" scope="col">
-                Cliente
-              </th>
-              <th className="colu" scope="col">
-                Rubro
-              </th>
-              <th className="colu" scope="col">
-                Modalidad
-              </th>
-              <th className="colu" scope="col">
-                Estado
-              </th>
+        <div class="card custom-card-shadow">
+          <table className="table table-hover">
+            <thead>
+              <tr>
+                <th className="colu" scope="col">
+                  Descripción
+                </th>
+                <th className="colu" scope="col">
+                  Cliente
+                </th>
+                <th className="colu" scope="col">
+                  Rubro
+                </th>
+                <th className="colu" scope="col">
+                  Modalidad
+                </th>
+                <th className="colu" scope="col">
+                  Estado
+                </th>
 
-              <th className="colu" scope="col">
-                Acciones
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {currentItems.map((empleo) => {
-                  console.log(empleo);
-                  return (
-                    <AccionesEmpleos key={empleo.idEmpleo} empleo={empleo} />
-                  );
-                })}
-          </tbody>
-        </table>
-        <ReactPaginate
+                <th className="colu" scope="col">
+                  Acciones
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {currentItems.map((empleo) => {
+                console.log(empleo);
+                return (
+                  <AccionesEmpleos key={empleo.idEmpleo} empleo={empleo} />
+                );
+              })}
+            </tbody>
+          </table>
+          <ReactPaginate
             previousLabel="Anterior"
             nextLabel="Siguiente"
             pageClassName="page-item"
@@ -232,9 +234,10 @@ const Empleos = () => {
             pageRangeDisplayed={5}
             onPageChange={handlePageClick}
             containerClassName="pagination"
-            activeClassName="active"            
+            activeClassName="active"
           />
-      </div>)}
+        </div>
+      )}
       {cargando ? <Spinner /> : null}
     </Fragment>
   );

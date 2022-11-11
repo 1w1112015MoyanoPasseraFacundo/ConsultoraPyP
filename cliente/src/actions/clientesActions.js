@@ -71,11 +71,9 @@ export function crearNuevoClienteAction(cliente) {
       //insertar en la API
       await clienteAxios.post("/clientes", cliente);
       dispatch(agregarClienteExito(cliente));
-      Swal.fire("Correcto!", "El cliente se agrego correctamente!", "success");
     } catch (error) {
-      console.log(error);
+      Swal.fire(error.response.data, "Intenta de nuevo", "error");
       dispatch(agregarClienteError(true));
-      Swal.fire("Hubo un error!", "Intenta de nuevo", "error");
     }
   };
 }
@@ -115,7 +113,7 @@ export function editarClienteAction(cliente) {
       dispatch(editarClienteExito(cliente));
       Swal.fire("Editado!", "El cliente ha sido editado", "success");
     } catch (error) {
-      console.log(error);
+      Swal.fire(error.response.data, "Intenta de nuevo", "error");
       dispatch(editarClienteError());
     }
   };

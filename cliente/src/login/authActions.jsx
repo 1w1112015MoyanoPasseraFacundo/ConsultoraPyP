@@ -9,8 +9,6 @@ export function usuarioAutenticado() {
     console.log("LOCALLLMENTE2", localStorage.getItem("token"));
     console.log("LOCALLLMENTE1", token);
 
-
-    // const token = Cookies.get("token");
     console.log(token);
     return async (dispatch) => {
     try {
@@ -60,11 +58,12 @@ export function usuarioAutenticado() {
   };
  
   export function cerrarSesion() {
-    // Cookies.remove("token");
-    localStorage.removeItem("token");
     return  (dispatch) => {
-    dispatch({
-      type: CERRAR_SESION,
-    });
-}
+      dispatch(cerrar());
+    }
   };
+
+  const cerrar = () => ({
+    type: CERRAR_SESION,
+    payload: false,
+  });

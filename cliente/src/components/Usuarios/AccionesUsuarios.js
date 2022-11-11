@@ -63,10 +63,10 @@ const AccionesUsuarios = ({ usuario }) => {
         <span>{mail}</span>
       </td>
       <td>
-        <span>{fechaSalida ? "NO" : "SI"}</span>
+        <span>{telefono}</span>
       </td>
       <td>
-        <span>{telefono}</span>
+        <span>{fechaSalida ? "NO" : "SI"}</span>
       </td>
       <td className="acciones">
         <button

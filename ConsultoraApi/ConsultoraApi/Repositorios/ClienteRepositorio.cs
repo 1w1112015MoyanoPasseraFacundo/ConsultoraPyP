@@ -52,6 +52,40 @@ namespace ConsultoraApi.Repositorios
 
             return lstUsuarios;
         }
+
+        public bool MailExists(string mail)
+        {
+            return db.Clientes.Any(u => u.Mail.ToLower() == mail.ToLower());
+        }
+        public bool MailExists(int idCliente, string mail)
+        {
+            return db.Clientes.Any(u => u.IdCliente != idCliente && u.Mail.ToLower() == mail.ToLower());
+        }  
+        public bool RazonExists(string razon)
+        {
+            return db.Clientes.Any(u => u.RazonSocial.ToLower() == razon.ToLower());
+        }
+        public bool RazonExists(int idCliente, string razon)
+        {
+            return db.Clientes.Any(u => u.IdCliente != idCliente && u.RazonSocial.ToLower() == razon.ToLower());
+        }
+        public bool CuitExists(int cuit)
+        {
+            return db.Clientes.Any(u => u.Documento == cuit);
+        }
+        public bool CuitExists(int idCliente, int cuit)
+        {
+            return db.Clientes.Any(u => u.IdCliente != idCliente && u.Documento == cuit);
+        }
+        public bool TelefonoExists(string telefono)
+        {
+            return db.Clientes.Any(u => u.Telefono == telefono);
+        }
+        public bool TelefonoExists(int idCliente, string telefono)
+        {
+            return db.Clientes.Any(u => u.IdCliente != idCliente && u.Telefono == telefono);
+        }
+
         public bool UpdateCliente(Cliente cliente)
         {
             db.Clientes.Update(cliente);

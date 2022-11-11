@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import Header from "./components/Header";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Candidatos from "./components/Candidatos/Candidatos";
@@ -26,7 +26,6 @@ import Login from "./login/Login";
 import Dashboard from "./components/dashboard";
 import RutaPrivada from "./components/RutaPrivada";
 import Reportes from "./components/Reportes/Reportes";
-import { usuarioAutenticado } from "./login/authActions";
 function App() {
   return (
     <Router>

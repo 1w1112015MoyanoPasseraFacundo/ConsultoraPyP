@@ -16,12 +16,16 @@ const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const autenticado = useSelector((state) => state.login.autenticado);
+  console.log(autenticado);
   useEffect(() => {
     dispatch(usuarioAutenticado());
   }, [autenticado]);
   const onSubmit = () => {
-    navigate("/login");
-    dispatch(cerrarSesion);
+    try {
+      dispatch(cerrarSesion);
+      localStorage.removeItem("token");
+      window.location.reload();
+    } catch (error) {}
   };
   const usuario = useSelector((state) => state.login.login);
   console.log(usuario);

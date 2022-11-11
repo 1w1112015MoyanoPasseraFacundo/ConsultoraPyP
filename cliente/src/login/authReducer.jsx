@@ -8,7 +8,7 @@ import {
   const initialState = {
     login: [],
     // token: Cookies.get("token"),
-    token: localStorage.getItem("token"),
+    token: null,
     autenticado: false,
     mensaje: null
   };
@@ -41,8 +41,6 @@ import {
           mensaje: action.payload,
         };
       case CERRAR_SESION:
-    // Cookies.remove("token");
-    localStorage.removeItem("token");
         return {
           ...state,
           token: null,

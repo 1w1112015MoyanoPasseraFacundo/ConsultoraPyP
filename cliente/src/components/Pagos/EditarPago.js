@@ -2,20 +2,30 @@ import React, { useEffect, useState } from "react";
 import { BsCheckLg, BsReplyFill } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 import { editarPagoAction } from "../../actions/pagosActions";
 import clienteAxios from "../../config/axios";
 const EditarPago = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [listaEmpleos, guardarEmpleos] = useState([]);
 
   const [pago, guardarPago] = useState({
     montoPago: 0,
     idCliente: 0,
+    idEmpleo: 0,
     Estado: 0,
     fechaPago: Date,
   });
   const [listaClientes, guardarClientes] = useState([]);
   const editar = useSelector((state) => state.pagos.editar);
+  const error = useSelector((state) => state.pagos.error);
+
+  useEffect(() => {
+    if (error === false) {
+      navigate("/pagos");
+    }
+  }, [error]);
   useEffect(() => {
     const llenarClientes = async () => {
       const resultado = await clienteAxios.get(`/Clientes`);
@@ -24,6 +34,16 @@ const EditarPago = () => {
     llenarClientes();
     guardarPago(editar);
   }, [editar]);
+
+  useEffect(() => {
+    const llenarEmpleo = async () => {
+      const resultado = await clienteAxios.get(
+        `/Empleos/GetEmpleosByIdCliente?idCliente=${idCliente}`
+      );
+      guardarEmpleos(resultado.data);
+    };
+    llenarEmpleo();
+  }, []);
 
   const onChangeFormulario = (e) => {
     guardarPago({
@@ -34,25 +54,38 @@ const EditarPago = () => {
   const cancelar = () => {
     navigate("/pagos");
   };
-  const { montoPago, idCliente, Estado, fechaPago } = pago;
+  const { montoPago, idCliente, Estado, fechaPago, idEmpleo, nombreEmpleo } =
+    pago;
   console.log(pago);
   const submitEditarPago = (e) => {
     e.preventDefault();
+    //validar form
+    console.log(montoPago);
+    if (
+      montoPago.trim() === "" ||
+      idCliente === 0 ||
+      idEmpleo === 0 ||
+      fechaPago.trim() === "" ||
+      montoPago.includes("-")
+    ) {
+      Swal.fire("Llene los campos obligatorios", "", "warning");
+      return;
+    }
     dispatch(editarPagoAction(pago));
-    navigate("/pagos");
   };
   return (
     <div className="row justify-content-center">
       <div className="col-md-12">
-        <h3 className="title-decorator">Editar Pago</h3>
+        <h3 className="title-decorator">Editar Cobro</h3>
         <div className="card">
           <div className="card-body">
             {/* {alerta ? <p className={alerta.clases}>{alerta.msg}</p>:null} */}
             <form>
               <div className="row p-t-20">
-                <div className="form-group col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                <div className="form-group col-lg-6 col-md-6 col-sm-12 col-xs-12">
                   <label>Cliente</label>
                   <select
+                    disabled="true"
                     className="form-control"
                     name="idCliente"
                     value={idCliente}
@@ -66,18 +99,35 @@ const EditarPago = () => {
                     ))}
                   </select>
                 </div>
-                <div className="form-group  col-lg-4 col-md-4 col-sm-12 col-xs-12">
+
+                <div className="form-group  col-lg-6 col-md-6col-sm-12 col-xs-12">
+                  <label>Empleo</label>
+                  <input
+                    disabled="true"
+                    type="text"
+                    className="form-control"
+                    placeholder="Empleo"
+                    name="nombreEmpleo"
+                    value={nombreEmpleo}
+                    onChange={onChangeFormulario}
+                  />
+                </div>
+              </div>
+              <div className="row p-t-20">
+                <div className="form-group  col-lg-6 col-md-6 col-sm-12 col-xs-12">
                   <label>Monto</label>
                   <input
                     type="number"
                     className="form-control"
                     placeholder="Monto"
+                    min="0"
                     name="montoPago"
                     value={montoPago}
                     onChange={onChangeFormulario}
                   />
                 </div>
-                <div className="form-group  col-lg-4 col-md-4 col-sm-12 col-xs-12">
+
+                <div className="form-group  col-lg-6 col-md-6 col-sm-12 col-xs-12">
                   <label>Fecha de pago</label>
                   <input
                     type="date"

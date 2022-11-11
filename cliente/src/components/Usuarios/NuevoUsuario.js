@@ -27,16 +27,25 @@ const NuevoUsuario = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const error = useSelector((state) => state.usuarios.error);
-  const mensaje = useSelector((state) => state.usuarios.mensaje);
   useEffect(() => {
-    if (error == true) {
-      Swal.fire(mensaje, "Intenta de nuevo", "error");
+    if (error === false) {
+      Swal.fire(
+        "Correcto!",
+        "El usuario se agrego correctamente!",
+        "success"
+      ).then((result) => {
+        if (result.isConfirmed) {
+          navigate("/usuarios");
+        }
+      });
     }
-    return;
-  }, [error, mensaje]);
+  }, [error]);
   //llama UsuarioAction
-  const agregarUsuario = (usuario) =>
-    dispatch(crearNuevoUsuarioAction(usuario));
+  const agregarUsuario = (usuario) => {
+    try {
+      dispatch(crearNuevoUsuarioAction(usuario));
+    } catch (error) {}
+  };
 
   const consultarAPI = async () => {
     const resultado = await clienteAxios.get(`/TiposDocumentos`);
@@ -55,7 +64,9 @@ const NuevoUsuario = () => {
       documento.trim() === "" ||
       nombreUsuario.trim() === "" ||
       password.trim() === "" ||
-      fechaNacimiento.trim() === ""
+      fechaNacimiento.trim() === "" ||
+      documento.includes("-") ||
+      telefono.includes("-")
     ) {
       Swal.fire("Llene los campos obligatorios", "", "warning");
       return;
@@ -135,7 +146,7 @@ const NuevoUsuario = () => {
                     value={idTipoDocumento}
                     onChange={(e) => guardarTipoDocumento(e.target.value)}
                   >
-                    <option value="">Seleccione...</option>
+                    <option>Seleccione...</option>
 
                     {listaTiposDocs.map((tipoDocumento) => (
                       <option
@@ -150,10 +161,13 @@ const NuevoUsuario = () => {
                 <div className="form-group col-lg-4 col-md-4 col-sm-12 col-xs-12">
                   <label>Documento</label>
                   <input
-                    type="text"
+                    type="number"
                     className="form-control"
                     placeholder="Documento"
                     name="documento"
+                    min="0"
+                    minLength={8}
+                    maxLength={8}
                     value={documento}
                     onChange={(e) => guardarDocumento(e.target.value)}
                   />
@@ -205,6 +219,9 @@ const NuevoUsuario = () => {
                       type="text"
                       className="form-control"
                       name="direccion"
+                      min="0"
+                      minLength={8}
+                      maxLength={8}
                       value={direccion}
                       onChange={(e) => guardarDireccion(e.target.value)}
                     />

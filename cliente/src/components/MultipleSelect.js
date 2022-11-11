@@ -11,6 +11,7 @@ export const Multipleselect = ({
   const optionsGeneric = useMemo(
     () =>
       options.map((e) => {
+        console.log("E", e);
         return { value: e.idCompetencia, label: e.nombre };
       }),
     [options]
@@ -32,8 +33,7 @@ export const Multipleselect = ({
     if (values !== undefined) {
       setSelectedOptions(values);
     }
-  }, []);
-
+  }, [values, selectedOptions]);
   return (
     <div>
       <Select

@@ -38,7 +38,7 @@ export default function (state = initialState, action) {
         ...state,
         loading: false,
         competencias: [...state.competencias, action.payload],
-        error: null,
+        error: false,
       };
     case AGREGAR_COMPETENCIA_ERROR:
     case DESCARGA_COMPETENCIAS_ERROR:
@@ -76,13 +76,14 @@ export default function (state = initialState, action) {
       return {
         ...state,
         editar: null,
+        error: false,
         competencias: state.competencias.map((competencia) =>
           competencia.idCompetencia === action.payload.idCompetencia
             ? (competencia = action.payload)
             : competencia
         ),
       };
-      case COMENZAR_DESCARGA_COMPETENCIAS:
+    case COMENZAR_DESCARGA_COMPETENCIAS:
       return {
         ...state,
         loading: action.payload,
