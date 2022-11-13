@@ -26,6 +26,8 @@ import Login from "./login/Login";
 import Dashboard from "./components/dashboard";
 import RutaPrivada from "./components/RutaPrivada";
 import Reportes from "./components/Reportes/Reportes";
+import Reporte1 from "./components/Reportes/Reporte1";
+import Busqueda from "./components/Reportes/Busqueda";
 function App() {
   return (
     <Router>
@@ -81,6 +83,8 @@ function App() {
             <Route exact path="/pagos" element={<Pagos />} />
             <Route exact path="/pagos/nuevo" element={<NuevoPago />} />
             <Route exact path="/pagos/editar/:id" element={<EditarPago />} />
+            <Route exact path="/reporte1" element={<Reporte1 />} />
+            <Route exact path="/busqueda" element={<Busqueda />} />
           </Route>
         </Routes>
       </Provider>

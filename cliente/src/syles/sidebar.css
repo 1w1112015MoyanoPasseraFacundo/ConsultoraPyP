@@ -41,7 +41,7 @@
   /* General sidebar styles */
   .bm-menu {
     background: rgb(42, 46, 63);
-    padding: 2.5em 1.5em 0;
+    padding: 0.5em 1.2em 0;
     font-size: 1.15em;
   }
   
@@ -69,7 +69,6 @@
   /* Individual item */
 .bm-item {
     display: inline-block;
-  
     color: #d1d1d1;
     margin-bottom: 10px;
     text-align: left;
@@ -77,9 +76,9 @@
     transition: color 0.2s;
   }
   
-  .bm-item:hover {
+  /* .bm-item:hover {
     color: #ffffff;
-  }
+  } */
 
   .menu-item{
     padding: 30px 35px 8px 15px;
@@ -87,5 +86,5 @@
     font-size: 20px;
     font-weight: 400;
     cursor: pointer;            
-
   }
+  

@@ -41,9 +41,51 @@ namespace ConsultoraApi.Controllers
 
                 if (empleo[i].IdEstado == 1)
                 {
-
                     empleoGetDto.Add(_mapper.Map<EmpleoGetDto>(empleo[i]));
                 }
+            }
+            if (empleoGetDto == null)
+            {
+                return StatusCode(409, "No existe ningún empleo activo actualmente");
+            }
+            for (int i = 0; i < empleoGetDto.Count; i++)
+            {
+                List<int> empXCompe = db.EmpleosXcompetencias.Where(x => x.IdEmpleo == empleoGetDto[i].IdEmpleo).Select(x => x.IdCompetencia).ToList();
+
+                List<CompetenciaListGetDto> compe = new List<CompetenciaListGetDto>();
+                for (int j = 0; j < empXCompe.Count; j++)
+                {
+                    var compes = db.Competencias.Where(x => x.IdCompetencia == empXCompe[j]).FirstOrDefault();
+                    compe.Add(_mapper.Map<CompetenciaListGetDto>(compes));
+                }
+
+                var estado = db.Estados.Where(x => x.IdEstado == empleoGetDto[i].idEstado).FirstOrDefault();
+                var rubro = db.Rubros.Where(x => x.IdRubro == empleoGetDto[i].IdRubro).FirstOrDefault();
+                var cliente = db.Clientes.Where(x => x.IdCliente == empleoGetDto[i].IdCliente).FirstOrDefault();
+                empleoGetDto[i].nombreRubro = rubro.Nombre;
+                empleoGetDto[i].nombreEstado = estado.Nombre;
+                empleoGetDto[i].nombreCliente = cliente.Nombre;
+                empleoGetDto[i].lstCompes = compe;
+
+
+            }
+
+            return Ok(empleoGetDto);
+
+        }
+
+        [HttpGet("GetAllEmpleos")]
+        public IActionResult GetAllEmpleos()
+        {
+            var empleo = db.Empleos.ToList();
+            if (empleo == null || empleo.Count == 0)
+            {
+                return StatusCode(400, "No existe ningún empleo registrado");
+            }
+            var empleoGetDto = new List<EmpleoGetDto>();
+            for (int i = 0; i < empleo.Count; i++)
+            {
+                    empleoGetDto.Add(_mapper.Map<EmpleoGetDto>(empleo[i]));
             }
             if (empleoGetDto == null)
             {

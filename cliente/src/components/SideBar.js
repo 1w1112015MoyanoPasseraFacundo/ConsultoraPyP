@@ -1,5 +1,26 @@
 import React from "react";
 import { slide as Menu } from "react-burger-menu";
+import {
+  BsCoin,
+  BsCurrencyDollar,
+  BsFillCalendarWeekFill,
+  BsFillFilePersonFill,
+  BsFillPersonFill,
+  BsFillPersonLinesFill,
+  BsFillPieChartFill,
+  BsFolder,
+  BsFolderFill,
+  BsFunnelFill,
+  BsGearFill,
+  BsHouse,
+  BsHouseDoorFill,
+  BsHouseFill,
+  BsPeopleFill,
+  BsSearch,
+  BsShieldFillCheck,
+  BsTools,
+  BsWrench,
+} from "react-icons/bs";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 const SideBar = () => {
@@ -27,35 +48,55 @@ const SideBar = () => {
   const repo = () => {
     navigate("/reportes");
   };
+  const rep = () => {
+    navigate("/reporte1");
+  };
+  const bus = () => {
+    navigate("/busqueda");
+  };
   return (
-    <Menu width={"250px"} customCrossIcon={false}>
-      <img src={require("../assets/logowhite.png")} height="100px" />
+    <Menu width={"284px"} customCrossIcon={false}>
       <a className="menu-item" href="/">
-        Inicio
+        <BsHouseDoorFill />
+        &nbsp; Inicio
       </a>
       <a className="menu-item" onClick={emp}>
-        Empleos
+        <BsFolderFill />
+        &nbsp; Empleos
       </a>
       <a className="menu-item" onClick={cand}>
-        Candidatos
+        <BsPeopleFill />
+        &nbsp; Candidatos
       </a>
       <a className="menu-item" onClick={clien}>
-        Clientes
+        <BsFillPersonLinesFill />
+        &nbsp; Clientes
       </a>
       {usuario.rol == "Admin" ? (
         <a className="menu-item" onClick={pago}>
-          Cobranzas
+          <BsCurrencyDollar />
+          &nbsp; Cobranzas
         </a>
       ) : null}
-
-      <a className="menu-item" onClick={compe}>
-        Habilidades
+      <a className="menu-item pull-center text-center" onClick={compe}>
+        <BsWrench />
+        &nbsp; Habilidades
       </a>
       <a className="menu-item" onClick={usu}>
-        Usuarios
+        <BsGearFill />
+        &nbsp; Usuarios
       </a>
       <a className="menu-item" onClick={repo}>
-        Reportes
+        <BsFillCalendarWeekFill />
+        &nbsp; Reportes
+      </a>
+      <a className="menu-item" onClick={rep}>
+        <BsFillPieChartFill />
+        &nbsp; Gráficos
+      </a>
+      <a className="menu-item" onClick={bus}>
+        <BsSearch />
+        &nbsp; Búsqueda
       </a>
     </Menu>
   );

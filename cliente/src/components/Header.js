@@ -33,8 +33,9 @@ const Header = () => {
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark justify-content-between header">
-      <div className="container">
-        <h1 className="titulo">Consultora PP</h1>
+      <div className="contei">
+        <img src={require("../assets/logowhite.png")} height="70px" />
+        {/* <h1 className="titulo">Consultora PP</h1> */}
       </div>
       <div class="dropdown">
         <span class="dropbtn">
@@ -59,7 +60,7 @@ const Header = () => {
                 <BsRecord />
               </i>
             </small>
-            &nbsp; Cambiar contraseña
+            &nbsp; Rol: {usuario.rol}
           </li>
           <li href="#">
             <a onClick={onSubmit}>

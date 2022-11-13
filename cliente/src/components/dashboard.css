@@ -6,6 +6,21 @@
     position: relative;
     
   }
+  .card-text {
+    font-weight: 400;
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .label-rounded {
+    border-radius: 60px;
+    background-color: #f9e7eb;
+    color:#ef5350 !important ;
+    font-size: 75%;
+    font-weight: 400;
+    padding: 3px 10px;
+    line-height: 13px;
+  }
 
   .title-font::after {
     content: '';

@@ -30,6 +30,20 @@ export function obtenerEmpleosAction() {
   };
 }
 
+export function obtenerAllEmpleosAction() {
+  return async (dispatch) => {
+    dispatch(descargarEmpleos());
+    try {
+      const respuesta = await clienteAxios.get("/Empleos/GetAllEmpleos");
+      dispatch(descargarEmpleosExitosa(respuesta.data));
+      console.log(respuesta.data);
+    } catch (error) {
+      console.log(error.response.data);
+      dispatch(descargarEmpleosError(error.response));
+    }
+  };
+}
+
 export function obtenerEmpleosFilterAction(filtros) {
   return async (dispatch) => {
     console.log(filtros);

@@ -49,16 +49,13 @@ const Pagos = () => {
   const itemsPerPage = 5;
   const [itemOffset, setItemOffset] = useState(0);
   const endOffset = itemOffset + itemsPerPage;
-  console.log(`Loading items from ${itemOffset} to ${endOffset}`);
   const currentItems = pagos.slice(itemOffset, endOffset);
   // Invoke when user click to request another page.
   const handlePageClick = (event) => {
     const newOffset = (event.selected * itemsPerPage) % pagos.length;
-    console.log(
-      `User requested page number ${event.selected}, which is offset ${newOffset}`
-    );
     setItemOffset(newOffset);
   };
+
   const pageCount = Math.ceil(pagos.length / itemsPerPage);
   return (
     <Fragment>
@@ -134,48 +131,52 @@ const Pagos = () => {
         </div>
       </div>
       {error != null ? (
-        <div role="alert" className="alert text-center animated fadeIn notFound">
+        <div
+          role="alert"
+          className="alert text-center animated fadeIn notFound"
+        >
           <img src={require("../../assets/documentNotFound.gif")} alt="404" />
-          <h2  >No se encontraron resultados.</h2>
+          <h2>No se encontraron resultados.</h2>
         </div>
-      ) : (<div class="card custom-card-shadow">
-        <div class="row">
-          <div class="col-lg-12">
-            <table className="table table-hover">
-              <thead>
-                <tr>
-                  <th className="colu" scope="col">
-                    Cliente
-                  </th>
-                  <th className="colu" scope="col">
-                    Empleo
-                  </th>
-                  <th className="colu" scope="col">
-                    Monto
-                  </th>
-                  <th align="center" className="colux" scope="col">
-                    Fecha
-                  </th>
-                  {/* <th className="colu" scope="col">
+      ) : (
+        <div class="card custom-card-shadow">
+          <div class="row">
+            <div class="col-lg-12">
+              <table className="table table-hover">
+                <thead>
+                  <tr>
+                    <th className="colu" scope="col">
+                      Cliente
+                    </th>
+                    <th className="colu" scope="col">
+                      Empleo
+                    </th>
+                    <th className="colu" scope="col">
+                      Monto
+                    </th>
+                    <th align="center" className="colux" scope="col">
+                      Fecha
+                    </th>
+                    {/* <th className="colu" scope="col">
                     Estado
                   </th> */}
-                  <th className="colu" scope="col">
-                    Acciones
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {currentItems.map((pago) => {
-                      console.log(pago);
-                      let fecha = pago.fechaPago.split("T");
-                      pago.fechaPago = fecha[0];
-                      return <AccionesPagos key={pago.idPago} pago={pago} />;
-                    })}
-              </tbody>
-            </table>
+                    <th className="colu" scope="col">
+                      Acciones
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {currentItems.map((pago) => {
+                    console.log(pago);
+                    let fecha = pago.fechaPago.split("T");
+                    pago.fechaPago = fecha[0];
+                    return <AccionesPagos key={pago.idPago} pago={pago} />;
+                  })}
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
-        <ReactPaginate
+          <ReactPaginate
             previousLabel="Anterior"
             nextLabel="Siguiente"
             pageClassName="page-item"
@@ -192,10 +193,11 @@ const Pagos = () => {
             pageRangeDisplayed={5}
             onPageChange={handlePageClick}
             containerClassName="pagination"
-            activeClassName="active"            
+            activeClassName="active"
           />
-      </div>)}
-{cargando ? <Spinner /> : null}
+        </div>
+      )}
+      {cargando ? <Spinner /> : null}
     </Fragment>
   );
 };
