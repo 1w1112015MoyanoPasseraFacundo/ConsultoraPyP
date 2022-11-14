@@ -78,7 +78,7 @@ const SideBar = () => {
           &nbsp; Cobranzas
         </a>
       ) : null}
-      <a className="menu-item pull-center text-center" onClick={compe}>
+      <a className="menu-item" onClick={compe}>
         <BsWrench />
         &nbsp; Habilidades
       </a>

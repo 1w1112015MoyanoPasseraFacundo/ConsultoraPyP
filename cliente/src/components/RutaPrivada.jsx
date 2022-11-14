@@ -16,7 +16,7 @@ const token = localStorage.getItem("token");
     <>
         <Header />
         <SideBar /> 
-      <div className="container cont mt-5"> 
+      <div className="container cont mt-5 min-vw-90"> 
         <Outlet /> 
       </div>
     </>

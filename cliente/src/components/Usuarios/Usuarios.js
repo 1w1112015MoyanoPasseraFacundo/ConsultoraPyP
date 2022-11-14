@@ -202,7 +202,7 @@ const Usuarios = () => {
             pageRangeDisplayed={5}
             onPageChange={handlePageClick}
             containerClassName="pagination"
-            activeClassName="active"            
+            activeClassName="active"
           />
         </div>
       )}

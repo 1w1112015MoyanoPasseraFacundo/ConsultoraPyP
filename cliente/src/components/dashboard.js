@@ -54,7 +54,7 @@ const Dashboard = () => {
   };
   return (
     <>
-      <div class="row">
+      <div class="row w-100">
         <div class="col-md-8">
           <div class="card custom-card-shadow">
             <div class="card-body">

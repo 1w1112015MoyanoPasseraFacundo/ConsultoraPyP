@@ -99,11 +99,13 @@ const Reporte1 = () => {
         <div className="gx-site-dash">
           <h5 className="gx-mb-3"> Empleos por rubros</h5>
           <br />
+          <div className="row">
           <div>
             <div class="foo blue"></div>Obras
           </div>
           <div>
-            <div class="foo purple"></div>Tech
+          <div class="foo purple"></div>Tech
+          </div>
           </div>
           {/* <div class="foo wine"></div> */}
 

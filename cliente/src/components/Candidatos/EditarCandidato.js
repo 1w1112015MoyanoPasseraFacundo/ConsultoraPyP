@@ -15,8 +15,7 @@ import clienteAxios from "../../config/axios";
 import { useGetCompetencia } from "../Empleos/Hooks/useGetCompetencia";
 import { Multipleselect } from "../MultipleSelect";
 const EditarCandidato = () => {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const navigate = useNavigate();  const dispatch = useDispatch();
 
   const [candidato, guardarCandidato] = useState({
     nombre: "",
