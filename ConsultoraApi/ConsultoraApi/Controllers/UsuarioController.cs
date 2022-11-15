@@ -22,14 +22,16 @@ namespace ConsultoraApi.Controllers
         private readonly IUsuarioRepositorio _uRepo;
         private readonly IUsuarioXRolRepositorio _rURepo;
         private readonly IJwtAuthenticationManager jwtAuthenticationManager;
+        private readonly EmailUtilities _emailUtilities;
 
-        public UsuarioController(IMapper mapper, IUsuarioRepositorio uRepo, ConsultoraPypContext _db, IJwtAuthenticationManager jwtAuthenticationManager, IUsuarioXRolRepositorio rURepo)
+        public UsuarioController(IMapper mapper, IUsuarioRepositorio uRepo, ConsultoraPypContext _db, IJwtAuthenticationManager jwtAuthenticationManager, IUsuarioXRolRepositorio rURepo, EmailUtilities emailUtilities)
         {
             _mapper = mapper;
             _uRepo = uRepo;
             db = _db;
             this.jwtAuthenticationManager = jwtAuthenticationManager;
             _rURepo = rURepo;
+            _emailUtilities = emailUtilities;
         }
 
         [HttpGet]
@@ -111,7 +113,11 @@ namespace ConsultoraApi.Controllers
             usu.FechaSalida = null;
             usu.FechaAlta = DateTime.Now;
 
-         
+            if (!_emailUtilities.SendNewUserEmail(usu.Mail, usu))
+            {
+                ModelState.AddModelError("", $"Algo salió mal enviando mail al usuario {usu.NombreUsuario}");
+                return StatusCode(500, ModelState);
+            }
 
             if (!_uRepo.CreateUsuario(usu))
             {
@@ -125,6 +131,7 @@ namespace ConsultoraApi.Controllers
                 return StatusCode(500, $"Algo salió mal creando el Usuario {rolXUsuario.IdUsuario} X Rol {rolXUsuario.IdRol}");
             }
 
+       
             return Ok($"Usuario {usu.NombreUsuario} creado con exito");
         }
         [HttpPut("{idUsuario:int}", Name = "UpdateUsuario")]

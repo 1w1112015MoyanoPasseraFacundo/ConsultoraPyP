@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ConsultoraApi.Dtos.DtosCandidatos;
 using ConsultoraApi.Dtos.DtosUsuarios;
+using ConsultoraApi.Helpers;
 using ConsultoraApi.Models;
 using ConsultoraApi.Repositorios.IRepositorios;
 using ConsultoraApi.Resultados;
@@ -20,13 +21,16 @@ namespace ConsultoraApi.Controllers
         IMapper _mapper;
         private readonly ICandidatoRepositorio _uRepo;
         private readonly ICandidatoXCompetenciaRepositorio _CXCRepo;
+        private readonly EmailUtilities _emailUtilities;
 
-        public CandidatoController(ConsultoraPypContext _db, IMapper mapper, ICandidatoRepositorio uRepo, ICandidatoXCompetenciaRepositorio CXCRepo)
+
+        public CandidatoController(ConsultoraPypContext _db, IMapper mapper, ICandidatoRepositorio uRepo, ICandidatoXCompetenciaRepositorio CXCRepo, EmailUtilities emailUtilities)
         {
             db = _db;
             _mapper = mapper;
             _uRepo = uRepo;
             _CXCRepo = CXCRepo;
+            _emailUtilities = emailUtilities;
         }
         [HttpGet]
         public IActionResult Get()
@@ -230,6 +234,13 @@ namespace ConsultoraApi.Controllers
             if (!_uRepo.UpdateCandidato(candidato))
             {
                 return StatusCode(500, $"Algo salió mal actualizando el candidato {candidato.Nombre} {candidato.Apellido}");
+            }
+
+
+            if (!_emailUtilities.SendChangeEstado(candidato.Mail, candidato))
+            {
+                ModelState.AddModelError("", $"Algo salió mal enviando mail al usuario {candidato.Nombre} {candidato.Apellido}");
+                return StatusCode(500, ModelState);
             }
 
 

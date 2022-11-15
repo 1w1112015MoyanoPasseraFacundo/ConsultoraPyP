@@ -1,3 +1,4 @@
+using ConsultoraApi.Helpers;
 using ConsultoraApi.Mapper;
 using ConsultoraApi.Models;
 using ConsultoraApi.Repositorios;
@@ -43,6 +44,9 @@ builder.Services.AddScoped<IEmpleoRepositorio, EmpleoRepositorio>();
 builder.Services.AddScoped<IEmpleoXCompetenciaRepositorio, EmpleoXCompetenciaRepositorio>();
 builder.Services.AddScoped<IPagoRepositorio, PagoRepositorio>();
 builder.Services.AddScoped<IUsuarioXRolRepositorio, UsuarioXRolRepositorio>();
+
+//Helpers
+builder.Services.AddScoped<EmailUtilities>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

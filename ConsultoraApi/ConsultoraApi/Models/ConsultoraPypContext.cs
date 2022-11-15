@@ -38,8 +38,8 @@ namespace ConsultoraApi.Models
             if (!optionsBuilder.IsConfigured)
             {
 
-                optionsBuilder.UseSqlServer("Server=DESKTOP-VVK62F7; Database=ConsultoraPyp; Trusted_Connection=True;");
-                //optionsBuilder.UseSqlServer("Server=10.1.1.102; Database=ConsultoraPyp; User Id=sa;Password=qwe-7890;");
+                //optionsBuilder.UseSqlServer("Server=DESKTOP-VVK62F7; Database=ConsultoraPyp; Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=10.1.1.102; Database=ConsultoraPyp; User Id=sa;Password=qwe-7890;");
             }
         }
 
