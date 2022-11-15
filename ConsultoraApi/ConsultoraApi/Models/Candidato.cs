@@ -25,6 +25,8 @@ namespace ConsultoraApi.Models
         public int IdEstado { get; set; }
         public int IdRubro { get; set; }
         public int IdGenero { get; set; }
+        public string? Observaciones { get; set; }
+
 
         public virtual Estado IdEstadoNavigation { get; set; } = null!;
         public virtual Genero IdGeneroNavigation { get; set; } = null!;

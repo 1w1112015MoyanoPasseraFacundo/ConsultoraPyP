@@ -62,9 +62,23 @@ export function editarCandidatoAction(candidato) {
     dispatch(editarCandidato());
     try {
       await clienteAxios.put(`/candidatos/${candidato.idCandidato}`, candidato);
-      console.log(candidato);
       dispatch(editarCandidatoExito(candidato));
       Swal.fire("Editado!", "El candidato ha sido editado", "success");
+    } catch (error) {
+      Swal.fire(error.response.data, "Intenta de nuevo", "error");
+      dispatch(editarCandidatoError());
+    }
+  };
+}
+
+export function editarEstadoCandidatoAction(candidato) {
+  return async (dispatch) => {
+    dispatch(editarCandidato());
+    try {
+      await clienteAxios.put(
+        `/candidatos/UpdateEstadoCandidato/${candidato.idCandidato}`,
+        candidato
+      );
     } catch (error) {
       Swal.fire(error.response.data, "Intenta de nuevo", "error");
       dispatch(editarCandidatoError());

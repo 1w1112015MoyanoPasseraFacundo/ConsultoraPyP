@@ -43,19 +43,14 @@ const Candidatos = () => {
 
   const cargando = useSelector((state) => state.candidatos.loading);
   const candidatos = useSelector((state) => state.candidatos.candidatos);
-  console.log(candidatos);
   const error = useSelector((state) => state.candidatos.error);
   const itemsPerPage = 5;
   const [itemOffset, setItemOffset] = useState(0);
   const endOffset = itemOffset + itemsPerPage;
-  console.log(`Loading items from ${itemOffset} to ${endOffset}`);
   const currentItems = candidatos.slice(itemOffset, endOffset);
   // Invoke when user click to request another page.
   const handlePageClick = (event) => {
     const newOffset = (event.selected * itemsPerPage) % candidatos.length;
-    console.log(
-      `User requested page number ${event.selected}, which is offset ${newOffset}`
-    );
     setItemOffset(newOffset);
   };
   const pageCount = Math.ceil(candidatos.length / itemsPerPage);
@@ -63,7 +58,7 @@ const Candidatos = () => {
     <Fragment>
       <h3 className="title-decorator">Candidatos</h3>
 
-      <div class="card card-form">
+      <div class="card card-form-cand">
         <div class="card-body card-body-custom">
           <form class="form-horizontal p-t-20" onSubmit={filtrar}>
             <div class="row">
@@ -132,58 +127,61 @@ const Candidatos = () => {
         </div>
       </div>
       {error != null ? (
-        <div role="alert" className="alert text-center animated fadeIn notFound">
+        <div
+          role="alert"
+          className="alert text-center animated fadeIn notFound"
+        >
           <img src={require("../../assets/documentNotFound.gif")} alt="404" />
-          <h2  >No se encontraron resultados.</h2>
+          <h2>No se encontraron resultados.</h2>
         </div>
       ) : (
-      <div class="card custom-card-shadow">
-        <div class="row">
-          <div class="col-lg-12">
-            <table className="table table-hover">
-              <thead>
-                <tr>
-                  <th className="colu" scope="col">
-                    Nombre
-                  </th>
+        <div class="card custom-card-shadow-cand">
+          <div class="row">
+            <div class="col-lg-12">
+              <table className="table table-hover">
+                <thead>
+                  <tr>
+                    <th className="colu" scope="col">
+                      Nombre
+                    </th>
 
-                  <th className="colu" scope="col">
-                    Documento
-                  </th>
-                  <th className="colu" scope="col">
-                    E-mail
-                  </th>
-                  <th className="colu" scope="col">
-                    Fecha de nacimiento
-                  </th>
-                  <th className="colu" scope="col">
-                    Estado
-                  </th>
-                  <th className="colu" scope="col">
-                    Teléfono
-                  </th>
-                  <th className="colu" scope="col">
-                    Acciones
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {currentItems.map((candidato) => {
-                      let fecha = candidato.fechaNacimiento.split("T");
-                      candidato.fechaNacimiento = fecha[0];
-                      console.log(candidato);
-                      return (
-                        <AccionesCandidatos
-                          key={candidato.idCandidato}
-                          candidato={candidato}
-                        />
-                      );
-                    })}
-              </tbody>
-            </table>
+                    <th className="colu" scope="col">
+                      Documento
+                    </th>
+                    <th className="colu" scope="col">
+                      E-mail
+                    </th>
+                    <th className="colu" scope="col">
+                      Fecha de nacimiento
+                    </th>
+                    <th className="colu" scope="col">
+                      Estado
+                    </th>
+                    <th className="colu" scope="col">
+                      Teléfono
+                    </th>
+                    <th className="colu" scope="col">
+                      Acciones
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {currentItems.map((candidato) => {
+                    let fecha = candidato.fechaNacimiento.split("T");
+                    candidato.fechaNacimiento = fecha[0];
+                    console.log(candidato);
+                    return (
+                      <AccionesCandidatos
+                        key={candidato.idCandidato}
+                        candidato={candidato}
+                      />
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
-        <ReactPaginate
+          <ReactPaginate
             previousLabel="Anterior"
             nextLabel="Siguiente"
             pageClassName="page-item"
@@ -200,10 +198,11 @@ const Candidatos = () => {
             pageRangeDisplayed={5}
             onPageChange={handlePageClick}
             containerClassName="pagination"
-            activeClassName="active"            
+            activeClassName="active"
           />
-      </div>)}
-  {cargando ? <Spinner /> : null}
+        </div>
+      )}
+      {cargando ? <Spinner /> : null}
     </Fragment>
   );
 };

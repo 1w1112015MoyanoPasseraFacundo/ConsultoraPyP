@@ -51,8 +51,6 @@ namespace ConsultoraApi.Controllers
                 var pais = db.Paises.Where(x => x.IdPais == candidatoGetDto[i].IdPais).FirstOrDefault();
                 candidatoGetDto[i].nombrePais = pais.Nombre;
                 candidatoGetDto[i].lstCompes = candXCompe;
-
-
             }
 
             return Ok(candidatoGetDto);
@@ -178,6 +176,7 @@ namespace ConsultoraApi.Controllers
             candidato.IdPais = candidatoUpdateDto.IdPais;
             candidato.IdRubro = candidatoUpdateDto.IdRubro;
             candidato.Linkedin = candidatoUpdateDto.Linkedin;
+            candidato.Observaciones = candidatoUpdateDto.Observaciones;
             candidato.Estado = candidatoUpdateDto.Estado;
             candidato.EstadoCivil = candidatoUpdateDto.EstadoCivil;
 
@@ -204,6 +203,35 @@ namespace ConsultoraApi.Controllers
                     return StatusCode(500, $"Algo salió mal actulizando el candidatoXCompetencia {compe}/{candidato.IdCandidato}");
                 }
             }
+
+            return Ok($"Candidato {candidato.Nombre} {candidato.Apellido} modificado con exito");
+        }
+
+        [HttpPut("UpdateEstadoCandidato/{idCandidato:int}", Name = "UpdateEstadoCandidato")]
+        public IActionResult UpdateEstadoCandidato(int idCandidato, [FromBody] CandidatoUpdateDto candidatoUpdateDto)
+        {
+            if (candidatoUpdateDto == null || idCandidato != candidatoUpdateDto.IdCandidato)
+            {
+                BadRequest();
+            }
+            var candidato = _uRepo.GetCandidato(idCandidato);
+
+
+            if (candidato == null)
+            {
+                return StatusCode(400, "El candidato no existe");
+            }
+
+            candidato.Observaciones = candidatoUpdateDto.Observaciones;
+            candidato.Estado = candidatoUpdateDto.Estado;
+
+
+
+            if (!_uRepo.UpdateCandidato(candidato))
+            {
+                return StatusCode(500, $"Algo salió mal actualizando el candidato {candidato.Nombre} {candidato.Apellido}");
+            }
+
 
             return Ok($"Candidato {candidato.Nombre} {candidato.Apellido} modificado con exito");
         }

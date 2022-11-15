@@ -15,7 +15,8 @@ import clienteAxios from "../../config/axios";
 import { useGetCompetencia } from "../Empleos/Hooks/useGetCompetencia";
 import { Multipleselect } from "../MultipleSelect";
 const EditarCandidato = () => {
-  const navigate = useNavigate();  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [candidato, guardarCandidato] = useState({
     nombre: "",
@@ -60,6 +61,7 @@ const EditarCandidato = () => {
     idRubro,
     idGenero,
     linkedin,
+    observaciones,
     telefono,
     estado,
     lstCompes,
@@ -120,7 +122,6 @@ const EditarCandidato = () => {
       return;
     }
     dispatch(editarCandidatoAction(candidato));
-    navigate("/candidatos");
   };
   const { data } = useGetCompetencia(idRubro);
   const [listaCompetencias, guardarCompetencias] = useState([]);
@@ -177,7 +178,6 @@ const EditarCandidato = () => {
                     value={idTipoDocumento}
                     onChange={onChangeFormulario}
                   >
-                    <option>Seleccione...</option>
                     {listaTiposDocs.map((tipoDocumento) => (
                       <option
                         key={tipoDocumento.idTipoDocumento}
@@ -219,7 +219,6 @@ const EditarCandidato = () => {
                     value={idRubro}
                     onChange={onChangeFormulario}
                   >
-                    <option>Seleccione...</option>
                     {listaRubros.map((rubro) => (
                       <option key={rubro.idRubro} value={rubro.idRubro}>
                         {rubro.nombre}
@@ -243,7 +242,6 @@ const EditarCandidato = () => {
                     value={idGenero}
                     onChange={onChangeFormulario}
                   >
-                    <option>Seleccione...</option>
                     {listaGeneros.map((genero) => (
                       <option key={genero.idGenero} value={genero.idGenero}>
                         {genero.nombre}
@@ -261,12 +259,11 @@ const EditarCandidato = () => {
                     value={idPais}
                     onChange={onChangeFormulario}
                   >
-                    <option>Seleccione...</option>
                     <option value="1">Argentina</option>
                   </select>
                 </div>
                 <div className="form-group  col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                  <label>Estado</label>
+                  {/* <label>Estado</label>
                   <select
                     className="form-control"
                     name="estado"
@@ -278,7 +275,7 @@ const EditarCandidato = () => {
                     <option>En proceso</option>
                     <option>En base</option>
                     <option>Seleccionado</option>
-                  </select>
+                  </select> */}
                 </div>
               </div>
               <h4 className="card-subtitle font-italic">Datos opcionales</h4>
@@ -304,6 +301,18 @@ const EditarCandidato = () => {
                       className="form-control"
                       name="linkedin"
                       value={linkedin}
+                      onChange={onChangeFormulario}
+                    />
+                  </div>
+                </div>
+                <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                  <div className="form-group">
+                    <label className="form-label">Observaciones </label>
+                    <textarea
+                      type="text"
+                      className="form-control"
+                      name="linkedin"
+                      value={observaciones}
                       onChange={onChangeFormulario}
                     />
                   </div>
