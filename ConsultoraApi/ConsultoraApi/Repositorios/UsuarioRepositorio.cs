@@ -27,6 +27,28 @@ namespace ConsultoraApi.Repositorios
                 return null;
             }
         }
+        public Usuario GetUsuario(string mail)
+        {
+            if (mail != null)
+            {
+                return db.Usuarios.FirstOrDefault(u => u.Mail == mail);
+            }
+            else
+            {
+                return null;
+            }
+        }
+        public ICollection<Usuario> GetListUsuario(int idUsuario)
+        {
+            if (idUsuario != null)
+            {
+                return db.Usuarios.Where(u => u.IdUsuario == idUsuario).ToList();
+            }
+            else
+            {
+                return null;
+            }
+        }
         public ICollection<Usuario> GetFilterUsuario(UsuarioFilterDto filterDto)
         {
             var lstUsuarios = db.Usuarios.ToList();

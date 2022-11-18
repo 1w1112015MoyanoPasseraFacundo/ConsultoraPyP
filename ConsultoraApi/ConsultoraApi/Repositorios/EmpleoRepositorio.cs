@@ -2,6 +2,8 @@
 using ConsultoraApi.Dtos.DtosEmpleos;
 using ConsultoraApi.Models;
 using ConsultoraApi.Repositorios.IRepositorios;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace ConsultoraApi.Repositorios
 {
@@ -28,6 +30,59 @@ namespace ConsultoraApi.Repositorios
         public Estado GetEstado(string nombreEstado)
         {
             return db.Estados.FirstOrDefault(r => r.Nombre == nombreEstado);
+        }
+        public List<Empleo> GetEmpleoPorMes(int mes)
+        {
+            return db.Empleos.Where(r => r.FechaAlta.Month == mes && r.IdEstado == 1002).ToList();
+
+        }
+        public ICollection<ReporteDto> GetEmpleosPorMes(int mes)
+        {
+            var data = db.Empleos.Where(r => r.FechaAlta.Month == mes && r.IdEstado == 1002).GroupBy(r => r.IdCliente).Select(r => new ReporteDto()
+            {
+                idCliente = r.Key,
+                countCliente = r.Sum(s=>s.IdCliente)/r.Key
+            }).ToList();
+            return data;
+
+        }
+        public ICollection<ReporteDto> GetEmpleosPoFecha(DateTime fecha1, DateTime fecha2)
+        {
+            var data = db.Empleos.Where(x => x.FechaAlta >= fecha1 && x.FechaAlta <= fecha2 && x.IdEstado == 1002).GroupBy(r => r.IdCliente).Select(r => new ReporteDto()
+            {
+                idCliente = r.Key,
+                countCliente = r.Sum(s => s.IdCliente) / r.Key
+            }).ToList();
+            return data;
+
+        }
+        public ICollection<EmpleoReporte2Dto> GetEstadoEmpleosPoFecha(DateTime fecha1, DateTime fecha2)
+        {
+            var data = db.Empleos.Where(x => x.FechaAlta >= fecha1 && x.FechaAlta <= fecha2).GroupBy(r => r.IdEstado).Select(r => new EmpleoReporte2Dto()
+            {
+                idEstado = r.Key,
+                countEstado = r.Sum(s => s.IdEstado) / r.Key
+            }).ToList();
+            return data;
+        }
+        public ICollection<EmpleoReporte2Dto> GetEstadoEmpleos()
+        {
+            var data = db.Empleos.GroupBy(r => r.IdEstado).Select(r => new EmpleoReporte2Dto()
+            {
+                idEstado = r.Key,
+                countEstado = r.Sum(s => s.IdEstado) / r.Key
+            }).ToList();
+            return data;
+        }
+        public ICollection<ReporteDto> GetEmpleosSinMes()
+        {
+            var data = db.Empleos.Where(r => r.IdEstado == 1002).GroupBy(r => r.IdCliente).Select(r => new ReporteDto()
+            {
+                idCliente = r.Key,
+                countCliente = r.Sum(s => s.IdCliente) / r.Key
+            }).ToList();
+            return data;
+
         }
         public ICollection<Empleo> GetFilterEmpleo(EmpleoFilterDto filterDto)
         {

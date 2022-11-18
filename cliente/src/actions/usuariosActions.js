@@ -82,6 +82,21 @@ export function obtenerUsuariosFilterAction(filtros) {
   };
 }
 
+export function getUsuarioById(idUsuario) {
+  return async (dispatch) => {
+    dispatch(descargarUsuarios());
+    try {
+      const respuesta = await clienteAxios.get(`/Usuarios/${idUsuario}`);
+      console.log("USUARIO A EDIT", respuesta);
+
+      dispatch(obtenerUsuarioEditarAction(respuesta.data));
+    } catch (error) {
+      console.log("ERROR A EDIT", error);
+      dispatch(descargarUsuariosError(error.response.data));
+    }
+  };
+}
+
 const descargarUsuarios = () => ({
   type: COMENZAR_DESCARGA_USUARIOS,
   payload: true,

@@ -19,7 +19,7 @@ const initialState = {
   error: null,
   loading: false,
   eliminar: null,
-  editar: null,
+  editar: [],
 };
 // eslint-disable-next-line
 export default function (state = initialState, action) {
@@ -75,6 +75,7 @@ export default function (state = initialState, action) {
       return {
         ...state,
         editar: action.payload,
+        error: null,
       };
     case CANDIDATO_EDITADO_EXITO:
       return {

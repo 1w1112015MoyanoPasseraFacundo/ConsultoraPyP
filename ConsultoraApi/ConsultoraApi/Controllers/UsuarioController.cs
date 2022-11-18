@@ -6,6 +6,7 @@ using ConsultoraApi.Models;
 using ConsultoraApi.Repositorios;
 using ConsultoraApi.Repositorios.IRepositorios;
 using ConsultoraApi.Resultados;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration.UserSecrets;
@@ -23,8 +24,9 @@ namespace ConsultoraApi.Controllers
         private readonly IUsuarioXRolRepositorio _rURepo;
         private readonly IJwtAuthenticationManager jwtAuthenticationManager;
         private readonly EmailUtilities _emailUtilities;
+        RandomStringGenerator randomString;
 
-        public UsuarioController(IMapper mapper, IUsuarioRepositorio uRepo, ConsultoraPypContext _db, IJwtAuthenticationManager jwtAuthenticationManager, IUsuarioXRolRepositorio rURepo, EmailUtilities emailUtilities)
+        public UsuarioController(IMapper mapper, IUsuarioRepositorio uRepo, ConsultoraPypContext _db, IJwtAuthenticationManager jwtAuthenticationManager, IUsuarioXRolRepositorio rURepo, EmailUtilities emailUtilities, RandomStringGenerator randomString)
         {
             _mapper = mapper;
             _uRepo = uRepo;
@@ -32,6 +34,7 @@ namespace ConsultoraApi.Controllers
             this.jwtAuthenticationManager = jwtAuthenticationManager;
             _rURepo = rURepo;
             _emailUtilities = emailUtilities;
+            this.randomString = randomString;
         }
 
         [HttpGet]
@@ -57,15 +60,19 @@ namespace ConsultoraApi.Controllers
         [HttpGet("{idUsuario:int}", Name = "GetUsuario")]
         public IActionResult GetUsuario(int idUsuario)
         {
-            var usuario = _uRepo.GetUsuario(idUsuario);
-
+            var usuario = _uRepo.GetListUsuario(idUsuario);
+            var usuarioGetDto = new UpdateUsuarioDto();
+            var lstUsuario = new List<UpdateUsuarioDto>();
             if (usuario == null)
             {
                 return NotFound();
             }
-
-            var usuarioGetDto = _mapper.Map<UpdateUsuarioDto>(usuario);
-            return Ok(usuarioGetDto);
+            foreach (var item in usuario)
+            {
+                usuarioGetDto = _mapper.Map<UpdateUsuarioDto>(item);
+                lstUsuario.Add(usuarioGetDto);
+            }
+            return Ok(lstUsuario);
         }
 
         [HttpGet("GetUsuariosFilter")]
@@ -131,7 +138,7 @@ namespace ConsultoraApi.Controllers
                 return StatusCode(500, $"Algo salió mal creando el Usuario {rolXUsuario.IdUsuario} X Rol {rolXUsuario.IdRol}");
             }
 
-       
+
             return Ok($"Usuario {usu.NombreUsuario} creado con exito");
         }
         [HttpPut("{idUsuario:int}", Name = "UpdateUsuario")]
@@ -144,7 +151,7 @@ namespace ConsultoraApi.Controllers
             var usuario = _uRepo.GetUsuario(idUsuario);
 
 
-            if (_uRepo.UsuarioExists(  usuarioUpdateDto.IdUsuario, usuarioUpdateDto.NombreUsuario))
+            if (_uRepo.UsuarioExists(usuarioUpdateDto.IdUsuario, usuarioUpdateDto.NombreUsuario))
             {
                 return StatusCode(409, "Ya existe el mismo nombre de usuario");
             }
@@ -175,7 +182,7 @@ namespace ConsultoraApi.Controllers
             usuario.Direccion = usuarioUpdateDto.Direccion;
             usuario.FechaNacimiento = usuarioUpdateDto.FechaNacimiento;
             usuario.Mail = usuarioUpdateDto.Mail;
-            usuario.IdGenero =  usuarioUpdateDto.IdGenero;
+            usuario.IdGenero = usuarioUpdateDto.IdGenero;
 
 
             if (!_uRepo.UpdateUsuario(usuario))
@@ -226,7 +233,7 @@ namespace ConsultoraApi.Controllers
                 return StatusCode(400, "No se ingreso la contraseña");
             }
             var result = db.Usuarios.FirstOrDefault(x => x.NombreUsuario == comando.nombreUsuario && x.Password == comando.password);
- 
+
 
             if (result == null)
             {
@@ -270,9 +277,41 @@ namespace ConsultoraApi.Controllers
             {
                 var rolxusu = db.UsuariosXroles.FirstOrDefault(x => x.IdUsuario == usu.IdUsuario);
                 var rol = db.Roles.FirstOrDefault(x => x.IdRol == rolxusu.IdRol);
-                var dto = new GetAuthUsuarioDto { nombreUsuario = usu.NombreUsuario, nombre = usu.Nombre, apellido = usu.Apellido, rol = rol.Nombre };
+                var dto = new GetAuthUsuarioDto { nombreUsuario = usu.NombreUsuario, nombre = usu.Nombre, apellido = usu.Apellido, rol = rol.Nombre, idUsuario = usu.IdUsuario };
                 return Ok(dto);
             }
+        }
+
+        [HttpPatch]
+        [Route("ForgotPasswordUsuario")]
+        public IActionResult ForgotPasswordUsuario(string mail)
+        {
+            if (mail == null || !_uRepo.MailExists(mail))
+            {
+                return NotFound();
+            }
+
+            Usuario usuario = _uRepo.GetUsuario(mail);
+
+            //Generamos el nuevo password.
+            string _pg = randomString.GenerarPass();
+            byte[] passwordHash, salt;
+            usuario.Password = _pg;
+
+
+            if (!_uRepo.UpdateUsuario(usuario))
+            {
+                ModelState.AddModelError("Resp", $"Algo salió mal al actualizar la contraseña del registro {usuario.NombreUsuario}");
+                return StatusCode(500, ModelState);
+            }
+
+            if (!_emailUtilities.SendResetPasswordEmail(mail, usuario.NombreUsuario, _pg))
+            {
+                ModelState.AddModelError("Resp", $"Algo salió mal al enviar el mail de nueva contraseña para el usuario {usuario.NombreUsuario}");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok();
         }
     }
 }

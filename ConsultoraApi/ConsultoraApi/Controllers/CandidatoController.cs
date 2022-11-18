@@ -44,11 +44,37 @@ namespace ConsultoraApi.Controllers
             for (int i = 0; i < cand.Count; i++)
             {
 
-                if (cand[i].Estado != "Descartado") 
+                if (cand[i].Estado != "Descartado")
                 {
                     candidatoGetDto.Add(_mapper.Map<CandidatoUpdateDto>(cand[i]));
                 }
             }
+            for (int i = 0; i < candidatoGetDto.Count; i++)
+            {
+                List<int> candXCompe = db.CandidatosXcompetencias.Where(x => x.IdCandidato == candidatoGetDto[i].IdCandidato).Select(x => x.IdCompetencia).ToList();
+                var pais = db.Paises.Where(x => x.IdPais == candidatoGetDto[i].IdPais).FirstOrDefault();
+                candidatoGetDto[i].nombrePais = pais.Nombre;
+                candidatoGetDto[i].lstCompes = candXCompe;
+            }
+
+            return Ok(candidatoGetDto);
+        }
+
+        [HttpGet("{idCandidato:int}", Name = "GetCandidato")]
+        public IActionResult GetCandidato(int idCandidato)
+        {
+            var cand = _uRepo.GetCandidato(idCandidato);
+            if (cand == null)
+            {
+                return StatusCode(400, "No existe ningún candidato registrado");
+            }
+            var candidatoGetDto = new List<CandidatoUpdateDto>();
+
+            if (cand.Estado != "Descartado")
+            {
+                candidatoGetDto.Add(_mapper.Map<CandidatoUpdateDto>(cand));
+            }
+
             for (int i = 0; i < candidatoGetDto.Count; i++)
             {
                 List<int> candXCompe = db.CandidatosXcompetencias.Where(x => x.IdCandidato == candidatoGetDto[i].IdCandidato).Select(x => x.IdCompetencia).ToList();
@@ -91,7 +117,7 @@ namespace ConsultoraApi.Controllers
             {
                 bool esValido = true;
                 foreach (var compes in idsCompe)
-                {   
+                {
                     esValido = _CXCRepo.CandXCompeExists(item.IdCandidato, int.Parse(compes));
                     if (!esValido)
                     {
@@ -263,13 +289,18 @@ namespace ConsultoraApi.Controllers
                 return StatusCode(400, "El candidato no existe");
             }
 
-            cand.IdEstado = 3;
+            cand.Estado = "Descartado";
 
             if (!_uRepo.DarDeBajaCandidato(cand))
             {
                 return StatusCode(500, $"Algo salió mal dando de baja el candidato {cand.Nombre} {cand.Apellido}");
             }
 
+            if (!_emailUtilities.SendDescartado(cand.Mail, cand))
+            {
+                ModelState.AddModelError("", $"Algo salió mal enviando mail al usuario {cand.Nombre} {cand.Apellido}");
+                return StatusCode(500, ModelState);
+            }
             //ELIMINAR CANDIDATOXCOMPETENCIA
             //List<CandidatosXcompetencia> candXComp = _CXCRepo.GetCandXCompes(idCandidato);
             //foreach (CandidatosXcompetencia xcompetencia in candXComp)

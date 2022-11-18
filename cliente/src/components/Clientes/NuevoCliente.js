@@ -73,7 +73,15 @@ const NuevoCliente = () => {
       Swal.fire("Llene todos los campos obligatorios", "", "warning");
       return;
     }
-
+    if (documento.length != 11) {
+      Swal.fire("El campo cuit sólo acepta once números", "", "warning");
+      return;
+    }
+    if (telefono != "") {
+      if (telefono.length < 7 || telefono.length > 20)
+        Swal.fire("Ingrese un télefono correcto", "", "warning");
+      return;
+    }
     agregarCliente({
       nombre,
       nombreFantasia,

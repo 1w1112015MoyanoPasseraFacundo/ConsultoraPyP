@@ -1,27 +1,26 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\fmoyano\\Documents\\tesis\\ConsultoraPyP\\ConsultoraApi\\ConsultoraApi\\ConsultoraApi.csproj": {}
+    "D:\\Usuario\\Documents\\TUP - FRC\\TESIS\\ConsultoraPyp\\ConsultoraApi\\ConsultoraApi\\ConsultoraApi.csproj": {}
   },
   "projects": {
-    "C:\\Users\\fmoyano\\Documents\\tesis\\ConsultoraPyP\\ConsultoraApi\\ConsultoraApi\\ConsultoraApi.csproj": {
+    "D:\\Usuario\\Documents\\TUP - FRC\\TESIS\\ConsultoraPyp\\ConsultoraApi\\ConsultoraApi\\ConsultoraApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\fmoyano\\Documents\\tesis\\ConsultoraPyP\\ConsultoraApi\\ConsultoraApi\\ConsultoraApi.csproj",
+        "projectUniqueName": "D:\\Usuario\\Documents\\TUP - FRC\\TESIS\\ConsultoraPyp\\ConsultoraApi\\ConsultoraApi\\ConsultoraApi.csproj",
         "projectName": "ConsultoraApi",
-        "projectPath": "C:\\Users\\fmoyano\\Documents\\tesis\\ConsultoraPyP\\ConsultoraApi\\ConsultoraApi\\ConsultoraApi.csproj",
-        "packagesPath": "C:\\Users\\fmoyano\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\fmoyano\\Documents\\tesis\\ConsultoraPyP\\ConsultoraApi\\ConsultoraApi\\obj\\",
+        "projectPath": "D:\\Usuario\\Documents\\TUP - FRC\\TESIS\\ConsultoraPyp\\ConsultoraApi\\ConsultoraApi\\ConsultoraApi.csproj",
+        "packagesPath": "C:\\Users\\Usuario\\.nuget\\packages\\",
+        "outputPath": "D:\\Usuario\\Documents\\TUP - FRC\\TESIS\\ConsultoraPyp\\ConsultoraApi\\ConsultoraApi\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\fmoyano\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Usuario\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
@@ -83,7 +82,8 @@
             "net47",
             "net471",
             "net472",
-            "net48"
+            "net48",
+            "net481"
           ],
           "assetTargetFallback": true,
           "warn": true,
@@ -95,7 +95,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.301\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.401\\RuntimeIdentifierGraph.json"
         }
       }
     }

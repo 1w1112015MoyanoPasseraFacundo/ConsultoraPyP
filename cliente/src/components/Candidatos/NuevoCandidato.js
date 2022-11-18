@@ -78,13 +78,23 @@ const NuevoCandidato = () => {
       idPais === 0 ||
       fechaNacimiento.trim() === "" ||
       lstCompes.length === 0 ||
-      documento.includes("-") ||
+      documento.toString().includes("-") ||
+      documento.toString().includes("e") ||
+      telefono.includes("e") ||
       telefono.includes("-")
     ) {
       Swal.fire("Llene los campos obligatorios", "", "warning");
       return;
     }
-
+    if (documento.length != 8) {
+      Swal.fire("El campo documento sólo acepta ocho números", "", "warning");
+      return;
+    }
+    if (telefono != "") {
+      if (telefono.length < 7 || telefono.length > 20)
+        Swal.fire("Ingrese un télefono correcto", "", "warning");
+      return;
+    }
     agregarCandidato({
       nombre,
       apellido,
@@ -105,7 +115,6 @@ const NuevoCandidato = () => {
   const cancelar = () => {
     navigate("/candidatos");
   };
-  console.log(idRubro);
   const { data } = useGetCompetencia(idRubro);
 
   return (

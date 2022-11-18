@@ -1,8 +1,7 @@
-import React, { Fragment, useEffect, useState } from "react";
-import Header from "./components/Header";
+import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Candidatos from "./components/Candidatos/Candidatos";
-import { Provider } from "react-redux";
+import { Provider, useSelector } from "react-redux";
 import "bootswatch/dist/lumen/bootstrap.min.css";
 import store from "./store";
 import Usuarios from "./components/Usuarios/Usuarios";
@@ -28,11 +27,16 @@ import RutaPrivada from "./components/RutaPrivada";
 import Reportes from "./components/Reportes/Reportes";
 import Reporte1 from "./components/Reportes/Reporte1";
 import Busqueda from "./components/Reportes/Busqueda";
+import PaginaError from "./components/PaginaError";
+import PreguntasFrecuentes from "./components/PreguntasFrecuentes";
+import RecoverPassword from "./login/recoverPassword";
 function App() {
   return (
     <Router>
       <Provider store={store}>
         <Routes>
+          <Route exact path="*" element={<PaginaError />} />
+          <Route exact path="/recoverPassword" element={<RecoverPassword />} />
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/" element={<RutaPrivada />}>
             <Route exact path="/" element={<Dashboard />} />
@@ -85,6 +89,11 @@ function App() {
             <Route exact path="/pagos/editar/:id" element={<EditarPago />} />
             <Route exact path="/reporte1" element={<Reporte1 />} />
             <Route exact path="/busqueda" element={<Busqueda />} />
+            <Route
+              exact
+              path="/preguntasFrecuentes"
+              element={<PreguntasFrecuentes />}
+            />
           </Route>
         </Routes>
       </Provider>

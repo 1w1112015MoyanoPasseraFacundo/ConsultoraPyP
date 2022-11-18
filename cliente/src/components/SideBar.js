@@ -1,24 +1,15 @@
 import React from "react";
 import { slide as Menu } from "react-burger-menu";
 import {
-  BsCoin,
   BsCurrencyDollar,
   BsFillCalendarWeekFill,
-  BsFillFilePersonFill,
-  BsFillPersonFill,
   BsFillPersonLinesFill,
   BsFillPieChartFill,
-  BsFolder,
   BsFolderFill,
-  BsFunnelFill,
   BsGearFill,
-  BsHouse,
   BsHouseDoorFill,
-  BsHouseFill,
   BsPeopleFill,
   BsSearch,
-  BsShieldFillCheck,
-  BsTools,
   BsWrench,
 } from "react-icons/bs";
 import { useSelector } from "react-redux";
@@ -82,14 +73,18 @@ const SideBar = () => {
         <BsWrench />
         &nbsp; Habilidades
       </a>
-      <a className="menu-item" onClick={usu}>
-        <BsGearFill />
-        &nbsp; Usuarios
-      </a>
-      <a className="menu-item" onClick={repo}>
-        <BsFillCalendarWeekFill />
-        &nbsp; Reportes
-      </a>
+      {usuario.rol == "Admin" ? (
+        <a className="menu-item" onClick={usu}>
+          <BsGearFill />
+          &nbsp; Usuarios
+        </a>
+      ) : null}
+      {usuario.rol == "Admin" ? (
+        <a className="menu-item" onClick={repo}>
+          <BsFillCalendarWeekFill />
+          &nbsp; Reportes
+        </a>
+      ) : null}
       <a className="menu-item" onClick={rep}>
         <BsFillPieChartFill />
         &nbsp; Gráficos

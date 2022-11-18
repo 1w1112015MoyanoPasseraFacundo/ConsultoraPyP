@@ -14,6 +14,7 @@ import {
   EMPLEO_ELIMINADO_EXITO,
   OBTENER_EMPLEO_EDITAR,
   OBTENER_EMPLEO_ELIMINAR,
+  REPORTE_EMPLEOS_EXITOS,
 } from "../types";
 
 export function obtenerEmpleosAction() {
@@ -43,6 +44,57 @@ export function obtenerAllEmpleosAction() {
     }
   };
 }
+
+export function obtenerEmpleosByMesAction(mes) {
+  return async (dispatch) => {
+    dispatch(descargarEmpleos());
+    try {
+      const respuesta = await clienteAxios.get(
+        `/Empleos/GetEmpleosByMes?mes=${mes}`
+      );
+      dispatch(descargarEmpleosReporteExitosa(respuesta.data));
+      console.log(respuesta.data);
+    } catch (error) {
+      console.log(error.response.data);
+      dispatch(descargarEmpleosError(error.response));
+    }
+  };
+}
+export function obtenerEstadosEmpleosByFechasAction(fecha1, fecha2) {
+  return async (dispatch) => {
+    dispatch(descargarEmpleos());
+    try {
+      const respuesta = await clienteAxios.get(
+        `/Empleos/GetEstadosEmpleosByFechas?fecha1=${fecha1}&fecha2=${fecha2}`
+      );
+      dispatch(descargarEmpleosExitosa(respuesta.data));
+      console.log(respuesta.data);
+    } catch (error) {
+      console.log(error.response.data);
+      dispatch(descargarEmpleosError(error.response));
+    }
+  };
+}
+export function obtenerEmpleosByFechasAction(fecha1, fecha2) {
+  return async (dispatch) => {
+    dispatch(descargarEmpleos());
+    try {
+      const respuesta = await clienteAxios.get(
+        `/Empleos/GetEmpleosByFechas?fecha1=${fecha1}&fecha2=${fecha2}`
+      );
+      dispatch(descargarEmpleosReporteExitosa(respuesta.data));
+      console.log(respuesta.data);
+    } catch (error) {
+      console.log(error.response.data);
+      dispatch(descargarEmpleosError(error.response));
+    }
+  };
+}
+
+const descargarEmpleosReporteExitosa = (empleos) => ({
+  type: REPORTE_EMPLEOS_EXITOS,
+  payload: empleos,
+});
 
 export function obtenerEmpleosFilterAction(filtros) {
   return async (dispatch) => {

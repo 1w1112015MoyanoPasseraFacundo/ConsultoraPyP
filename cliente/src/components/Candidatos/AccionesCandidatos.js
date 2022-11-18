@@ -14,6 +14,8 @@ import { Button, Form, Modal } from "react-bootstrap";
 import { useEffect } from "react";
 
 const AccionesCandidatos = ({ candidato }) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const {
     nombre,
     apellido,
@@ -42,10 +44,9 @@ const AccionesCandidatos = ({ candidato }) => {
       [e.target.name]: e.target.value,
     });
   };
-  const dispatch = useDispatch();
   const confirmarEliminar = (idCandidato) => {
     Swal.fire({
-      title: "Está seguro que desea dar de baja este candidato?",
+      title: "¿Está seguro que desea descartar este candidato?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -61,34 +62,16 @@ const AccionesCandidatos = ({ candidato }) => {
   const submitEditarCandidato = (e) => {
     e.preventDefault();
     dispatch(editarEstadoCandidatoAction(candidatos));
-    // Swal.fire({
-    //   title: "¿Desea enviar un correo informando el cambio de estado?",
-    //   icon: "question",
-    //   showCancelButton: true,
-    //   confirmButtonColor: "#3085d6",
-    //   cancelButtonColor: "#d33",
-    //   confirmButtonText: "Confirmar",
-    //   cancelButtonText: "Cancelar",
-    //   allowOutsideClick: false,
-    // }).then((result) => {
-    //   if (result.isConfirmed) {
-    //     //metodo para enviar mail
-    //     Swal.fire("Estado actulizado!", "", "success").then((result) => {
-    //       if (result.isConfirmed) {
-    //         handleClose();
-    //       }
-    //     });
-    //   } else 
-    //   if (result.isDenied) {
-        Swal.fire("Estado actulizado!", "Se ha enviado un e-mail al candidato", "success").then((result) => {
-          if (result.isConfirmed) {
-            handleClose();
-          }
-    //     });
-    //   }
+    Swal.fire(
+      "Estado actulizado!",
+      "Se ha enviado un e-mail al candidato",
+      "success"
+    ).then((result) => {
+      if (result.isConfirmed) {
+        handleClose();
+      }
     });
   };
-  const navigate = useNavigate();
 
   const redireccionarEdicion = (candidato) => {
     dispatch(obtenerCandidatoEditar(candidato));

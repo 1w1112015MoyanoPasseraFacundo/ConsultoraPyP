@@ -11,6 +11,7 @@ import {
   EMPLEO_ELIMINADO_EXITO,
   OBTENER_EMPLEO_EDITAR,
   OBTENER_EMPLEO_ELIMINAR,
+  REPORTE_EMPLEOS_EXITOS,
 } from "../types";
 
 const initialState = {
@@ -19,6 +20,7 @@ const initialState = {
   loading: false,
   eliminar: null,
   editar: null,
+  reporte: [],
 };
 // eslint-disable-next-line
 export default function (state = initialState, action) {
@@ -36,6 +38,13 @@ export default function (state = initialState, action) {
         ...state,
         loading: false,
         empleos: action.payload,
+        error: null,
+      };
+    case REPORTE_EMPLEOS_EXITOS:
+      return {
+        ...state,
+        loading: false,
+        reporte: action.payload,
         error: null,
       };
     case AGREGAR_EMPLEO_ERROR:

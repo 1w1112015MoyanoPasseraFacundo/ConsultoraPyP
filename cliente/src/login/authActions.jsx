@@ -6,26 +6,35 @@ import { CERRAR_SESION, LOGIN_ERROR, LOGIN_EXITOSO, OBTENER_USUARIO } from "../t
 
 export function usuarioAutenticado() {
     const token = localStorage.getItem("token");
-    console.log("LOCALLLMENTE2", localStorage.getItem("token"));
-    console.log("LOCALLLMENTE1", token);
-
-    console.log(token);
     return async (dispatch) => {
     try {
       const resp = await clienteAxios.get(`/Usuarios/login?nombreUsuario=${token}`);
-      console.log(resp);
       dispatch({
         type: OBTENER_USUARIO,
         payload: resp.data,
       });
     } catch (error) {
-      console.log(error);
-
       dispatch({
         type: LOGIN_ERROR,
       });
     }}
   };
+
+  export function recoverPassword(email){
+    return async(dispatch)=>{
+      console.log("MAIL", email);
+
+      try{
+      const resp = await clienteAxios.patch(`/Usuarios/ForgotPasswordUsuario?mail=${email}`);
+     Swal.fire("Correo enviado", "", "success");
+     console.log("RESPUESTA", resp);
+      }catch(error){
+        console.log("error", error);
+
+        Swal.fire("Ocurrió un error al enviar el correo", "Intenta de nuevo", "error");
+      }
+    }
+  }
 
   export function iniciarSesion(datos) {
     console.log(datos);
@@ -39,7 +48,6 @@ export function usuarioAutenticado() {
       });
       // Cookies.set("token", resp.data.usuario);
       localStorage.setItem("token", resp.data.usuario);
-      console.log("LOCALLL", localStorage.getItem("token"));
       usuarioAutenticado();
     } catch (error) {
         console.log(error.response);

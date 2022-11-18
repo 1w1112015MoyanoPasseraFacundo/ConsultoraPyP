@@ -7,7 +7,6 @@ export const Multipleselect = ({
   defaultOption,
   values,
 }) => {
-  console.log("VALUES", values);
   const [selectedOptions, setSelectedOptions] = useState([]);
   const optionsGeneric = useMemo(
     () =>

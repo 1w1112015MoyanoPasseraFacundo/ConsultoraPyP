@@ -85,7 +85,7 @@ namespace ConsultoraApi.Controllers
             var empleoGetDto = new List<EmpleoGetDto>();
             for (int i = 0; i < empleo.Count; i++)
             {
-                    empleoGetDto.Add(_mapper.Map<EmpleoGetDto>(empleo[i]));
+                empleoGetDto.Add(_mapper.Map<EmpleoGetDto>(empleo[i]));
             }
             if (empleoGetDto == null)
             {
@@ -145,7 +145,7 @@ namespace ConsultoraApi.Controllers
         [HttpGet("GetEmpleosByIdCliente")]
         public IActionResult GetEmpleosByIdCliente(int idCliente)
         {
-            var emple = _eRepo.GetEmpleoByIdCliente(idCliente).Where(x=>x.IdEstado==1).ToList();
+            var emple = _eRepo.GetEmpleoByIdCliente(idCliente).Where(x => x.IdEstado == 1).ToList();
             if (emple == null || emple.Count == 0)
             {
                 //DEJAR EN 200 ASI DEVUELVE LISTA VACIA
@@ -157,7 +157,7 @@ namespace ConsultoraApi.Controllers
             {
                 var clien = db.Clientes.FirstOrDefault(x => x.IdCliente == i.IdCliente);
 
-                var dto = new EmpleoGetDto { IdEmpleo = i.IdEmpleo, IdCliente = i.IdCliente, Nombre = i.Nombre};
+                var dto = new EmpleoGetDto { IdEmpleo = i.IdEmpleo, IdCliente = i.IdCliente, Nombre = i.Nombre };
                 empleGetDto.Add(dto);
             }
             if (empleGetDto.Count == 0 || empleGetDto == null)
@@ -168,6 +168,105 @@ namespace ConsultoraApi.Controllers
             return Ok(empleGetDto);
         }
 
+        [HttpGet("GetEmpleosByMes")]
+        public IActionResult GetEmpleosByMes(int mes)
+        {
+            ICollection<ReporteDto> emples;
+            if (mes == 0)
+            {
+                emples = _eRepo.GetEmpleosSinMes();
+            }
+            else
+            {
+                emples = _eRepo.GetEmpleosPorMes(mes);
+            }
+            if ((emples == null || emples.Count == 0) && mes != 0)
+            {
+                //DEJAR EN 200 ASI DEVUELVE LISTA VACIA
+                return StatusCode(200, emples);
+            }
+            var empleGetDto = new List<ReporteDto>();
+
+            foreach (var i in emples)
+            {
+                var clien = db.Clientes.FirstOrDefault(x => x.IdCliente == i.idCliente);
+
+                var dto = new ReporteDto { idCliente = clien.IdCliente, nombreCliente = clien.Nombre, countCliente = i.countCliente };
+                empleGetDto.Add(dto);
+            }
+            if (empleGetDto.Count == 0 || empleGetDto == null)
+            {
+                return StatusCode(409, "No hay competencias habilitadas");
+            }
+
+            return Ok(empleGetDto);
+        }
+        [HttpGet("GetEmpleosByFechas")]
+        public IActionResult GetEmpleosByFechas(DateTime fecha1, DateTime fecha2)
+        {
+            ICollection<ReporteDto> emples;
+            if (fecha1 == null || fecha2 == null)
+            {
+                emples = _eRepo.GetEmpleosSinMes();
+            }
+            else
+            {
+                emples = _eRepo.GetEmpleosPoFecha(fecha1, fecha2);
+            }
+            if ((emples == null || emples.Count == 0) && (fecha1 != null || fecha2 != null))
+            {
+                //DEJAR EN 200 ASI DEVUELVE LISTA VACIA
+                return StatusCode(200, emples);
+            }
+            var empleGetDto = new List<ReporteDto>();
+
+            foreach (var i in emples)
+            {
+                var clien = db.Clientes.FirstOrDefault(x => x.IdCliente == i.idCliente);
+
+                var dto = new ReporteDto { idCliente = clien.IdCliente, nombreCliente = clien.Nombre, countCliente = i.countCliente };
+                empleGetDto.Add(dto);
+            }
+            if (empleGetDto.Count == 0 || empleGetDto == null)
+            {
+                return StatusCode(409, "No hay competencias habilitadas");
+            }
+
+            return Ok(empleGetDto);
+        }
+        [HttpGet("GetEstadosEmpleosByFechas")]
+        public IActionResult GetEstadosEmpleosByFechas(DateTime fecha1, DateTime fecha2)
+        {
+            ICollection<EmpleoReporte2Dto> emples;
+            if (fecha1 == null || fecha2 == null)
+            {
+                emples = _eRepo.GetEstadoEmpleos();
+            }
+            else
+            {
+                emples = _eRepo.GetEstadoEmpleosPoFecha(fecha1, fecha2);
+            }
+            if ((emples == null || emples.Count == 0) && (fecha1 != null || fecha2 != null))
+            {
+                //DEJAR EN 200 ASI DEVUELVE LISTA VACIA
+                return StatusCode(200, emples);
+            }
+            var empleGetDto = new List<EmpleoReporte2Dto>();
+
+            foreach (var i in emples)
+            {
+                var est = db.Estados.FirstOrDefault(x => x.IdEstado == i.idEstado);
+
+                var dto = new EmpleoReporte2Dto { idEstado = est.IdEstado, nombreEstado = est.Nombre, countEstado = i.countEstado };
+                empleGetDto.Add(dto);
+            }
+            if (empleGetDto.Count == 0 || empleGetDto == null)
+            {
+                return StatusCode(409, "No hay empleos en esas fechas");
+            }
+
+            return Ok(empleGetDto);
+        }
         [HttpPost]
         public IActionResult CreateEmpleo(EmpleoCreateDto empleoDto)
         {
@@ -355,6 +454,6 @@ namespace ConsultoraApi.Controllers
             return Ok($"Empleo {empl.Nombre} cancelado con exito");
         }
 
-       
+
     }
 }

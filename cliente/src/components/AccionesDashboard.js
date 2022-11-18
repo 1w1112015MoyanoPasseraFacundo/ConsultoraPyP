@@ -2,9 +2,13 @@ import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import { Button, Modal } from "react-bootstrap";
-import { BsSearch } from "react-icons/bs";
-import { useSelector } from "react-redux";
+import { BsFillPencilFill, BsPencil, BsSearch } from "react-icons/bs";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { obtenerCandidatoEditar } from "../actions/candidatosActions";
 const AccionesDashboard = ({ candidato }) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const {
     nombre,
     apellido,
@@ -21,11 +25,18 @@ const AccionesDashboard = ({ candidato }) => {
     idCandidato,
     lstCompes,
   } = candidato;
+  console.log("CANDIDATO", candidato);
+  const redireccionarEdicion = (candidato) => {
+    dispatch(obtenerCandidatoEditar(candidato));
+    navigate(`/candidatos/editar/${candidato.idCandidato}`);
+  };
 
   const [show, setShow] = useState(false);
 
+  function handleShow(breakpoint) {
+    setShow(true);
+  }
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
   return (
     <>
       <tr>
@@ -40,27 +51,33 @@ const AccionesDashboard = ({ candidato }) => {
           <span>{telefono}</span>
         </td>
         <td>
-          <span>{linkedin}</span>
-        </td>
-        <td>
           <span>{estado}</span>
         </td>
-
         <td className="acciones">
           <button
             type="button"
-            className="btn btn-success mr-2"
+            className="btn btn-warning mr-2"
             title="Ver"
             data-toggle="modal"
             data-target="#exampleModal"
-            onClick={handleShow}
+            onClick={() => redireccionarEdicion(candidato)}
+          >
+            <BsFillPencilFill />
+          </button>
+          <button
+            type="button"
+            className="btn btn-primary mr-2"
+            title="Ver"
+            data-toggle="modal"
+            data-target="#exampleModal"
+            onClick={() => handleShow()}
           >
             <BsSearch />
           </button>
         </td>
       </tr>
 
-      <Modal show={show} onHide={handleClose} size="lg">
+      <Modal size="lg" show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Candidato</Modal.Title>
         </Modal.Header>
@@ -116,29 +133,29 @@ const AccionesDashboard = ({ candidato }) => {
               </div>
             </div>
             <div className="row p-t-20">
-              <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                <div className="form-group">
-                  <label className="form-label"> Teléfono </label>
-                  <input
-                    type="Number"
-                    className="form-control"
-                    name="telefono"
-                    value={telefono}
-                    disabled="true"
-                  />
-                </div>
+              <div className="form-group  col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <label>Nacimiento</label>
+                <input
+                  type="mail"
+                  className="form-control"
+                  placeholder="E-mail"
+                  name="mail"
+                  value={fechaNacimiento}
+                  disabled="true"
+                />
               </div>
-              <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                <div className="form-group">
-                  <label className="form-label"> Linkedin </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    name="linkedin"
-                    value={linkedin}
-                    disabled="true"
-                  />
-                </div>
+              <div className="form-group col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <label>Género</label>
+                <select
+                  className="form-control"
+                  name="pais"
+                  value={idGenero}
+                  disabled="true"
+                >
+                  <option>Seleccione...</option>
+                  <option value="1">Masculino</option>
+                  <option value="2">Femenino</option>
+                </select>
               </div>
             </div>
             <div className="row p-t-20">
@@ -170,11 +187,37 @@ const AccionesDashboard = ({ candidato }) => {
                 </select>
               </div>
             </div>
+            <div className="row p-t-20">
+              <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <div className="form-group">
+                  <label className="form-label"> Teléfono </label>
+                  <input
+                    type="Number"
+                    className="form-control"
+                    name="telefono"
+                    value={telefono}
+                    disabled="true"
+                  />
+                </div>
+              </div>
+              <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <div className="form-group">
+                  <label className="form-label"> Linkedin </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="linkedin"
+                    value={linkedin}
+                    disabled="true"
+                  />
+                </div>
+              </div>
+            </div>
           </form>
           <Button
             variant="primary"
             onClick={handleClose}
-            size="lg"
+            size="xl"
             className="float-right"
           >
             Aceptar

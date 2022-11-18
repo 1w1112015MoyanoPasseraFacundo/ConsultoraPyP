@@ -8,6 +8,7 @@ import {
   obtenerUsuariosFilterAction,
 } from "../../actions/usuariosActions";
 import clienteAxios from "../../config/axios";
+import PaginaError from "../PaginaError";
 const NuevoUsuario = () => {
   //state
 
@@ -52,6 +53,7 @@ const NuevoUsuario = () => {
     console.log(resultado);
     guardarTiposDocs(resultado.data);
   };
+  const login = useSelector((state) => state.login.login);
 
   const submitNuevoUsuario = (e) => {
     e.preventDefault();
@@ -69,6 +71,15 @@ const NuevoUsuario = () => {
       telefono.includes("-")
     ) {
       Swal.fire("Llene los campos obligatorios", "", "warning");
+      return;
+    }
+    if (documento.length != 8) {
+      Swal.fire("El campo documento sólo acepta ocho números", "", "warning");
+      return;
+    }
+    if (telefono != "") {
+      if (telefono.length < 7 || telefono.length > 20)
+        Swal.fire("Ingrese un télefono correcto", "", "warning");
       return;
     }
 
@@ -93,185 +104,192 @@ const NuevoUsuario = () => {
   const cancelar = () => {
     navigate("/usuarios");
   };
+
   return (
-    <div className="row justify-content-center">
-      <div className="col-md-12">
-        <h3 className="title-decorator">Nuevo Usuario</h3>
-        <div className="card">
-          <div className="card-body">
-            {/* {alerta ? <p className={alerta.clases}>{alerta.msg}</p>:null} */}
-            <form>
-              <div className="row p-t-20">
-                <div className="form-group col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                  <label>Nombre</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Nombre"
-                    name="nombre"
-                    value={nombre}
-                    onChange={(e) => guardarNombre(e.target.value)}
-                  />
-                </div>
-                <div className="form-group  col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                  <label>Apellido</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Apellido"
-                    name="apellido"
-                    value={apellido}
-                    onChange={(e) => guardarApellido(e.target.value)}
-                  />
-                </div>
-                <div className="form-group  col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                  <label>Correo electrónico</label>
-                  <input
-                    type="mail"
-                    className="form-control"
-                    placeholder="E-mail"
-                    name="mail"
-                    value={mail}
-                    onChange={(e) => guardarMail(e.target.value)}
-                  />
-                </div>
-              </div>
-              <div className="row p-t-20">
-                <div className="form-group col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                  <label>Tipo de Documento</label>
-                  <select
-                    className="form-control"
-                    name="tipoDocumento"
-                    onClick={consultarAPI}
-                    value={idTipoDocumento}
-                    onChange={(e) => guardarTipoDocumento(e.target.value)}
-                  >
-                    <option>Seleccione...</option>
-
-                    {listaTiposDocs.map((tipoDocumento) => (
-                      <option
-                        key={tipoDocumento.idTipoDocumento}
-                        value={tipoDocumento.idTipoDocumento}
+    <>
+      {login.rol == "Admin" ? (
+        <div className="row justify-content-center">
+          <div className="col-md-12">
+            <h3 className="title-decorator">Nuevo Usuario</h3>
+            <div className="card">
+              <div className="card-body">
+                {/* {alerta ? <p className={alerta.clases}>{alerta.msg}</p>:null} */}
+                <form>
+                  <div className="row p-t-20">
+                    <div className="form-group col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                      <label>Nombre</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Nombre"
+                        name="nombre"
+                        value={nombre}
+                        onChange={(e) => guardarNombre(e.target.value)}
+                      />
+                    </div>
+                    <div className="form-group  col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                      <label>Apellido</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Apellido"
+                        name="apellido"
+                        value={apellido}
+                        onChange={(e) => guardarApellido(e.target.value)}
+                      />
+                    </div>
+                    <div className="form-group  col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                      <label>Correo electrónico</label>
+                      <input
+                        type="mail"
+                        className="form-control"
+                        placeholder="E-mail"
+                        name="mail"
+                        value={mail}
+                        onChange={(e) => guardarMail(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                  <div className="row p-t-20">
+                    <div className="form-group col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                      <label>Tipo de Documento</label>
+                      <select
+                        className="form-control"
+                        name="tipoDocumento"
+                        onClick={consultarAPI}
+                        value={idTipoDocumento}
+                        onChange={(e) => guardarTipoDocumento(e.target.value)}
                       >
-                        {tipoDocumento.nombre}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="form-group col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                  <label>Documento</label>
-                  <input
-                    type="number"
-                    className="form-control"
-                    placeholder="Documento"
-                    name="documento"
-                    min="0"
-                    minLength={8}
-                    maxLength={8}
-                    value={documento}
-                    onChange={(e) => guardarDocumento(e.target.value)}
-                  />
-                </div>
-                <div className="form-group  col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                  <label>Fecha de nacimiento</label>
-                  <input
-                    type="date"
-                    className="form-control"
-                    name="fechaNacimiento"
-                    value={fechaNacimiento}
-                    onChange={(e) => guardarFecha(e.target.value)}
-                  />
-                </div>
-              </div>
-              <div className="row p-t-20">
-                <div className="form-group col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                  <label>Nombre de usuario</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Usuario"
-                    name="nombreUsuario"
-                    value={nombreUsuario}
-                    onChange={(e) => guardarNombreUsuario(e.target.value)}
-                  />
-                </div>
-                <div className="form-group  col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                  <label>Contraseña</label>
-                  <input
-                    className="form-control"
-                    type="password"
-                    id="password"
-                    name="password"
-                    placeholder="Contraseña"
-                    value={password}
-                    onChange={(e) => guardarContraseña(e.target.value)}
-                  />
-                </div>
-                <div className="form-group  col-lg-4 col-md-4 col-sm-12 col-xs-12"></div>
-              </div>
-              <h4 className="card-subtitle font-italic">Datos opcionales</h4>
-              <hr />
-              <div className="row">
-                <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                  <div className="form-group">
-                    <label className="form-label"> Dirección </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      name="direccion"
-                      min="0"
-                      minLength={8}
-                      maxLength={8}
-                      value={direccion}
-                      onChange={(e) => guardarDireccion(e.target.value)}
-                    />
-                  </div>
-                </div>
-                <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                  <div className="form-group">
-                    <label className="form-label"> Teléfono </label>
-                    <input
-                      type="Number"
-                      className="form-control"
-                      name="telefono"
-                      value={telefono}
-                      onChange={(e) => guardarTelefono(e.target.value)}
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className=" row">
-                <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12"></div>
-                <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12"></div>
+                        <option>Seleccione...</option>
 
-                <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                  <button
-                    type="submit"
-                    className="btn btn-light font-weight-bold text-uppercase"
-                    onClick={cancelar}
-                  >
-                    <i class="mx-1 mr-2">
-                      <BsReplyFill />
-                    </i>
-                    <span> Volver</span>
-                  </button>
-                  <button
-                    type="submit"
-                    className="btn btn-primary font-weight-bold text-uppercase d-block  nuevo"
-                    onClick={submitNuevoUsuario}
-                  >
-                    <i class="mx-1 mr-2">
-                      <BsCheckLg />
-                    </i>
-                    <span> Guardar</span>
-                  </button>
-                </div>
+                        {listaTiposDocs.map((tipoDocumento) => (
+                          <option
+                            key={tipoDocumento.idTipoDocumento}
+                            value={tipoDocumento.idTipoDocumento}
+                          >
+                            {tipoDocumento.nombre}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className="form-group col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                      <label>Documento</label>
+                      <input
+                        type="number"
+                        className="form-control"
+                        placeholder="Documento"
+                        name="documento"
+                        min="0"
+                        minLength={8}
+                        maxLength={8}
+                        value={documento}
+                        onChange={(e) => guardarDocumento(e.target.value)}
+                      />
+                    </div>
+                    <div className="form-group  col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                      <label>Fecha de nacimiento</label>
+                      <input
+                        type="date"
+                        className="form-control"
+                        name="fechaNacimiento"
+                        value={fechaNacimiento}
+                        onChange={(e) => guardarFecha(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                  <div className="row p-t-20">
+                    <div className="form-group col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                      <label>Nombre de usuario</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Usuario"
+                        name="nombreUsuario"
+                        value={nombreUsuario}
+                        onChange={(e) => guardarNombreUsuario(e.target.value)}
+                      />
+                    </div>
+                    <div className="form-group  col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                      <label>Contraseña</label>
+                      <input
+                        className="form-control"
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Contraseña"
+                        value={password}
+                        onChange={(e) => guardarContraseña(e.target.value)}
+                      />
+                    </div>
+                    <div className="form-group  col-lg-4 col-md-4 col-sm-12 col-xs-12"></div>
+                  </div>
+                  <h4 className="card-subtitle font-italic">
+                    Datos opcionales
+                  </h4>
+                  <hr />
+                  <div className="row">
+                    <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                      <div className="form-group">
+                        <label className="form-label"> Dirección </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          name="direccion"
+                          min="0"
+                          minLength={8}
+                          maxLength={8}
+                          value={direccion}
+                          onChange={(e) => guardarDireccion(e.target.value)}
+                        />
+                      </div>
+                    </div>
+                    <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                      <div className="form-group">
+                        <label className="form-label"> Teléfono </label>
+                        <input
+                          type="Number"
+                          className="form-control"
+                          name="telefono"
+                          value={telefono}
+                          onChange={(e) => guardarTelefono(e.target.value)}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className=" row">
+                    <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12"></div>
+                    <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12"></div>
+
+                    <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                      <button
+                        type="submit"
+                        className="btn btn-light font-weight-bold text-uppercase"
+                        onClick={cancelar}
+                      >
+                        <i class="mx-1 mr-2">
+                          <BsReplyFill />
+                        </i>
+                        <span> Volver</span>
+                      </button>
+                      <button
+                        type="submit"
+                        className="btn btn-primary font-weight-bold text-uppercase d-block  nuevo"
+                        onClick={submitNuevoUsuario}
+                      >
+                        <i class="mx-1 mr-2">
+                          <BsCheckLg />
+                        </i>
+                        <span> Guardar</span>
+                      </button>
+                    </div>
+                  </div>
+                </form>
               </div>
-            </form>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+      ) : null}
+    </>
   );
 };
 

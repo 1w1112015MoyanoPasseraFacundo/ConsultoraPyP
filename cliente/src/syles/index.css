@@ -168,8 +168,13 @@ h1 a.text-light:hover {
   min-width: 160px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
-  cursor: pointer;
   border-radius: 8px;
+}
+.rolle{
+  cursor: default;
+}
+.sesionOut{
+  cursor: pointer;
 }
 
 .dropdown-content:hover{
@@ -193,6 +198,14 @@ h1 a.text-light:hover {
   box-shadow: 0px 1px 3px 2px rgba(58, 58, 58, 0.15) !important;
   border-radius: 8px !important;
   width: 110%;
+}
+.custom-card-shadow-preg {
+  box-shadow: 0px 1px 3px 2px rgba(58, 58, 58, 0.15) !important;
+  border-radius: 8px !important;
+ cursor: pointer;
+}
+.custom-card-shadow-preg:hover {
+  transform: scale(1.03);
 }
 
 .box {
@@ -235,3 +248,89 @@ visibility: hidden!important;
   font-weight: 700;
 }
 
+.error-page{
+  background-color: #fff;
+  color: red;
+}
+.error-box {
+  height: 100%;
+  width: 100%;
+  position: fixed;
+}
+.error-box .footer {
+  width: 100%;
+  left: 0px;
+  right: 0px;
+}
+
+.error-body h1 {
+  font-size: 210px;
+  font-weight: 900;
+  text-shadow: 4px 4px 0 #ffffff, 6px 6px 0 #263238;
+  line-height: 210px;
+}
+
+.error-text {
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  bottom: 50px;
+}
+.preg{
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 21px;
+}
+.left {float:left;}
+.right {float:right;}
+
+.terminos{
+  padding-left: 45px;
+}
+
+/* RECOVER */
+
+
+.recover-register {
+  height: 100%;
+  width: 100%;
+  padding: 2rem;
+  position: fixed;
+  z-index: 999;
+}
+
+.recover-box {
+  width: 500px;
+  margin: auto;
+}
+
+.bg-reset-pass {
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0.9;
+  height: 100vh;
+  width: 100vw;
+  /* z-index: -1; */
+}
+
+.strengthBar {
+  display: inline;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  vertical-align: 2px;
+}
+
+.point:last-of-type {
+  margin: 0 !important;
+}
+
+.point {
+  background: #ddd;
+  border-radius: 2px;
+  display: inline-block;
+  height: 5px;
+  margin-right: 1px;
+  width: 62px;
+}

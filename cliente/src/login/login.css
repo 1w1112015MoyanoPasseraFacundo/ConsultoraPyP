@@ -10,9 +10,7 @@
     height: 100vh;
     width: 100vw;
   }
-  .logo{
-    background-image: url("../assets/logo.png");
-  }
+
   .login-form-container {
     z-index: 55;
     background-color: rgba(0, 0, 0, 0.4);

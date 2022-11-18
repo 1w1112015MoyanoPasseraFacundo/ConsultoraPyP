@@ -9,6 +9,7 @@ import {
 } from "../../actions/pagosActions";
 import clienteAxios from "../../config/axios";
 import Spinner from "../../syles/Spinner";
+import PaginaError from "../PaginaError";
 import AccionesPagos from "./AccionesPagos";
 const Pagos = () => {
   const dispatch = useDispatch();
@@ -57,38 +58,42 @@ const Pagos = () => {
   };
 
   const pageCount = Math.ceil(pagos.length / itemsPerPage);
+  const login = useSelector((state) => state.login.login);
+
   return (
-    <Fragment>
-      <h3 className="title-decorator">Cobranzas</h3>
-      <div class="row">
-        <div class="col-lg-12">
-          <div class="card card-form ">
-            <div class="card-body card-body-custom">
-              <form class="form-horizontal p-t-20" onSubmit={filtrar}>
-                <div class="row">
-                  <div class="col-md-4">
-                    <div class="form-group">
-                      <select
-                        type="text"
-                        class="form-control"
-                        value={idCliente}
-                        name="idCliente"
-                        onClick={llenarCliente}
-                        onChange={(e) => guardarCliente(e.target.value)}
-                      >
-                        <option value={empty}>Seleccione cliente...</option>
-                        {listaClientes.map((cliente) => (
-                          <option
-                            key={cliente.idCliente}
-                            value={cliente.idCliente}
+    <>
+      {login.rol == "Admin" ? (
+        <>
+          <h3 className="title-decorator">Cobranzas</h3>
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="card card-form ">
+                <div class="card-body card-body-custom">
+                  <form class="form-horizontal p-t-20" onSubmit={filtrar}>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <select
+                            type="text"
+                            class="form-control"
+                            value={idCliente}
+                            name="idCliente"
+                            onClick={llenarCliente}
+                            onChange={(e) => guardarCliente(e.target.value)}
                           >
-                            {cliente.nombre}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                  </div>
-                  {/* <div class="col-md-4">
+                            <option value={empty}>Seleccione cliente...</option>
+                            {listaClientes.map((cliente) => (
+                              <option
+                                key={cliente.idCliente}
+                                value={cliente.idCliente}
+                              >
+                                {cliente.nombre}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      </div>
+                      {/* <div class="col-md-4">
                     <div class="form-group">
                       <select
                         type="text"
@@ -103,102 +108,107 @@ const Pagos = () => {
                       </select>
                     </div>
                   </div> */}
-                  <div class="col-md-4">
-                    <div class="pull-right text-right">
-                      <button type="submit" class="btn btn-primary">
-                        <i class="mx-1 mr-2">
-                          <BsSearch />
-                        </i>
-                        <span> Buscar</span>
-                      </button>
-                      &nbsp;
-                      <button
-                        type="button"
-                        class="btn btn-dark"
-                        onClick={nuevo}
-                      >
-                        <i class="mx-1 mr-2">
-                          <BsPlusLg />
-                        </i>
-                        <span> Nuevo</span>
-                      </button>
+                      <div class="col-md-4">
+                        <div class="pull-right text-right">
+                          <button type="submit" class="btn btn-primary">
+                            <i class="mx-1 mr-2">
+                              <BsSearch />
+                            </i>
+                            <span> Buscar</span>
+                          </button>
+                          &nbsp;
+                          <button
+                            type="button"
+                            class="btn btn-dark"
+                            onClick={nuevo}
+                          >
+                            <i class="mx-1 mr-2">
+                              <BsPlusLg />
+                            </i>
+                            <span> Nuevo</span>
+                          </button>
+                        </div>
+                      </div>
                     </div>
-                  </div>
+                  </form>
                 </div>
-              </form>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
-      {error != null ? (
-        <div
-          role="alert"
-          className="alert text-center animated fadeIn notFound"
-        >
-          <img src={require("../../assets/documentNotFound.gif")} alt="404" />
-          <h2>No se encontraron resultados.</h2>
-        </div>
-      ) : (
-        <div class="card custom-card-shadow">
-          <div class="row">
-            <div class="col-lg-12">
-              <table className="table table-hover">
-                <thead>
-                  <tr>
-                    <th className="colu" scope="col">
-                      Cliente
-                    </th>
-                    <th className="colu" scope="col">
-                      Empleo
-                    </th>
-                    <th className="colu" scope="col">
-                      Monto
-                    </th>
-                    <th align="center" className="colux" scope="col">
-                      Fecha
-                    </th>
-                    {/* <th className="colu" scope="col">
+          {error != null ? (
+            <div
+              role="alert"
+              className="alert text-center animated fadeIn notFound"
+            >
+              <img
+                src={require("../../assets/documentNotFound.gif")}
+                alt="404"
+              />
+              <h2>No se encontraron resultados.</h2>
+            </div>
+          ) : (
+            <div class="card custom-card-shadow">
+              <div class="row">
+                <div class="col-lg-12">
+                  <table className="table table-hover">
+                    <thead>
+                      <tr>
+                        <th className="colu" scope="col">
+                          Cliente
+                        </th>
+                        <th className="colu" scope="col">
+                          Empleo
+                        </th>
+                        <th className="colu" scope="col">
+                          Monto
+                        </th>
+                        <th align="center" className="colux" scope="col">
+                          Fecha
+                        </th>
+                        {/* <th className="colu" scope="col">
                     Estado
                   </th> */}
-                    <th className="colu" scope="col">
-                      Acciones
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {currentItems.map((pago) => {
-                    console.log(pago);
-                    let fecha = pago.fechaPago.split("T");
-                    pago.fechaPago = fecha[0];
-                    return <AccionesPagos key={pago.idPago} pago={pago} />;
-                  })}
-                </tbody>
-              </table>
+                        <th className="colu" scope="col">
+                          Acciones
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {currentItems.map((pago) => {
+                        console.log(pago);
+                        let fecha = pago.fechaPago.split("T");
+                        pago.fechaPago = fecha[0];
+                        return <AccionesPagos key={pago.idPago} pago={pago} />;
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <ReactPaginate
+                previousLabel="Anterior"
+                nextLabel="Siguiente"
+                pageClassName="page-item"
+                pageLinkClassName="page-link"
+                previousClassName="page-item"
+                previousLinkClassName="page-link"
+                nextClassName="page-item"
+                nextLinkClassName="page-link"
+                breakLabel="..."
+                breakClassName="page-item"
+                breakLinkClassName="page-link"
+                pageCount={pageCount}
+                marginPagesDisplayed={2}
+                pageRangeDisplayed={5}
+                onPageChange={handlePageClick}
+                containerClassName="pagination"
+                activeClassName="active"
+              />
             </div>
-          </div>
-          <ReactPaginate
-            previousLabel="Anterior"
-            nextLabel="Siguiente"
-            pageClassName="page-item"
-            pageLinkClassName="page-link"
-            previousClassName="page-item"
-            previousLinkClassName="page-link"
-            nextClassName="page-item"
-            nextLinkClassName="page-link"
-            breakLabel="..."
-            breakClassName="page-item"
-            breakLinkClassName="page-link"
-            pageCount={pageCount}
-            marginPagesDisplayed={2}
-            pageRangeDisplayed={5}
-            onPageChange={handlePageClick}
-            containerClassName="pagination"
-            activeClassName="active"
-          />
-        </div>
-      )}
-      {cargando ? <Spinner /> : null}
-    </Fragment>
+          )}
+          {cargando ? <Spinner /> : null}
+        </>
+      ) : null}
+    </>
   );
 };
 

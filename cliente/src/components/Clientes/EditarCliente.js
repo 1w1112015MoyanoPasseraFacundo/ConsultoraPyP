@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { BsCheckLg, BsReplyFill } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 import { editarClienteAction } from "../../actions/clientesActions";
 import clienteAxios from "../../config/axios";
 const EditarCliente = () => {
@@ -65,6 +66,34 @@ const EditarCliente = () => {
 
   const submitEditarCliente = (e) => {
     e.preventDefault();
+    //validar form
+    if (
+      nombre.trim() === "" ||
+      nombreFantasia.trim() === "" ||
+      mail.trim() === "" ||
+      idPais === 0 ||
+      idPais === "0" ||
+      documento === "" ||
+      idRubro === "0" ||
+      idRubro === 0 ||
+      direccion.trim() === "" ||
+      telefono === "" ||
+      documento.includes("-") ||
+      telefono.includes("-")
+    ) {
+      console.log(idRubro);
+      Swal.fire("Llene todos los campos obligatorios", "", "warning");
+      return;
+    }
+    if (documento.length != 11) {
+      Swal.fire("El campo cuit sólo acepta once números", "", "warning");
+      return;
+    }
+    if (telefono != "") {
+      if (telefono.length < 7 || telefono.length > 20)
+        Swal.fire("Ingrese un télefono correcto", "", "warning");
+      return;
+    }
     dispatch(editarClienteAction(cliente));
     navigate("/clientes");
   };

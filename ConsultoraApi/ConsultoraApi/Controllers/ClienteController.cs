@@ -161,7 +161,7 @@ namespace ConsultoraApi.Controllers
             }
             var cand = _cRepo.GetCliente(idCliente);
 
-
+                
             if (cand == null)
             {
                 return StatusCode(400, "El cliente no existe");

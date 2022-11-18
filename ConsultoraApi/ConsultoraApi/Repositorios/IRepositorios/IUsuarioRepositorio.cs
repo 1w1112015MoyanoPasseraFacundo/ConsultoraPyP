@@ -7,6 +7,8 @@ namespace ConsultoraApi.Repositorios.IRepositorios
     {
 
         public Usuario GetUsuario(int idUsuario);
+        public Usuario GetUsuario(string mail);
+        public ICollection<Usuario> GetListUsuario(int idUsuario);
         public ICollection<Usuario> GetFilterUsuario(UsuarioFilterDto filterDto);
         public bool CreateUsuario(Usuario usuario);
         public bool UsuarioExists(string NombreUsuario);

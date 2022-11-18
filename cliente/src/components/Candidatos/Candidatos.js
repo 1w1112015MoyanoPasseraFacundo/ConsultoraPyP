@@ -7,7 +7,6 @@ import {
   obtenerCandidatosAction,
   obtenerCandidatosFilterAction,
 } from "../../actions/candidatosActions";
-import { obtenerEmpleosAction } from "../../actions/empleosActions";
 import Spinner from "../../syles/Spinner";
 import AccionesCandidatos from "./AccionesCandidatos";
 const Candidatos = () => {
@@ -30,7 +29,6 @@ const Candidatos = () => {
 
   useEffect(() => {
     //consultar api
-
     const cargarCandidatos = () => dispatch(obtenerCandidatosAction());
     cargarCandidatos();
     // eslint-disable-next-line
@@ -169,7 +167,6 @@ const Candidatos = () => {
                   {currentItems.map((candidato) => {
                     let fecha = candidato.fechaNacimiento.split("T");
                     candidato.fechaNacimiento = fecha[0];
-                    console.log(candidato);
                     return (
                       <AccionesCandidatos
                         key={candidato.idCandidato}

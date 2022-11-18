@@ -47,6 +47,7 @@ builder.Services.AddScoped<IUsuarioXRolRepositorio, UsuarioXRolRepositorio>();
 
 //Helpers
 builder.Services.AddScoped<EmailUtilities>();
+builder.Services.AddScoped<RandomStringGenerator>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

@@ -1,10 +1,3 @@
-import {
-  Checkbox,
-  ListItemIcon,
-  ListItemText,
-  MenuItem,
-  Select,
-} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { BsCheckLg, BsReplyFill } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,7 +10,6 @@ import { Multipleselect } from "../MultipleSelect";
 const EditarCandidato = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
   const [candidato, guardarCandidato] = useState({
     nombre: "",
     apellido: "",
@@ -47,6 +39,7 @@ const EditarCandidato = () => {
       [e.target.name]: e.target.value,
     });
   };
+
   const cancelar = () => {
     navigate("/candidatos");
   };
@@ -66,7 +59,6 @@ const EditarCandidato = () => {
     estado,
     lstCompes,
   } = candidato;
-  console.log(candidato);
   const error = useSelector((state) => state.candidatos.error);
 
   useEffect(() => {
@@ -116,9 +108,20 @@ const EditarCandidato = () => {
       fechaNacimiento.trim() === "" ||
       lstCompes.length === 0 ||
       documento.toString().includes("-") ||
+      documento.toString().includes("e") ||
+      telefono.includes("e") ||
       telefono.includes("-")
     ) {
       Swal.fire("Llene los campos obligatorios", "", "warning");
+      return;
+    }
+    if (documento.length != 8) {
+      Swal.fire("El campo documento sólo acepta ocho números", "", "warning");
+      return;
+    }
+    if (telefono != "") {
+      if (telefono.length < 7 || telefono.length > 20)
+        Swal.fire("Ingrese un télefono correcto", "", "warning");
       return;
     }
     dispatch(editarCandidatoAction(candidato));
@@ -232,6 +235,7 @@ const EditarCandidato = () => {
                     options={data ? data : []}
                     setState={guardarCompetencias}
                     defaultOption={"Seleccione habilidades..."}
+                    values={candidato.lstCompes ? candidato.lstCompes : []}
                   />
                 </div>
                 <div className="form-group  col-lg-4 col-md-4 col-sm-12 col-xs-12">

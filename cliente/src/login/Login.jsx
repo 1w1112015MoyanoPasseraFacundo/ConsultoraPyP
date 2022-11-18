@@ -39,6 +39,10 @@ const Login = () => {
     });
   };
 
+  const recover =()=>{
+    navigate("/recoverPassword");
+  }
+
   const onSubmit = (e) => {
     e.preventDefault();
     try{
@@ -53,9 +57,6 @@ const Login = () => {
     }catch(error){
 
     }
-
-
-
   };
   return (
     <section id="wrapper" className="login-register login-sidebar login-bg-img">
@@ -114,9 +115,10 @@ const Login = () => {
             <div className="form-group row">
               <div className="col-md-12">
                 <a
+                type="button"
                   id="to-recover"
-                  className="text-dark pull-right link-wf"
-                  href="/"
+                  className="text-dark pull-right"
+                  onClick={recover}
                 >
                   <i className="fa fa-lock m-r-5"></i> ¿Olvidaste tu clave?
                 </a>
