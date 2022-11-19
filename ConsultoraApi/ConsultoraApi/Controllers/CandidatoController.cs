@@ -112,7 +112,7 @@ namespace ConsultoraApi.Controllers
                 return StatusCode(400, "Error");
             }
             var listaCandidatos = new List<CandidatoUpdateDto>();
-            var cand = db.Candidatos.ToList();
+            var cand = db.Candidatos.Where(x=>x.Estado!="Descartado").ToList();
             foreach (var item in cand)
             {
                 bool esValido = true;

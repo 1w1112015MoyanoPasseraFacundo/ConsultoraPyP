@@ -76,7 +76,7 @@ const Reportes = () => {
 
   return (
     <>
-      {usuario.rol == "Admin" ? (
+      {usuario.rol === "Admin" ? (
         <>
           <h3 className="title-decorator">Cobros efectuados</h3>
           <br />
@@ -120,7 +120,7 @@ const Reportes = () => {
                   </div>
                 </div>
               </div>
-              {error !== null ? null : ( // </div> //   <h2>No se encontraron resultados.</h2> //   <img src={require("../../assets/documentNotFound.gif")} alt="404" /> // > //   className="alert text-center animated fadeIn notFound" //   role="alert" // <div
+              {error !== null ? null : (
                 <div class="row">
                   <div class="col-lg-12">
                     <table className="table table-hover">
@@ -142,7 +142,6 @@ const Reportes = () => {
                       </thead>
                       <tbody>
                         {pagos.map((pago) => {
-                          console.log(pago);
                           let fecha = pago.fechaPago.split("T");
                           pago.fechaPago = fecha[0];
                           return (
@@ -161,9 +160,7 @@ const Reportes = () => {
                             class="btn btn-success"
                             onClick={exportPDF}
                           >
-                            {/* <i class="mx-1 mr-2"> */}
                             <BsDownload />
-                            {/* </i> */}
                             <span> Descargar</span>
                           </button>
                         </div>

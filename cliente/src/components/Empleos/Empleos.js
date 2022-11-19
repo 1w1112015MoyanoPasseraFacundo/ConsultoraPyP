@@ -33,20 +33,30 @@ const Empleos = () => {
   const nuevo = () => {
     navigate("/empleos/nuevo");
   };
-  const llenarRubro = async () => {
-    const resultado = await clienteAxios.get(`/rubros`);
-    guardarRubros(resultado.data);
-  };
-  const llenarCliente = async () => {
-    const resultado = await clienteAxios.get(`/clientes`);
-    guardarClientes(resultado.data);
-  };
-  const llenarEstado = async () => {
-    const resultado = await clienteAxios.get(`/estados`);
-    guardarEstados(resultado.data);
-  };
+
+  useEffect(() => {
+    const llenarRubro = async () => {
+      const resultado = await clienteAxios.get(`/rubros`);
+      guardarRubros(resultado.data);
+    };
+    llenarRubro();
+  }, []);
+  useEffect(() => {
+    const llenarCliente = async () => {
+      const resultado = await clienteAxios.get(`/clientes`);
+      guardarClientes(resultado.data);
+    };
+    llenarCliente();
+  }, []);
+  useEffect(() => {
+    const llenarEstado = async () => {
+      const resultado = await clienteAxios.get(`/estados`);
+      guardarEstados(resultado.data);
+    };
+    llenarEstado();
+  }, []);
+
   const buscar = (datos) => {
-    console.log(datos);
     dispatch(obtenerEmpleosFilterAction(datos));
   };
   const filtrar = (e) => {
@@ -59,10 +69,11 @@ const Empleos = () => {
     });
   };
   const empleos = useSelector((state) => state.empleos.empleos);
-  console.log(empleos);
   const error = useSelector((state) => state.empleos.error);
   const cargando = useSelector((state) => state.empleos.loading);
   const empty = "";
+
+  //PAGINADOR
   const itemsPerPage = 5;
   const [itemOffset, setItemOffset] = useState(0);
   const endOffset = itemOffset + itemsPerPage;
@@ -70,9 +81,6 @@ const Empleos = () => {
   // Invoke when user click to request another page.
   const handlePageClick = (event) => {
     const newOffset = (event.selected * itemsPerPage) % empleos.length;
-    console.log(
-      `User requested page number ${event.selected}, which is offset ${newOffset}`
-    );
     setItemOffset(newOffset);
   };
   const pageCount = Math.ceil(empleos.length / itemsPerPage);
@@ -103,7 +111,6 @@ const Empleos = () => {
                     class="form-control"
                     value={idCliente}
                     name="idCliente"
-                    onClick={llenarCliente}
                     onChange={(e) => guardarCliente(e.target.value)}
                   >
                     <option value={empty}>Seleccione cliente...</option>
@@ -122,7 +129,6 @@ const Empleos = () => {
                     class="form-control"
                     value={idRubro}
                     name="idRubro"
-                    onClick={llenarRubro}
                     onChange={(e) => guardarRubro(e.target.value)}
                   >
                     <option value={empty}>Seleccione rubro...</option>
@@ -141,7 +147,6 @@ const Empleos = () => {
                     class="form-control"
                     value={idEstado}
                     name="idEstado"
-                    onClick={llenarEstado}
                     onChange={(e) => guardarEstado(e.target.value)}
                   >
                     <option value={empty}>Seleccione estado...</option>

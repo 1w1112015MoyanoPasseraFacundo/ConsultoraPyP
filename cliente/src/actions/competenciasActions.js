@@ -70,11 +70,6 @@ export function crearNuevaCompetenciaAction(competencia) {
       //insertar en la API
       await clienteAxios.post("/competencias", competencia);
       dispatch(agregarCompetenciaExito(competencia));
-      Swal.fire(
-        "Correcto!",
-        "La habilidad se agrego correctamente!",
-        "success"
-      );
     } catch (error) {
       console.log(error);
       dispatch(agregarCompetenciaError(true));
@@ -148,6 +143,7 @@ export function darDeBajaCompetencia(idCompetencia) {
       await clienteAxios.delete(`/competencias/${idCompetencia}`);
       dispatch(eliminarCompetenciaExito());
       Swal.fire("Eliminado!", "La habilidad ha sido dado de baja", "success");
+      window.location.reload();
     } catch (error) {
       dispatch(eliminarCompetenciaError());
     }

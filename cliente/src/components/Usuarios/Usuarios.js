@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BsPlusLg, BsSearch } from "react-icons/bs";
 import ReactPaginate from "react-paginate";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,13 +8,13 @@ import {
   obtenerUsuariosFilterAction,
 } from "../../actions/usuariosActions";
 import Spinner from "../../syles/Spinner";
-import PaginaError from "../PaginaError";
 import AccionesUsuarios from "./AccionesUsuarios";
 const Usuarios = () => {
   const [usuario, guardarUsuario] = useState("");
   const [cuil, guardarCuil] = useState("");
   const [estado, guardarEstado] = useState("");
 
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   useEffect(() => {
     //consultar api
@@ -34,17 +34,16 @@ const Usuarios = () => {
     dispatch(obtenerUsuariosFilterAction(datos));
   };
   const usuarios = useSelector((state) => state.usuarios.usuarios);
-  console.log("USUARIOS", usuarios);
   const login = useSelector((state) => state.login.login);
 
   const cargando = useSelector((state) => state.usuarios.loading);
   const error = useSelector((state) => state.usuarios.error);
-  const navigate = useNavigate();
 
   const nuevo = () => {
     navigate("/usuarios/nuevo");
   };
 
+  //PAGINADOR
   const itemsPerPage = 5;
   const [itemOffset, setItemOffset] = useState(0);
   const endOffset = itemOffset + itemsPerPage;
@@ -55,9 +54,10 @@ const Usuarios = () => {
     setItemOffset(newOffset);
   };
   const pageCount = Math.ceil(usuarios.length / itemsPerPage);
+
   return (
     <>
-      {login.rol == "Admin" ? (
+      {login.rol === "Admin" ? (
         <>
           <h3 className="title-decorator">Usuarios</h3>
           <div class="row">

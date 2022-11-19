@@ -65,7 +65,8 @@ namespace ConsultoraApi.Controllers
                 empleoGetDto[i].nombreRubro = rubro.Nombre;
                 empleoGetDto[i].nombreEstado = estado.Nombre;
                 empleoGetDto[i].nombreCliente = cliente.Nombre;
-                empleoGetDto[i].lstCompes = compe;
+                empleoGetDto[i].lstCompes = empXCompe;
+                //empleoGetDto[i].lstCompes = compe;
 
 
             }
@@ -108,7 +109,8 @@ namespace ConsultoraApi.Controllers
                 empleoGetDto[i].nombreRubro = rubro.Nombre;
                 empleoGetDto[i].nombreEstado = estado.Nombre;
                 empleoGetDto[i].nombreCliente = cliente.Nombre;
-                empleoGetDto[i].lstCompes = compe;
+                empleoGetDto[i].lstCompes = empXCompe;
+                //empleoGetDto[i].lstCompes = compe;
 
 
             }

@@ -20,7 +20,9 @@ const EditarCompetencia = () => {
     if (error === false) {
       navigate("/competencias");
     }
+    // eslint-disable-next-line
   }, [error]);
+
   useEffect(() => {
     guardarCompetencia(editar);
   }, [editar]);
@@ -38,11 +40,10 @@ const EditarCompetencia = () => {
     if (idRubro === 0) {
       competencia.nombreRubro = "";
     }
+    // eslint-disable-next-line
   }, [idRubro, competencia.nombreRubro]);
   const submitEditarCompetencia = (e) => {
     e.preventDefault();
-    console.log(idRubro);
-    console.log(competencia);
 
     //validar form
     if (nombre.trim() === "" || idRubro === 0 || idRubro === "0") {

@@ -9,11 +9,11 @@ import clienteAxios from "../../config/axios";
 
 const NuevoCliente = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   //state
   const [nombre, guardarNombre] = useState("");
   const [nombreFantasia, guardarNombreFantasia] = useState("");
   const [mail, guardarMail] = useState("");
-  // const [idTipoDocumento, guardarTipoDocumento] = useState(0);
   const [documento, guardarDocumento] = useState("");
   const [idRubro, guardarRubro] = useState(0);
   const [listaRubros, guardarRubros] = useState([]);
@@ -21,10 +21,8 @@ const NuevoCliente = () => {
   const [listaPaises, guardarPaises] = useState([]);
   const [idPais, guardarPais] = useState(0);
   const [telefono, guardarTelefono] = useState("");
-  const dispatch = useDispatch();
   const error = useSelector((state) => state.clientes.error);
   useEffect(() => {
-    console.log(error);
     if (error === false) {
       Swal.fire(
         "Correcto!",
@@ -36,24 +34,32 @@ const NuevoCliente = () => {
         }
       });
     }
+    // eslint-disable-next-line
   }, [error]);
 
   //llama clienteAction
-  const agregarCliente = (cliente) =>
+  const agregarCliente = (cliente) => {
+    console.log("CLIENTE", cliente);
     dispatch(crearNuevoClienteAction(cliente));
+  };
+  useEffect(() => {
+    const consultarAPI = async () => {
+      const resultado = await clienteAxios.get(`/rubros`);
+      guardarRubros(resultado.data);
+    };
+    consultarAPI();
+  }, []);
 
-  const consultarAPI = async () => {
-    const resultado = await clienteAxios.get(`/rubros`);
-    guardarRubros(resultado.data);
-  };
-  const llenarPais = async () => {
-    const resultado = await clienteAxios.get(`/Paises`);
-    guardarPaises(resultado.data);
-  };
+  useEffect(() => {
+    const llenarPais = async () => {
+      const resultado = await clienteAxios.get(`/Paises`);
+      guardarPaises(resultado.data);
+    };
+    llenarPais();
+  }, []);
 
   const submitNuevoCliente = (e) => {
     e.preventDefault();
-
     //validar form
     if (
       nombre.trim() === "" ||
@@ -67,20 +73,22 @@ const NuevoCliente = () => {
       direccion.trim() === "" ||
       telefono === "" ||
       documento.includes("-") ||
-      telefono.includes("-")
+      documento.includes("e") ||
+      telefono.includes("-") ||
+      telefono.includes("e")
     ) {
-      console.log(idRubro);
+      console.log("ENTRA");
       Swal.fire("Llene todos los campos obligatorios", "", "warning");
       return;
-    }
-    if (documento.length != 11) {
+    } else if (documento.length !== 11) {
+      console.log("ENTRA");
       Swal.fire("El campo cuit sólo acepta once números", "", "warning");
       return;
-    }
-    if (telefono != "") {
-      if (telefono.length < 7 || telefono.length > 20)
+    } else if (telefono !== "") {
+      if (telefono.length < 7 || telefono.length > 20) {
         Swal.fire("Ingrese un télefono correcto", "", "warning");
-      return;
+        return;
+      }
     }
     agregarCliente({
       nombre,
@@ -146,7 +154,6 @@ const NuevoCliente = () => {
                     className="form-control"
                     name="pais"
                     value={idPais}
-                    onClick={llenarPais}
                     onChange={(e) => guardarPais(e.target.value)}
                   >
                     <option value={0}>Seleccione...</option>
@@ -177,7 +184,6 @@ const NuevoCliente = () => {
                     className="form-control"
                     name="rubro"
                     value={idRubro}
-                    onClick={consultarAPI}
                     onChange={(e) => guardarRubro(e.target.value)}
                   >
                     <option value={0}>Seleccione...</option>

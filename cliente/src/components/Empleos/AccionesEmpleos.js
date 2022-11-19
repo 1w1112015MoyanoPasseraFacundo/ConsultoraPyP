@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   BsFillPauseFill,
   BsFillPencilFill,
@@ -27,7 +27,7 @@ const AccionesEmpleos = ({ empleo }) => {
     lstCompes,
     idEmpleo,
   } = empleo;
-  const confirmarEliminar = (idEmpleo) => {
+  const confirmarEliminar = () => {
     Swal.fire({
       title: "¿Está seguro que desea cancelar este empleo?",
       icon: "warning",
@@ -43,7 +43,7 @@ const AccionesEmpleos = ({ empleo }) => {
     });
   };
 
-  const confirmarSuspender = (idEmpleo) => {
+  const confirmarSuspender = () => {
     Swal.fire({
       title: "¿Está seguro que desea suspender este empleo?",
       icon: "warning",
@@ -59,7 +59,7 @@ const AccionesEmpleos = ({ empleo }) => {
     });
   };
 
-  const confirmarReanudar = (idEmpleo) => {
+  const confirmarReanudar = () => {
     Swal.fire({
       title: "¿Está seguro que desea reanudar este empleo?",
       icon: "warning",
@@ -95,7 +95,7 @@ const AccionesEmpleos = ({ empleo }) => {
       </td>
 
       <td className="acciones">
-        {nombreEstado != "Finalizado" ? (
+        {nombreEstado !== "Finalizado" ? (
           <button
             type="button"
             className="btn btn-success mr-2"
@@ -105,7 +105,7 @@ const AccionesEmpleos = ({ empleo }) => {
             <BsFillPencilFill />
           </button>
         ) : null}
-        {nombreEstado == "Activo" ? (
+        {nombreEstado === "Activo" ? (
           <button
             type="button"
             className="btn btn-warning mr-2"
@@ -115,7 +115,7 @@ const AccionesEmpleos = ({ empleo }) => {
             <BsFillPauseFill />
           </button>
         ) : null}
-        {nombreEstado == "Suspendido" || nombreEstado == "Cancelado" ? (
+        {nombreEstado === "Suspendido" || nombreEstado === "Cancelado" ? (
           <button
             type="button"
             className="btn btn-warning mr-2"
@@ -126,7 +126,7 @@ const AccionesEmpleos = ({ empleo }) => {
           </button>
         ) : null}
 
-        {nombreEstado == "Activo" ? (
+        {nombreEstado === "Activo" ? (
           <button
             type="button"
             className="btn btn-danger"

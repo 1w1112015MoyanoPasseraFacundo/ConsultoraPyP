@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  BsCheckCircleFill,
-  BsFillPencilFill,
-  BsFillReplyAllFill,
-  BsRecycle,
-  BsTrashFill,
-} from "react-icons/bs";
+import { BsFillPencilFill, BsRecycle, BsTrashFill } from "react-icons/bs";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -14,9 +8,9 @@ import {
   obtenerClienteEditar,
 } from "../../actions/clientesActions";
 const AccionesCliente = ({ cliente }) => {
+  const navigate = useNavigate();
   const { nombre, documento, idPais, mail, idCliente, nombrePais, idEstado } =
     cliente;
-  console.log(cliente);
   const dispatch = useDispatch();
   const confirmarEliminar = (idCliente) => {
     Swal.fire({
@@ -31,17 +25,14 @@ const AccionesCliente = ({ cliente }) => {
       if (result.isConfirmed) {
         dispatch(darDeBajaCliente(cliente.idCliente));
       }
-      console.log(cliente);
     });
   };
 
-  const navigate = useNavigate();
-
   const redireccionarEdicion = (cliente) => {
     dispatch(obtenerClienteEditar(cliente));
-    console.log(cliente);
     navigate(`editar/${cliente.idCliente}`);
   };
+
   return (
     <tr>
       <td>{nombre}</td>
@@ -56,7 +47,7 @@ const AccionesCliente = ({ cliente }) => {
         <span>{mail}</span>
       </td>
       <td>
-        <span>{idEstado == 1 ? "Si" : "No"}</span>
+        <span>{idEstado === 1 ? "Si" : "No"}</span>
       </td>
       <td className="acciones">
         <button
@@ -68,7 +59,7 @@ const AccionesCliente = ({ cliente }) => {
           <BsFillPencilFill />
         </button>
 
-        {idEstado == 1 ? (
+        {idEstado === 1 ? (
           <button
             type="button"
             title="Dar de baja"

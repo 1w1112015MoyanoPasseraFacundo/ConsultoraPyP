@@ -5,12 +5,12 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { editarUsuarioAction } from "../../actions/usuariosActions";
 import clienteAxios from "../../config/axios";
-import PaginaError from "../PaginaError";
 const EditarUsuario = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const [listaTiposDocs, guardarTiposDocs] = useState([]);
+  // eslint-disable-next-line
   const [listaGeneros, guardarGeneros] = useState([]);
 
   const [usuario, guardarUsuario] = useState({
@@ -33,8 +33,9 @@ const EditarUsuario = () => {
     if (error === false) {
       navigate("/usuarios");
     }
+    // eslint-disable-next-line
   }, [error]);
-  console.log("DESDE EDITAR", editar);
+
   useEffect(() => {
     const consultarAPI = async () => {
       const resultado = await clienteAxios.get(`/TiposDocumentos`);
@@ -50,12 +51,10 @@ const EditarUsuario = () => {
   }, [editar]);
 
   const onChangeFormulario = (e) => {
-    console.log(e.target);
     guardarUsuario({
       ...usuario,
       [e.target.name]: e.target.value,
     });
-    console.log(usuario);
   };
 
   const {
@@ -73,6 +72,7 @@ const EditarUsuario = () => {
 
   const submitEditarUsuario = (e) => {
     e.preventDefault();
+    let fecha = fechaNacimiento.split("-")[0];
     //validar form
     if (
       nombre.trim() === "" ||
@@ -88,22 +88,23 @@ const EditarUsuario = () => {
     ) {
       Swal.fire("Llene los campos obligatorios", "", "warning");
       return;
-    }
-    if (documento.length != 8) {
+    } else if (documento.length !== 8) {
       Swal.fire("El campo documento sólo acepta ocho números", "", "warning");
       return;
-    }
-    if (telefono != "") {
-      if (telefono.length < 7 || telefono.length > 20)
-        Swal.fire("Ingrese un télefono correcto", "", "warning");
+    } else if (fecha < 1900 || fecha > 2022) {
+      Swal.fire("Ingrese un año válido", "", "warning");
       return;
+    } else if (telefono !== "") {
+      if (telefono.length < 7 || telefono.length > 20) {
+        Swal.fire("Ingrese un télefono correcto", "", "warning");
+        return;
+      }
     }
     dispatch(editarUsuarioAction(usuario));
   };
   const cancelar = () => {
     navigate("/usuarios");
   };
-  const login = useSelector((state) => state.login.login);
 
   return (
     <>
@@ -162,19 +163,14 @@ const EditarUsuario = () => {
                       onChange={onChangeFormulario}
                     >
                       <option>Seleccione...</option>
-                      {listaTiposDocs.map(
-                        (tipoDocumento) => (
-                          console.log(tipoDocumento),
-                          (
-                            <option
-                              key={tipoDocumento.idTipoDocumento}
-                              value={tipoDocumento.idTipoDocumento}
-                            >
-                              {tipoDocumento.nombre}
-                            </option>
-                          )
-                        )
-                      )}
+                      {listaTiposDocs.map((tipoDocumento) => (
+                        <option
+                          key={tipoDocumento.idTipoDocumento}
+                          value={tipoDocumento.idTipoDocumento}
+                        >
+                          {tipoDocumento.nombre}
+                        </option>
+                      ))}
                     </select>
                   </div>
                   <div className="form-group col-lg-4 col-md-4 col-sm-12 col-xs-12">

@@ -13,11 +13,9 @@ export const useGetCompetencia = (idRubro) => {
           `Competencias/GetCompetenciasByIdRubro?idRubro=${idRubro}`
         );
         const dato = await response.data;
-        console.log(dato);
         setData(dato);
         setIsLoading(false);
       } catch (error) {
-        console.log(error);
         setIsError(error);
         setIsLoading(false);
       }

@@ -34,7 +34,6 @@ const AccionesPagos = ({ pago }) => {
   };
   const redireccionarEdicion = (pago) => {
     dispatch(obtenerPagoEditar(pago));
-    console.log(pago);
     navigate(`editar/${pago.idPago}`);
   };
   return (

@@ -1,31 +1,22 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../dashboard.css";
-import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
 import { Multipleselect } from "../MultipleSelect";
 import AccionesDashboard from "../AccionesDashboard";
 import clienteAxios from "../../config/axios";
-import { obtenerCandidatoEditar, obtenerCandidatosByCompes } from "../../actions/candidatosActions";
+import { obtenerCandidatosByCompes } from "../../actions/candidatosActions";
 import { GetCompetenciasByEmpleo } from "../../actions/dashboardActions";
 import { BsDownload, BsFillExclamationCircleFill } from "react-icons/bs";
 import jsPDF from "jspdf";
 
 const Busqueda = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const usuario = useSelector((state) => state.login.login);
   const [lstCompes, guardarCompetencias] = useState([]);
-  const [idCandidato, guardarCandidato] = useState(0);
   const [idEmpleo, guardarEmpleo] = useState(0);
-  const [listaCandidatos, guardarCandidatos] = useState([]);
   const [listaEmpleo, guardarEmpleos] = useState([]);
   const candidatos = useSelector((state) => state.candidatos.candidatos);
   const error = useSelector((state) => state.candidatos.error);
-  const empleo = useSelector((state) => state.empleos.empleos);
-  console.log("EMPLEO", empleo);
-  // console.log("LSTEMPLEO", guardarEmpleo());
+
   useEffect(() => {
     const cargarCandidatos = () =>
       dispatch(obtenerCandidatosByCompes(lstCompes));
@@ -35,8 +26,9 @@ const Busqueda = () => {
       guardarEmpleos(resultado.data);
     };
     getEmpleos();
+    // eslint-disable-next-line
   }, [guardarEmpleos, lstCompes]);
-  console.log("CAND", candidatos);
+
   const { data } = GetCompetenciasByEmpleo(idEmpleo);
 
   //PDF
@@ -50,7 +42,7 @@ const Busqueda = () => {
 
     doc.setFontSize(15);
 
-    const title = `Candidatos para el empleo ${idEmpleo}`;
+    const title = `Candidatos`;
     const headers = [["Candidato", "E-mail", "Documento", "Telefono", "Linkedin", "Estado"]];
 
     const data = candidatos.map((elt) => [
@@ -70,8 +62,7 @@ const Busqueda = () => {
 
     doc.text(title, marginLeft, 40);
     doc.autoTable(content);
-    let finalY = doc.lastAutoTable.finalY;
-    doc.save("EmpleosPorFecha.pdf");
+    doc.save("CandidatosPorHabilidades.pdf");
   };
 
   return (
@@ -89,7 +80,6 @@ const Busqueda = () => {
                         className="form-control"
                         name="empleo"
                         value={idEmpleo}
-                        // onClick={getEmpleos}
                         onChange={(e) => guardarEmpleo(e.target.value)}
                       >
                         <option value={0}>Seleccione empleo...</option>
@@ -115,7 +105,7 @@ const Busqueda = () => {
               </form>
             </div>
           </div>
-          {error != null ? null : candidatos.length === 0 ? (
+          {error !== null ? null : candidatos.length === 0 ? (
             <div
               role="alert"
               className="alert text-center animated fadeIn notFound"
@@ -168,9 +158,7 @@ const Busqueda = () => {
                             class="btn btn-success"
                             onClick={exportPDF}
                           >
-                            {/* <i class="mx-1 mr-2"> */}
                             <BsDownload />
-                            {/* </i> */}
                             <span> Descargar</span>
                           </button>
 

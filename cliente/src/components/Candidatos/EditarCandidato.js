@@ -28,6 +28,8 @@ const EditarCandidato = () => {
   const [listaTiposDocs, guardarTiposDocs] = useState([]);
   const [listaRubros, guardarRubros] = useState([]);
   const [listaGeneros, guardarGeneros] = useState([]);
+  const [listaCompetencias, guardarCompetencias] = useState([]);
+  const [listaPaises, guardarPaises] = useState([]);
   const editar = useSelector((state) => state.candidatos.editar);
   useEffect(() => {
     guardarCandidato(editar);
@@ -88,9 +90,17 @@ const EditarCandidato = () => {
     };
     llenarCompetencias();
   }, []);
-
+  useEffect(() => {
+    const llenarPais = async () => {
+      const resultado = await clienteAxios.get(`/Paises`);
+      guardarPaises(resultado.data);
+    };
+    llenarPais();
+  }, []);
   const submitEditarCandidato = (e) => {
     e.preventDefault();
+    let fecha = fechaNacimiento.split("-")[0];
+    const doc = documento.toString();
     //validar form
     if (
       nombre.trim() === "" ||
@@ -114,20 +124,21 @@ const EditarCandidato = () => {
     ) {
       Swal.fire("Llene los campos obligatorios", "", "warning");
       return;
-    }
-    if (documento.length != 8) {
+    } else if (doc.length != 8) {
       Swal.fire("El campo documento sólo acepta ocho números", "", "warning");
       return;
-    }
-    if (telefono != "") {
-      if (telefono.length < 7 || telefono.length > 20)
-        Swal.fire("Ingrese un télefono correcto", "", "warning");
+    } else if (fecha < 1900 || fecha > 2022) {
+      Swal.fire("Ingrese un año válido", "", "warning");
       return;
+    } else if (telefono != "") {
+      if (telefono.length < 7 || telefono.length > 20) {
+        Swal.fire("Ingrese un télefono correcto", "", "warning");
+        return;
+      }
     }
     dispatch(editarCandidatoAction(candidato));
   };
   const { data } = useGetCompetencia(idRubro);
-  const [listaCompetencias, guardarCompetencias] = useState([]);
 
   return (
     <div className="row justify-content-center">
@@ -263,7 +274,11 @@ const EditarCandidato = () => {
                     value={idPais}
                     onChange={onChangeFormulario}
                   >
-                    <option value="1">Argentina</option>
+                    {listaPaises.map((pais) => (
+                      <option key={pais.idPais} value={pais.idPais}>
+                        {pais.nombre}
+                      </option>
+                    ))}{" "}
                   </select>
                 </div>
                 <div className="form-group  col-lg-4 col-md-4 col-sm-12 col-xs-12">

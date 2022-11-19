@@ -23,7 +23,6 @@ import { useNavigate } from "react-router-dom";
 export function crearNuevoUsuarioAction(usuario) {
   return async (dispatch) => {
     dispatch(agregarUsuario());
-    console.log(usuario);
     try {
       //insertar en la API
       await clienteAxios.post("/Usuarios", usuario);
@@ -87,11 +86,9 @@ export function getUsuarioById(idUsuario) {
     dispatch(descargarUsuarios());
     try {
       const respuesta = await clienteAxios.get(`/Usuarios/${idUsuario}`);
-      console.log("USUARIO A EDIT", respuesta);
 
       dispatch(obtenerUsuarioEditarAction(respuesta.data));
     } catch (error) {
-      console.log("ERROR A EDIT", error);
       dispatch(descargarUsuariosError(error.response.data));
     }
   };
@@ -120,6 +117,7 @@ export function darDeBajaUsuario(id) {
       await clienteAxios.delete(`/Usuarios/${id}`);
       dispatch(eliminarUsuarioExito());
       Swal.fire("Eliminado!", "El usuario ha sido dado de baja", "success");
+      window.location.reload();
     } catch (error) {
       dispatch(eliminarUsuarioError());
     }

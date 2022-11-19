@@ -15,6 +15,7 @@ const EditarCliente = () => {
       navigate("/clientes");
     }
   }, [error]);
+
   const [cliente, guardarCliente] = useState({
     nombre: "",
     nombreFantasia: "",
@@ -62,7 +63,6 @@ const EditarCliente = () => {
     telefono,
     direccion,
   } = cliente;
-  console.log(cliente);
 
   const submitEditarCliente = (e) => {
     e.preventDefault();
@@ -79,23 +79,24 @@ const EditarCliente = () => {
       direccion.trim() === "" ||
       telefono === "" ||
       documento.includes("-") ||
-      telefono.includes("-")
+      documento.includes("e") ||
+      telefono.includes("-") ||
+      telefono.includes("e")
     ) {
-      console.log(idRubro);
       Swal.fire("Llene todos los campos obligatorios", "", "warning");
       return;
     }
-    if (documento.length != 11) {
+    if (documento.length !== 11) {
       Swal.fire("El campo cuit sólo acepta once números", "", "warning");
       return;
     }
-    if (telefono != "") {
-      if (telefono.length < 7 || telefono.length > 20)
+    if (telefono !== "") {
+      if (telefono.length < 7 || telefono.length > 20) {
         Swal.fire("Ingrese un télefono correcto", "", "warning");
-      return;
+        return;
+      }
     }
     dispatch(editarClienteAction(cliente));
-    navigate("/clientes");
   };
   return (
     <div className="row justify-content-center">

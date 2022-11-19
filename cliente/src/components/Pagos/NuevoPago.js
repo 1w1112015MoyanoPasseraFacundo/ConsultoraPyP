@@ -36,10 +36,13 @@ const NuevoPago = () => {
   //llama PagoAction
   const agregarPago = (pago) => dispatch(crearNuevoPagoAction(pago));
 
-  const llenarClientes = async () => {
-    const resultado = await clienteAxios.get(`/Clientes`);
-    guardarClientes(resultado.data);
-  };
+  useEffect(() => {
+    const llenarClientes = async () => {
+      const resultado = await clienteAxios.get(`/Clientes`);
+      guardarClientes(resultado.data);
+    };
+    llenarClientes();
+  }, [idCliente]);
 
   useEffect(() => {
     const llenarEmpleos = async () => {
@@ -56,19 +59,25 @@ const NuevoPago = () => {
     if (listaEmpleos.length === 0) {
       guardarEmpleo(0);
     }
-  }, [listaEmpleos, idCliente]);
+  }, [listaEmpleos, idCliente, idEmpleo]);
 
   const submitNuevoPago = (e) => {
     e.preventDefault();
+    let fecha = fechaPago.split("-")[0];
+    console.log(idEmpleo);
     //validar form
     if (
       montoPago === "" ||
       idCliente === 0 ||
       idEmpleo === 0 ||
+      idEmpleo === "0" ||
       fechaPago === "" ||
       montoPago.includes("-")
     ) {
       Swal.fire("Llene todos los campos obligatorios", "", "warning");
+      return;
+    } else if (fecha < 1900 || fecha > 2022) {
+      Swal.fire("Ingrese un año válido", "", "warning");
       return;
     }
     agregarPago({
@@ -104,7 +113,6 @@ const NuevoPago = () => {
                         className="form-control"
                         name="cliente"
                         value={idCliente}
-                        onClick={llenarClientes}
                         onChange={(e) => guardarCliente(e.target.value)}
                       >
                         <option value={0}>Seleccione...</option>

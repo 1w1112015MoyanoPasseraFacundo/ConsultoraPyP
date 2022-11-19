@@ -1,19 +1,8 @@
-import React, { PureComponent, useState } from "react";
+import React, { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-} from "recharts";
-import {
-  obtenerEmpleosByFechasAction,
-  obtenerEmpleosByMesAction,
-} from "../../actions/empleosActions";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip } from "recharts";
+import { obtenerEmpleosByFechasAction } from "../../actions/empleosActions";
 
 export const Chart = () => {
   const dispatch = useDispatch();
@@ -61,21 +50,6 @@ export const Chart = () => {
           </div>
         </div>
       </div>
-      {/* <select class="form-control" onChange={(e) => guardarMes(e.target.value)}>
-        <option value={0}>Todos</option>
-        <option value={1}>Enero</option>
-        <option value={2}>Febrero</option>
-        <option value={3}>Marzo</option>
-        <option value={4}>Abril</option>
-        <option value={5}>Mayo</option>
-        <option value={6}>Junio</option>
-        <option value={7}>Julio</option>
-        <option value={8}>Agosto</option>
-        <option value={9}>Septiembre</option>
-        <option value={10}>Octubre</option>
-        <option value={11}>Noviembre</option>
-        <option value={12}>Diciembre</option>
-      </select> */}
       {empleos.length !== 0 ? (
         <>
           <br />
@@ -94,9 +68,7 @@ export const Chart = () => {
             <XAxis dataKey="name" />
             <YAxis />
             <Tooltip />
-            <Legend />
             <Bar dataKey="Cantidad" fill="#8884d8" />
-            {/* <Bar dataKey="uv" fill="#82ca9d" /> */}
           </BarChart>
         </>
       ) : (

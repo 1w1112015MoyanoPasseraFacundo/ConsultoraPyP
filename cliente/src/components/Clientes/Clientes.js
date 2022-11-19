@@ -33,28 +33,23 @@ const Clientes = () => {
   };
   useEffect(() => {
     //consultar api
-
     const cargarClientes = () => dispatch(obtenerClientesAction());
     cargarClientes();
     // eslint-disable-next-line
   }, []);
 
   const clientes = useSelector((state) => state.clientes.clientes);
-const cargando = useSelector((state) => state.clientes.loading);
-const error = useSelector((state) => state.clientes.error);
-  console.log(error);
-  console.log(clientes);
+  const cargando = useSelector((state) => state.clientes.loading);
+  const error = useSelector((state) => state.clientes.error);
+
+  //PAGINADOR
   const itemsPerPage = 5;
   const [itemOffset, setItemOffset] = useState(0);
   const endOffset = itemOffset + itemsPerPage;
-  console.log(`Loading items from ${itemOffset} to ${endOffset}`);
   const currentItems = clientes.slice(itemOffset, endOffset);
   // Invoke when user click to request another page.
   const handlePageClick = (event) => {
     const newOffset = (event.selected * itemsPerPage) % clientes.length;
-    console.log(
-      `User requested page number ${event.selected}, which is offset ${newOffset}`
-    );
     setItemOffset(newOffset);
   };
   const pageCount = Math.ceil(clientes.length / itemsPerPage);
@@ -128,51 +123,54 @@ const error = useSelector((state) => state.clientes.error);
         </div>
       </div>
       {error != null ? (
-        <div role="alert" className="alert text-center animated fadeIn notFound">
+        <div
+          role="alert"
+          className="alert text-center animated fadeIn notFound"
+        >
           <img src={require("../../assets/documentNotFound.gif")} alt="404" />
-          <h2  >No se encontraron resultados.</h2>
+          <h2>No se encontraron resultados.</h2>
         </div>
       ) : (
-      <div class="card custom-card-shadow">
-        <div class="row">
-          <div class="col-lg-12">
-            <table className="table table-hover">
-              <thead>
-                <tr>
-                  <th className="colu" scope="col">
-                    Nombre
-                  </th>
-                  <th className="colu" scope="col">
-                    País
-                  </th>
-                  <th className="colu" scope="col">
-                    CUIT
-                  </th>
-                  <th className="colu" scope="col">
-                    E-mail
-                  </th>
-                  <th className="colu" scope="col">
-                    Vigente
-                  </th>
-                  <th className="colu" scope="col">
-                    Acciones
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {currentItems.map((cliente) => {
-                      return (
-                        <AccionesCliente
-                          key={cliente.idCliente}
-                          cliente={cliente}
-                        />
-                      );
-                    })}
-              </tbody>
-            </table>
+        <div class="card custom-card-shadow">
+          <div class="row">
+            <div class="col-lg-12">
+              <table className="table table-hover">
+                <thead>
+                  <tr>
+                    <th className="colu" scope="col">
+                      Nombre
+                    </th>
+                    <th className="colu" scope="col">
+                      País
+                    </th>
+                    <th className="colu" scope="col">
+                      CUIT
+                    </th>
+                    <th className="colu" scope="col">
+                      E-mail
+                    </th>
+                    <th className="colu" scope="col">
+                      Vigente
+                    </th>
+                    <th className="colu" scope="col">
+                      Acciones
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {currentItems.map((cliente) => {
+                    return (
+                      <AccionesCliente
+                        key={cliente.idCliente}
+                        cliente={cliente}
+                      />
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
-        <ReactPaginate
+          <ReactPaginate
             previousLabel="Anterior"
             nextLabel="Siguiente"
             pageClassName="page-item"
@@ -189,12 +187,12 @@ const error = useSelector((state) => state.clientes.error);
             pageRangeDisplayed={5}
             onPageChange={handlePageClick}
             containerClassName="pagination"
-            activeClassName="active"            
+            activeClassName="active"
           />
-          </div>)}
-      
-  {cargando ? <Spinner /> : null}
+        </div>
+      )}
 
+      {cargando ? <Spinner /> : null}
     </Fragment>
   );
 };

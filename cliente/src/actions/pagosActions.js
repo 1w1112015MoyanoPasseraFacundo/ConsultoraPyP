@@ -154,6 +154,7 @@ export function darDeBajaPago(idPago) {
       await clienteAxios.delete(`/Pagos/${idPago}`);
       dispatch(eliminarPagoExito());
       Swal.fire("Eliminado!", "El pago ha sido dado de baja", "success");
+      window.location.reload();
     } catch (error) {
       dispatch(eliminarPagoError());
     }

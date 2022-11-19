@@ -1,16 +1,6 @@
 import React from "react";
-import { useState } from "react";
 import { useEffect } from "react";
-import { Button, Modal } from "react-bootstrap";
-import {
-  BsArrowDown,
-  BsArrowDownShort,
-  BsChevronDown,
-  BsCircle,
-  BsPersonCircle,
-  BsRecord,
-  BsRecordFill,
-} from "react-icons/bs";
+import { BsChevronDown, BsPersonCircle, BsRecord } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
@@ -38,7 +28,6 @@ const Header = () => {
   };
 
   const usuAEdit = useSelector((state) => state.usuarios.editar);
-  console.log("BY ID", usuAEdit);
   const onEdit = () => {
     let fecha = usuAEdit[0].fechaNacimiento.split("T");
     usuAEdit[0].fechaNacimiento = fecha[0];
@@ -50,8 +39,11 @@ const Header = () => {
     <>
       <nav className="navbar navbar-expand-lg navbar-dark justify-content-between header">
         <div className="contei">
-          <img src={require("../assets/logowhite.png")} height="70px" />
-          {/* <h1 className="titulo">Consultora PP</h1> */}
+          <img
+            src={require("../assets/logowhite.png")}
+            height="70px"
+            alt="400"
+          />
         </div>
         <div class="dropdown">
           <span class="dropbtn">

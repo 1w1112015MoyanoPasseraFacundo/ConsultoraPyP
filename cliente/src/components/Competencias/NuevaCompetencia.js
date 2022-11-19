@@ -26,7 +26,7 @@ const NuevaCompetencia = () => {
     if (error === false) {
       Swal.fire(
         "Correcto!",
-        "El usuario se agrego correctamente!",
+        "La habilidad se agrego correctamente!",
         "success"
       ).then((result) => {
         if (result.isConfirmed) {
@@ -34,22 +34,24 @@ const NuevaCompetencia = () => {
         }
       });
     }
+    // eslint-disable-next-line
   }, [error]);
   const agregarCompetencia = (competencia) => {
     dispatch(crearNuevaCompetenciaAction(competencia));
   };
+  useEffect(() => {
+    const llenarRubro = async () => {
+      const resultado = await clienteAxios.get(`/rubros`);
+      guardarRubros(resultado.data);
+    };
+    llenarRubro();
+  }, []);
 
-  const llenarRubro = async () => {
-    const resultado = await clienteAxios.get(`/rubros`);
-    guardarRubros(resultado.data);
-  };
   const submitNuevaCompetencia = (e) => {
     e.preventDefault();
     //validar form
-    console.log(idRubro);
     if (nombre.trim() === "" || idRubro === 0 || idRubro === "0") {
       Swal.fire("Llene todos los campos", "", "warning");
-      console.log(idRubro);
       return;
     }
 
@@ -68,7 +70,6 @@ const NuevaCompetencia = () => {
         <h3 className="title-decorator">Nueva habilidad</h3>
         <div className="card">
           <div className="card-body">
-            {/* {alerta ? <p className={alerta.clases}>{alerta.msg}</p>:null} */}
             <form>
               <div className="row p-t-20">
                 <div className="form-group col-lg-6 col-md-6 col-sm-12 col-xs-12">
@@ -87,7 +88,6 @@ const NuevaCompetencia = () => {
                   <select
                     className="form-control"
                     name="idRubro"
-                    onClick={llenarRubro}
                     value={idRubro}
                     onChange={(e) => guardarRubro(e.target.value)}
                   >

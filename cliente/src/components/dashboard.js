@@ -2,12 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./dashboard.css";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  BsFillInfoCircleFill,
-  BsFillInfoSquareFill,
-  BsFillRecordFill,
-  BsQuestionLg,
-} from "react-icons/bs";
+import { BsFillRecordFill, BsQuestionLg } from "react-icons/bs";
 import { obtenerAllEmpleosAction } from "../actions/empleosActions";
 import { Button, Modal } from "react-bootstrap";
 
@@ -40,14 +35,6 @@ const Dashboard = () => {
     if (e.nombreEstado === "Activo") {
       activos++;
     }
-    // if (e.nombreRubro === "Tech") {
-    //   tech = e.nombreRubro;
-    //   contTech++;
-    // }
-    // if (e.nombreRubro === "Obras") {
-    //   obras = e.nombreRubro;
-    //   contObras++;
-    // }
   });
   const emp = () => {
     navigate("/empleos");
@@ -99,6 +86,7 @@ const Dashboard = () => {
                   class="col-md-6"
                   src={require("../assets/logoHorizonta.png")}
                   height="240px"
+                  alt="logo"
                 />
               </div>
             </div>
@@ -187,6 +175,7 @@ const Dashboard = () => {
                 height="246px"
                 width="300px"
                 className="terminos"
+                alt="termino"
               ></img>
               <br />
               <br />

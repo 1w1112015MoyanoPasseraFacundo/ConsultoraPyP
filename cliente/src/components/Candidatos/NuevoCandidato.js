@@ -26,6 +26,7 @@ const NuevoCandidato = () => {
   const [linkedin, guardarLinkedin] = useState("");
   const [idGenero, guardarGenero] = useState(0);
   const [idPais, guardarPais] = useState(0);
+  const [listaPaises, guardarPaises] = useState([]);
   const [telefono, guardarTelefono] = useState("");
   const [lstCompes, guardarCompetencias] = useState([]);
   const dispatch = useDispatch();
@@ -47,21 +48,37 @@ const NuevoCandidato = () => {
   //llama candidatoAction
   const agregarCandidato = (candidato) =>
     dispatch(crearNuevoCandidatoAction(candidato));
-
-  const consultarAPI = async () => {
-    const resultado = await clienteAxios.get(`/rubros`);
-    guardarRubros(resultado.data);
-  };
-  const llenarTipoDoc = async () => {
-    const resultado = await clienteAxios.get(`/TiposDocumentos`);
-    guardarTiposDocs(resultado.data);
-  };
-  const llenarGenero = async () => {
-    const resultado = await clienteAxios.get(`/Generos`);
-    guardarGeneros(resultado.data);
-  };
+  useEffect(() => {
+    const consultarAPI = async () => {
+      const resultado = await clienteAxios.get(`/rubros`);
+      guardarRubros(resultado.data);
+    };
+    consultarAPI();
+  }, []);
+  useEffect(() => {
+    const llenarTipoDoc = async () => {
+      const resultado = await clienteAxios.get(`/TiposDocumentos`);
+      guardarTiposDocs(resultado.data);
+    };
+    llenarTipoDoc();
+  }, []);
+  useEffect(() => {
+    const llenarGenero = async () => {
+      const resultado = await clienteAxios.get(`/Generos`);
+      guardarGeneros(resultado.data);
+    };
+    llenarGenero();
+  }, []);
+  useEffect(() => {
+    const llenarPais = async () => {
+      const resultado = await clienteAxios.get(`/Paises`);
+      guardarPaises(resultado.data);
+    };
+    llenarPais();
+  }, []);
   const submitNuevoCandidato = (e) => {
     e.preventDefault();
+    let fecha = fechaNacimiento.split("-")[0];
     //validar form
     if (
       nombre.trim() === "" ||
@@ -85,15 +102,17 @@ const NuevoCandidato = () => {
     ) {
       Swal.fire("Llene los campos obligatorios", "", "warning");
       return;
-    }
-    if (documento.length != 8) {
+    } else if (documento.length != 8) {
       Swal.fire("El campo documento sólo acepta ocho números", "", "warning");
       return;
-    }
-    if (telefono != "") {
-      if (telefono.length < 7 || telefono.length > 20)
-        Swal.fire("Ingrese un télefono correcto", "", "warning");
+    } else if (fecha < 1900 || fecha > 2022) {
+      Swal.fire("Ingrese un año válido", "", "warning");
       return;
+    } else if (telefono != "") {
+      if (telefono.length < 7 || telefono.length > 20) {
+        Swal.fire("Ingrese un télefono correcto", "", "warning");
+        return;
+      }
     }
     agregarCandidato({
       nombre,
@@ -167,7 +186,7 @@ const NuevoCandidato = () => {
                     className="form-control"
                     name="tipoDocumento"
                     value={idTipoDocumento}
-                    onClick={llenarTipoDoc}
+                    // onClick={llenarTipoDoc}
                     onChange={(e) => guardarTipoDocumento(e.target.value)}
                   >
                     <option value={0}>Seleccione...</option>
@@ -213,7 +232,7 @@ const NuevoCandidato = () => {
                     className="form-control"
                     name="rubro"
                     value={idRubro}
-                    onClick={consultarAPI}
+                    // onClick={consultarAPI}
                     onChange={(e) => guardarRubro(e.target.value)}
                   >
                     <option value={0}>Seleccione...</option>
@@ -237,7 +256,7 @@ const NuevoCandidato = () => {
                   <select
                     className="form-control"
                     name="genero"
-                    onClick={llenarGenero}
+                    // onClick={llenarGenero}
                     value={idGenero}
                     onChange={(e) => guardarGenero(e.target.value)}
                   >
@@ -260,7 +279,11 @@ const NuevoCandidato = () => {
                     onChange={(e) => guardarPais(e.target.value)}
                   >
                     <option>Seleccione...</option>
-                    <option value="1">Argentina</option>
+                    {listaPaises.map((pais) => (
+                      <option key={pais.idPais} value={pais.idPais}>
+                        {pais.nombre}
+                      </option>
+                    ))}{" "}
                   </select>
                 </div>
               </div>

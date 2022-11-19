@@ -30,6 +30,7 @@ namespace ConsultoraApi.Dtos.DtosEmpleos
 
         public string? Modalidad { get; set; }
 
-        public List<CompetenciaListGetDto> lstCompes { get; set; }
+        public List<int> lstCompes { get; set; }
+        //public List<CompetenciaListGetDto> lstCompes { get; set; }
     }
 }

@@ -18,11 +18,12 @@ const AccionesUsuarios = ({ usuario }) => {
     idUsuario,
     nombreUsuario,
     fechaSalida,
+    // eslint-disable-next-line
     password,
   } = usuario;
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const confirmarEliminar = (idUsuario) => {
-    console.log(idUsuario);
     Swal.fire({
       title: "Está seguro que desea dar de baja este usuario?",
       icon: "warning",
@@ -33,16 +34,12 @@ const AccionesUsuarios = ({ usuario }) => {
       cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.isConfirmed) {
-        console.log(idUsuario);
         dispatch(darDeBajaUsuario(idUsuario));
       }
     });
   };
 
-  const navigate = useNavigate();
-
   const redireccionarEdicion = (usuario) => {
-    console.log(usuario);
     dispatch(obtenerUsuarioEditar(usuario));
     navigate(`editar/${usuario.idUsuario}`);
   };

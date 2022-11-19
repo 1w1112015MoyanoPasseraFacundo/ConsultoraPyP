@@ -170,7 +170,8 @@ namespace ConsultoraApi.Models
                     .IsUnicode(false)
                     .HasColumnName("direccion");
 
-                entity.Property(e => e.Documento).HasColumnName("documento");
+                entity.Property(e => e.Documento).HasMaxLength(100)
+                    .IsUnicode(false).HasColumnName("documento");
 
                 entity.Property(e => e.FechaAlta)
                     .HasColumnType("datetime")

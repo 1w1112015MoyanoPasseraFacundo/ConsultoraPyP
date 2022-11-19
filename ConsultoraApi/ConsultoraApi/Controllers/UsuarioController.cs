@@ -120,12 +120,6 @@ namespace ConsultoraApi.Controllers
             usu.FechaSalida = null;
             usu.FechaAlta = DateTime.Now;
 
-            if (!_emailUtilities.SendNewUserEmail(usu.Mail, usu))
-            {
-                ModelState.AddModelError("", $"Algo salió mal enviando mail al usuario {usu.NombreUsuario}");
-                return StatusCode(500, ModelState);
-            }
-
             if (!_uRepo.CreateUsuario(usu))
             {
                 return StatusCode(500, $"Algo salió mal creando el usuario {usu.NombreUsuario}");
@@ -136,6 +130,12 @@ namespace ConsultoraApi.Controllers
             if (!_rURepo.CreateRolXUsuario(rolXUsuario))
             {
                 return StatusCode(500, $"Algo salió mal creando el Usuario {rolXUsuario.IdUsuario} X Rol {rolXUsuario.IdRol}");
+            }
+
+            if (!_emailUtilities.SendNewUserEmail(usu.Mail, usu))
+            {
+                ModelState.AddModelError("", $"Algo salió mal enviando mail al usuario {usu.NombreUsuario}");
+                return StatusCode(500, ModelState);
             }
 
 

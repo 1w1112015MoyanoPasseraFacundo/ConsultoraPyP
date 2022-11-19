@@ -72,6 +72,7 @@ export function crearNuevoClienteAction(cliente) {
       await clienteAxios.post("/clientes", cliente);
       dispatch(agregarClienteExito(cliente));
     } catch (error) {
+      console.log("ERROR", error);
       Swal.fire(error.response.data, "Intenta de nuevo", "error");
       dispatch(agregarClienteError(true));
     }
@@ -142,6 +143,7 @@ export function darDeBajaCliente(idCliente) {
       await clienteAxios.delete(`/clientes/${idCliente}`);
       dispatch(eliminarClienteExito());
       Swal.fire("Eliminado!", "El cliente ha sido dado de baja", "success");
+      window.location.reload();
     } catch (error) {
       dispatch(eliminarClienteError());
     }

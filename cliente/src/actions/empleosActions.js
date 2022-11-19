@@ -172,13 +172,20 @@ const obtenerEmpleoEditarAction = (empleo) => ({
 });
 
 export function editarEmpleoAction(empleo) {
+  console.log("EMPLEO", empleo);
   return async (dispatch) => {
     dispatch(editarEmpleo());
     try {
-      await clienteAxios.put(`/empleos/${empleo.idEmpleo}`, empleo);
+      const rest = await clienteAxios.put(
+        `/empleos/${empleo.idEmpleo}`,
+        empleo
+      );
+      console.log("resp", rest);
+
       dispatch(editarEmpleoExito(empleo));
       Swal.fire("Editado!", "El empleo ha sido editado", "success");
     } catch (error) {
+      console.log("ERROR", error);
       Swal.fire(error.response.data, "Intenta de nuevo", "error");
       dispatch(editarEmpleoError());
     }

@@ -69,11 +69,11 @@ namespace ConsultoraApi.Repositorios
         {
             return db.Clientes.Any(u => u.IdCliente != idCliente && u.RazonSocial.ToLower() == razon.ToLower());
         }
-        public bool CuitExists(int cuit)
+        public bool CuitExists(string cuit)
         {
             return db.Clientes.Any(u => u.Documento == cuit);
         }
-        public bool CuitExists(int idCliente, int cuit)
+        public bool CuitExists(int idCliente, string cuit)
         {
             return db.Clientes.Any(u => u.IdCliente != idCliente && u.Documento == cuit);
         }

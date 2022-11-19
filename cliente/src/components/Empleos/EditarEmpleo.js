@@ -1,10 +1,3 @@
-import {
-  Checkbox,
-  ListItemIcon,
-  ListItemText,
-  MenuItem,
-  Select,
-} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { BsCheckLg, BsReplyFill } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
@@ -51,8 +44,6 @@ const EditarEmpleo = () => {
     guardarEmpleo(editar);
   }, [editar]);
 
-  console.log("EMPLEO", empleo);
-
   const onChangeFormulario = (e) => {
     guardarEmpleo({
       ...empleo,
@@ -63,9 +54,9 @@ const EditarEmpleo = () => {
     navigate("/empleos");
   };
   const { nombre, idCliente, idEstado, idRubro, modalidad, lstCompes } = empleo;
+  console.log("COMPES", lstCompes);
   const submitEditarCliente = (e) => {
     e.preventDefault();
-    console.log(lstCompes);
     //validar form
     if (
       nombre === "" ||
@@ -74,13 +65,11 @@ const EditarEmpleo = () => {
       modalidad === "" ||
       idRubro === 0 ||
       idRubro === "0"
-      // || lstCompes.length === 0
     ) {
       Swal.fire("Llene todos los campos obligatorios", "", "warning");
       return;
     }
     dispatch(editarEmpleoAction(empleo));
-    navigate("/empleos");
   };
 
   const [listaCompetencias, guardarCompetencias] = useState([]);
@@ -92,7 +81,6 @@ const EditarEmpleo = () => {
         <h3 className="title-decorator">Editar Empleo</h3>
         <div className="card">
           <div className="card-body">
-            {/* {alerta ? <p className={alerta.clases}>{alerta.msg}</p>:null} */}
             <form>
               <div className="row p-t-20">
                 <div className="form-group col-lg-4 col-md-4 col-sm-12 col-xs-12">

@@ -3,7 +3,6 @@ import { BsPlusLg, BsSearch } from "react-icons/bs";
 import ReactPaginate from "react-paginate";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import Swal from "sweetalert2";
 import {
   obtenerCompetenciasAction,
   obtenerCompetenciasFilterAction,
@@ -20,6 +19,7 @@ const Competencias = () => {
   const competencias = useSelector((state) => state.competencias.competencias);
   const error = useSelector((state) => state.competencias.error);
   const cargando = useSelector((state) => state.competencias.loading);
+
   useEffect(() => {
     const cargarCompetencias = () => dispatch(obtenerCompetenciasAction());
     cargarCompetencias();
@@ -40,16 +40,19 @@ const Competencias = () => {
   const nuevo = () => {
     navigate("/competencias/nuevo");
   };
-  const llenarRubro = async () => {
-    const resultado = await clienteAxios.get(`/rubros`);
-    guardarRubros(resultado.data);
-  };
+  useEffect(() => {
+    const llenarRubro = async () => {
+      const resultado = await clienteAxios.get(`/rubros`);
+      guardarRubros(resultado.data);
+    };
+    llenarRubro();
+  }, []);
   const empty = "";
 
+  //PAGINADOR
   const itemsPerPage = 5;
   const [itemOffset, setItemOffset] = useState(0);
   const endOffset = itemOffset + itemsPerPage;
-  console.log(`Loading items from ${itemOffset} to ${endOffset}`);
   const currentItems = competencias.slice(itemOffset, endOffset);
   // Invoke when user click to request another page.
   const handlePageClick = (event) => {
@@ -88,7 +91,6 @@ const Competencias = () => {
                         value={idRubro}
                         placeholder="Rubro"
                         name="idRubro"
-                        onClick={llenarRubro}
                         onChange={(e) => guardarRubro(e.target.value)}
                       >
                         <option value={empty}>Seleccione...</option>

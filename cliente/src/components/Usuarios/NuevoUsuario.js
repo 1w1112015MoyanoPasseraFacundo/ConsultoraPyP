@@ -3,12 +3,8 @@ import { BsCheckLg, BsReplyFill } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import {
-  crearNuevoUsuarioAction,
-  obtenerUsuariosFilterAction,
-} from "../../actions/usuariosActions";
+import { crearNuevoUsuarioAction } from "../../actions/usuariosActions";
 import clienteAxios from "../../config/axios";
-import PaginaError from "../PaginaError";
 const NuevoUsuario = () => {
   //state
 
@@ -17,12 +13,10 @@ const NuevoUsuario = () => {
   const [mail, guardarMail] = useState("");
   const [idTipoDocumento, guardarTipoDocumento] = useState(0);
   const [listaTiposDocs, guardarTiposDocs] = useState([]);
-  const [listaGeneros, guardarGeneros] = useState([]);
   const [documento, guardarDocumento] = useState("");
   const [password, guardarContraseña] = useState("");
   const [fechaNacimiento, guardarFecha] = useState("");
   const [nombreUsuario, guardarNombreUsuario] = useState("");
-  // const [idGenero, guardarGenero] = useState(0);
   const [direccion, guardarDireccion] = useState("");
   const [telefono, guardarTelefono] = useState("");
   const navigate = useNavigate();
@@ -40,23 +34,28 @@ const NuevoUsuario = () => {
         }
       });
     }
+    // eslint-disable-next-line
   }, [error]);
+
   //llama UsuarioAction
   const agregarUsuario = (usuario) => {
     try {
       dispatch(crearNuevoUsuarioAction(usuario));
     } catch (error) {}
   };
+  useEffect(() => {
+    const consultarAPI = async () => {
+      const resultado = await clienteAxios.get(`/TiposDocumentos`);
+      guardarTiposDocs(resultado.data);
+    };
+    consultarAPI();
+  }, []);
 
-  const consultarAPI = async () => {
-    const resultado = await clienteAxios.get(`/TiposDocumentos`);
-    console.log(resultado);
-    guardarTiposDocs(resultado.data);
-  };
   const login = useSelector((state) => state.login.login);
 
   const submitNuevoUsuario = (e) => {
     e.preventDefault();
+    let fecha = fechaNacimiento.split("-")[0];
     //validar form
     if (
       nombre.trim() === "" ||
@@ -72,15 +71,17 @@ const NuevoUsuario = () => {
     ) {
       Swal.fire("Llene los campos obligatorios", "", "warning");
       return;
-    }
-    if (documento.length != 8) {
+    } else if (documento.length !== 8) {
       Swal.fire("El campo documento sólo acepta ocho números", "", "warning");
       return;
-    }
-    if (telefono != "") {
-      if (telefono.length < 7 || telefono.length > 20)
-        Swal.fire("Ingrese un télefono correcto", "", "warning");
+    } else if (fecha < 1900 || fecha > 2022) {
+      Swal.fire("Ingrese un año válido", "", "warning");
       return;
+    } else if (telefono !== "") {
+      if (telefono.length < 7 || telefono.length > 20) {
+        Swal.fire("Ingrese un télefono correcto", "", "warning");
+        return;
+      }
     }
 
     //harcorde some data
@@ -107,7 +108,7 @@ const NuevoUsuario = () => {
 
   return (
     <>
-      {login.rol == "Admin" ? (
+      {login.rol === "Admin" ? (
         <div className="row justify-content-center">
           <div className="col-md-12">
             <h3 className="title-decorator">Nuevo Usuario</h3>
@@ -156,7 +157,6 @@ const NuevoUsuario = () => {
                       <select
                         className="form-control"
                         name="tipoDocumento"
-                        onClick={consultarAPI}
                         value={idTipoDocumento}
                         onChange={(e) => guardarTipoDocumento(e.target.value)}
                       >
@@ -235,9 +235,6 @@ const NuevoUsuario = () => {
                           type="text"
                           className="form-control"
                           name="direccion"
-                          min="0"
-                          minLength={8}
-                          maxLength={8}
                           value={direccion}
                           onChange={(e) => guardarDireccion(e.target.value)}
                         />
@@ -250,6 +247,9 @@ const NuevoUsuario = () => {
                           type="Number"
                           className="form-control"
                           name="telefono"
+                          min="0"
+                          minLength={8}
+                          maxLength={8}
                           value={telefono}
                           onChange={(e) => guardarTelefono(e.target.value)}
                         />

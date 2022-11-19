@@ -1,9 +1,8 @@
 import React from "react";
-import { useEffect } from "react";
 import { useState } from "react";
 import { Button, Modal } from "react-bootstrap";
-import { BsFillPencilFill, BsPencil, BsSearch } from "react-icons/bs";
-import { useDispatch, useSelector } from "react-redux";
+import { BsFillPencilFill, BsSearch } from "react-icons/bs";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { obtenerCandidatoEditar } from "../actions/candidatosActions";
 const AccionesDashboard = ({ candidato }) => {
@@ -25,7 +24,7 @@ const AccionesDashboard = ({ candidato }) => {
     idCandidato,
     lstCompes,
   } = candidato;
-  console.log("CANDIDATO", candidato);
+
   const redireccionarEdicion = (candidato) => {
     dispatch(obtenerCandidatoEditar(candidato));
     navigate(`/candidatos/editar/${candidato.idCandidato}`);
@@ -33,7 +32,7 @@ const AccionesDashboard = ({ candidato }) => {
 
   const [show, setShow] = useState(false);
 
-  function handleShow(breakpoint) {
+  function handleShow() {
     setShow(true);
   }
   const handleClose = () => setShow(false);

@@ -1,8 +1,5 @@
-import Cookies from "js-cookie";
-import React, { Fragment, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Navigate, Outlet, useNavigate } from "react-router-dom";
-import { usuarioAutenticado } from "../login/authActions";
+import React from "react";
+import { Navigate, Outlet } from "react-router-dom";
 import Header from "./Header";
 import SideBar from "./SideBar";
 

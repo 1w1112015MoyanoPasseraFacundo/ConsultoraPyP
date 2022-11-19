@@ -1,9 +1,8 @@
-import React, { useMemo, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { BsCheckLg, BsReplyFill } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import { obtenerCompetenciasAction } from "../../actions/competenciasActions";
 import { crearNuevoEmpleoAction } from "../../actions/empleosActions";
 import clienteAxios from "../../config/axios";
 import { Multipleselect } from "../MultipleSelect";
@@ -38,14 +37,21 @@ const NuevoEmpleo = () => {
   }, [error]); //llama empleoAction
   const agregarEmpleo = (empleo) => dispatch(crearNuevoEmpleoAction(empleo));
 
-  const consultarAPI = async () => {
-    const resultado = await clienteAxios.get(`/rubros`);
-    guardarRubros(resultado.data);
-  };
-  const llenarClientes = async () => {
-    const resultado = await clienteAxios.get(`/Clientes`);
-    guardarClientes(resultado.data);
-  };
+  useEffect(() => {
+    const llenarRubro = async () => {
+      const resultado = await clienteAxios.get(`/rubros`);
+      guardarRubros(resultado.data);
+    };
+    llenarRubro();
+  }, []);
+
+  useEffect(() => {
+    const llenarCliente = async () => {
+      const resultado = await clienteAxios.get(`/clientes`);
+      guardarClientes(resultado.data);
+    };
+    llenarCliente();
+  }, []);
 
   const submitNuevoEmpleo = (e) => {
     e.preventDefault();
@@ -105,7 +111,6 @@ const NuevoEmpleo = () => {
                     className="form-control"
                     name="cliente"
                     value={idCliente}
-                    onClick={llenarClientes}
                     onChange={(e) => guardarCliente(e.target.value)}
                   >
                     <option value={0}>Seleccione...</option>
@@ -135,7 +140,6 @@ const NuevoEmpleo = () => {
                     className="form-control"
                     name="rubro"
                     value={idRubro}
-                    onClick={consultarAPI}
                     onChange={(e) => guardarRubro(e.target.value)}
                   >
                     <option value={0}>Seleccione...</option>

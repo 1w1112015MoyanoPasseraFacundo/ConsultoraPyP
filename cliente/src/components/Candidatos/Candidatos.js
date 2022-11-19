@@ -14,6 +14,9 @@ const Candidatos = () => {
   const [nombre, guardarNombre] = useState("");
   const [apellido, guardarApellido] = useState("");
   const [estado, guardarEstado] = useState("");
+  const cargando = useSelector((state) => state.candidatos.loading);
+  const candidatos = useSelector((state) => state.candidatos.candidatos);
+  const error = useSelector((state) => state.candidatos.error);
 
   const filtrar = (e) => {
     e.preventDefault();
@@ -32,16 +35,13 @@ const Candidatos = () => {
     const cargarCandidatos = () => dispatch(obtenerCandidatosAction());
     cargarCandidatos();
     // eslint-disable-next-line
-  }, []);
+  }, [candidatos.estado]);
   const navigate = useNavigate();
 
   const nuevo = () => {
     navigate("/candidatos/nuevo");
   };
 
-  const cargando = useSelector((state) => state.candidatos.loading);
-  const candidatos = useSelector((state) => state.candidatos.candidatos);
-  const error = useSelector((state) => state.candidatos.error);
   const itemsPerPage = 5;
   const [itemOffset, setItemOffset] = useState(0);
   const endOffset = itemOffset + itemsPerPage;

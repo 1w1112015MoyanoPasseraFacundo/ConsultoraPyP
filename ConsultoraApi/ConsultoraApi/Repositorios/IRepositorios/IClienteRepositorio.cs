@@ -12,8 +12,8 @@ namespace ConsultoraApi.Repositorios.IRepositorios
         public bool MailExists(int idCliente, string mail);
         public bool RazonExists(string razon);
         public bool RazonExists(int idCliente, string razon);
-        public bool CuitExists(int cuit);
-        public bool CuitExists(int idCliente, int cuit);
+        public bool CuitExists(string cuit);
+        public bool CuitExists(int idCliente, string cuit);
         public bool TelefonoExists(string telefono);
         public bool TelefonoExists(int idCliente, string telefono);
         public ICollection<Cliente> GetFilterCliente(ClienteFilterDto filterDto);

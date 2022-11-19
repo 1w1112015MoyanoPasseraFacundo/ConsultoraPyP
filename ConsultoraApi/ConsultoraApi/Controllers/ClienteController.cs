@@ -104,7 +104,7 @@ namespace ConsultoraApi.Controllers
             clien.IdEstado = 1;
             clien.FechaAlta = DateTime.Now;
             clien.IdGenero = 1;
-            clien.IdTipoDocumento = 1002;
+            clien.IdTipoDocumento = 1;
 
             if (!_cRepo.CreateCliente(clien))
             {

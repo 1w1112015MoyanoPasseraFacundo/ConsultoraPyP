@@ -59,7 +59,7 @@ namespace ConsultoraApi.Controllers
         [HttpGet("GetPagosReporte")]
         public IActionResult GetPagosReporte(DateTime fecha1, DateTime fecha2)
         {
-            var pago = db.Pagos.Where(x=>x.FechaPago>=fecha1 && x.FechaPago <= fecha2).ToList();
+            var pago = db.Pagos.Where(x=>x.FechaPago.Date >= fecha1.Date && x.FechaPago.Date <= fecha2.Date).ToList();
             if (pago == null || pago.Count == 0)
             {
                 return StatusCode(400, "No existe ningún pago registrado");

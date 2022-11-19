@@ -56,19 +56,24 @@ const EditarPago = () => {
   };
   const { montoPago, idCliente, Estado, fechaPago, idEmpleo, nombreEmpleo } =
     pago;
-  console.log(pago);
   const submitEditarPago = (e) => {
     e.preventDefault();
+    let fecha = fechaPago.split("-")[0];
+    let monto = montoPago.toString();
     //validar form
-    console.log(montoPago);
     if (
-      montoPago.trim() === "" ||
+      monto.trim() === "" ||
       idCliente === 0 ||
       idEmpleo === 0 ||
+      idEmpleo === "0" ||
       fechaPago.trim() === "" ||
-      montoPago.includes("-")
+      monto.includes("-") ||
+      monto.includes("e")
     ) {
       Swal.fire("Llene los campos obligatorios", "", "warning");
+      return;
+    } else if (fecha < 1900 || fecha > 2022) {
+      Swal.fire("Ingrese un año válido", "", "warning");
       return;
     }
     dispatch(editarPagoAction(pago));
