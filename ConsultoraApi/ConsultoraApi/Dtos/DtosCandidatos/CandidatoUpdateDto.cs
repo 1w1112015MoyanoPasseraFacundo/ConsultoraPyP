@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using ConsultoraApi.Dtos.DtosCompetencias;
+using System.ComponentModel.DataAnnotations;
 
 namespace ConsultoraApi.Dtos.DtosCandidatos
 {
@@ -38,7 +39,6 @@ namespace ConsultoraApi.Dtos.DtosCandidatos
 
         [Required(ErrorMessage = "El campo Rubro es obligatorio")]
         public int IdRubro { get; set; }
-
         public List<int> lstCompes { get; set; }
     }
 }

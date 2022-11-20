@@ -28,7 +28,8 @@ const NuevoCandidato = () => {
   const [idPais, guardarPais] = useState(0);
   const [listaPaises, guardarPaises] = useState([]);
   const [telefono, guardarTelefono] = useState("");
-  const [lstCompes, guardarCompetencias] = useState([]);
+  let [lstCompes, guardarCompetencias] = useState([]);
+  const { data } = useGetCompetencia(idRubro);
   const dispatch = useDispatch();
   const error = useSelector((state) => state.candidatos.error);
   useEffect(() => {
@@ -44,6 +45,8 @@ const NuevoCandidato = () => {
       });
     }
   }, [error]);
+
+  lstCompes = lstCompes.map((e) => e.value);
 
   //llama candidatoAction
   const agregarCandidato = (candidato) =>
@@ -134,7 +137,6 @@ const NuevoCandidato = () => {
   const cancelar = () => {
     navigate("/candidatos");
   };
-  const { data } = useGetCompetencia(idRubro);
 
   return (
     <div className="row justify-content-center">
@@ -142,7 +144,6 @@ const NuevoCandidato = () => {
         <h3 className="title-decorator">Nuevo Candidato</h3>
         <div className="card">
           <div className="card-body">
-            {/* {alerta ? <p className={alerta.clases}>{alerta.msg}</p>:null} */}
             <form>
               <div className="row p-t-20">
                 <div className="form-group col-lg-4 col-md-4 col-sm-12 col-xs-12">
@@ -232,7 +233,6 @@ const NuevoCandidato = () => {
                     className="form-control"
                     name="rubro"
                     value={idRubro}
-                    // onClick={consultarAPI}
                     onChange={(e) => guardarRubro(e.target.value)}
                   >
                     <option value={0}>Seleccione...</option>

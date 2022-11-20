@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { BsCheckLg, BsReplyFill } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -18,7 +18,9 @@ const EditarEmpleo = () => {
     idRubro: 0,
     modalidad: "",
     lstCompes: [],
+    value: [],
   });
+
   const [listaClientes, guardarClientes] = useState([]);
   const [listaRubros, guardarRubros] = useState([]);
   const editar = useSelector((state) => state.empleos.editar);
@@ -54,9 +56,35 @@ const EditarEmpleo = () => {
     navigate("/empleos");
   };
   const { nombre, idCliente, idEstado, idRubro, modalidad, lstCompes } = empleo;
-  console.log("COMPES", lstCompes);
+
+  const formattedCompetencies = useMemo(
+    () =>
+      lstCompes.map((e) => {
+        return { value: e.idCompetencia, label: e.nombre };
+      }),
+    [lstCompes]
+  );
+
+  let [value, setValue] = useState(
+    formattedCompetencies ? formattedCompetencies : null
+  );
+
+  if (value.length === 0) {
+    value = formattedCompetencies;
+  }
+  const { data } = useGetCompetencia(idRubro);
+
   const submitEditarCliente = (e) => {
     e.preventDefault();
+
+    value = value.map((e) => e.value);
+    for (let i = lstCompes.length; i > 0; i--) {
+      lstCompes.pop();
+    }
+    for (let i = 0; value.length > i; i++) {
+      lstCompes.push(value[i]);
+    }
+
     //validar form
     if (
       nombre === "" ||
@@ -71,9 +99,6 @@ const EditarEmpleo = () => {
     }
     dispatch(editarEmpleoAction(empleo));
   };
-
-  const [listaCompetencias, guardarCompetencias] = useState([]);
-  const { data } = useGetCompetencia(idRubro);
 
   return (
     <div className="row justify-content-center">
@@ -143,9 +168,11 @@ const EditarEmpleo = () => {
                   <label>Habilidades</label>
                   <Multipleselect
                     options={data ? data : []}
-                    setState={guardarCompetencias}
+                    // setState={guardarCompetencias}
+                    setState={setValue}
                     defaultOption={"Seleccione habilidades..."}
-                    values={lstCompes}
+                    value={value}
+                    // values={lstCompes}
                   />
                 </div>
               </div>

@@ -18,7 +18,7 @@ const NuevoEmpleo = () => {
   const [idRubro, guardarRubro] = useState(0);
   const [listaRubros, guardarRubros] = useState([]);
   const [modalidad, guardarModalidad] = useState("");
-  const [lstCompes, guardarCompetencias] = useState([]);
+  let [lstCompes, guardarCompetencias] = useState([]);
   const dispatch = useDispatch();
 
   const error = useSelector((state) => state.empleos.error);
@@ -35,8 +35,15 @@ const NuevoEmpleo = () => {
       });
     }
   }, [error]); //llama empleoAction
+  lstCompes = lstCompes.map((e) => e.value);
   const agregarEmpleo = (empleo) => dispatch(crearNuevoEmpleoAction(empleo));
-
+  {
+    listaClientes.map((cliente) => (
+      <option key={cliente.idCliente} value={cliente.idCliente}>
+        {cliente.nombre}
+      </option>
+    ));
+  }
   useEffect(() => {
     const llenarRubro = async () => {
       const resultado = await clienteAxios.get(`/rubros`);
@@ -72,7 +79,6 @@ const NuevoEmpleo = () => {
 
     agregarEmpleo({
       nombre,
-
       idEstado,
       idCliente,
       idRubro,

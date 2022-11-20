@@ -18,6 +18,7 @@ namespace ConsultoraApi.Mapper
             CreateMap<Usuario, UpdateUsuarioDto>().ReverseMap();
             CreateMap<Candidato, CandidatoUpdateDto>().ReverseMap();
             CreateMap<Candidato, CandidatoCreateDto>().ReverseMap();
+            CreateMap<Candidato, CandidatoGetDto>().ReverseMap();
             CreateMap<Competencia, CompetenciaCreateDto>().ReverseMap();
             CreateMap<Competencia, CompetenciaUpdateDto>().ReverseMap();
             CreateMap<Competencia, CompetenciaGetDto>().ReverseMap();

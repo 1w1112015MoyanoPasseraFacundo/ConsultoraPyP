@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useMemo } from "react";
 import { BsCheckLg, BsReplyFill } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -63,6 +64,23 @@ const EditarCandidato = () => {
   } = candidato;
   const error = useSelector((state) => state.candidatos.error);
 
+  const formattedCompetencies = useMemo(
+    () =>
+      lstCompes.map((e) => {
+        return { value: e.idCompetencia, label: e.nombre };
+      }),
+    [lstCompes]
+  );
+
+  let [value, setValue] = useState(
+    formattedCompetencies ? formattedCompetencies : null
+  );
+
+  if (value.length === 0) {
+    value = formattedCompetencies;
+  }
+  const { data } = useGetCompetencia(idRubro);
+
   useEffect(() => {
     if (error === false) {
       navigate("/candidatos");
@@ -101,6 +119,14 @@ const EditarCandidato = () => {
     e.preventDefault();
     let fecha = fechaNacimiento.split("-")[0];
     const doc = documento.toString();
+
+    value = value.map((e) => e.value);
+    for (let i = lstCompes.length; i > 0; i--) {
+      lstCompes.pop();
+    }
+    for (let i = 0; value.length > i; i++) {
+      lstCompes.push(value[i]);
+    }
     //validar form
     if (
       nombre.trim() === "" ||
@@ -138,7 +164,6 @@ const EditarCandidato = () => {
     }
     dispatch(editarCandidatoAction(candidato));
   };
-  const { data } = useGetCompetencia(idRubro);
 
   return (
     <div className="row justify-content-center">
@@ -146,7 +171,6 @@ const EditarCandidato = () => {
         <h3 className="title-decorator">Editar Candidato</h3>
         <div className="card">
           <div className="card-body">
-            {/* {alerta ? <p className={alerta.clases}>{alerta.msg}</p>:null} */}
             <form>
               <div className="row p-t-20">
                 <div className="form-group col-lg-4 col-md-4 col-sm-12 col-xs-12">
@@ -244,9 +268,11 @@ const EditarCandidato = () => {
                   <label>Habilidades</label>
                   <Multipleselect
                     options={data ? data : []}
-                    setState={guardarCompetencias}
+                    // setState={guardarCompetencias}
+                    setState={setValue}
                     defaultOption={"Seleccione habilidades..."}
-                    values={candidato.lstCompes ? candidato.lstCompes : []}
+                    // values={candidato.lstCompes ? candidato.lstCompes : []}
+                    value={value}
                   />
                 </div>
                 <div className="form-group  col-lg-4 col-md-4 col-sm-12 col-xs-12">

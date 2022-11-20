@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ConsultoraApi.Dtos.DtosCandidatos;
+using ConsultoraApi.Dtos.DtosCompetencias;
 using ConsultoraApi.Dtos.DtosUsuarios;
 using ConsultoraApi.Helpers;
 using ConsultoraApi.Models;
@@ -40,21 +41,27 @@ namespace ConsultoraApi.Controllers
             {
                 return StatusCode(400, "No existe ningún candidato registrado");
             }
-            var candidatoGetDto = new List<CandidatoUpdateDto>();
+            var candidatoGetDto = new List<CandidatoGetDto>();
             for (int i = 0; i < cand.Count; i++)
             {
 
                 if (cand[i].Estado != "Descartado")
                 {
-                    candidatoGetDto.Add(_mapper.Map<CandidatoUpdateDto>(cand[i]));
+                    candidatoGetDto.Add(_mapper.Map<CandidatoGetDto>(cand[i]));
                 }
             }
             for (int i = 0; i < candidatoGetDto.Count; i++)
             {
                 List<int> candXCompe = db.CandidatosXcompetencias.Where(x => x.IdCandidato == candidatoGetDto[i].IdCandidato).Select(x => x.IdCompetencia).ToList();
+                List<CompetenciaListGetDto> compe = new List<CompetenciaListGetDto>();
+                for (int j = 0; j < candXCompe.Count; j++)
+                {
+                    var compes = db.Competencias.Where(x => x.IdCompetencia == candXCompe[j]).FirstOrDefault();
+                    compe.Add(_mapper.Map<CompetenciaListGetDto>(compes));
+                }
                 var pais = db.Paises.Where(x => x.IdPais == candidatoGetDto[i].IdPais).FirstOrDefault();
                 candidatoGetDto[i].nombrePais = pais.Nombre;
-                candidatoGetDto[i].lstCompes = candXCompe;
+                candidatoGetDto[i].lstCompes = compe;
             }
 
             return Ok(candidatoGetDto);
@@ -68,19 +75,25 @@ namespace ConsultoraApi.Controllers
             {
                 return StatusCode(400, "No existe ningún candidato registrado");
             }
-            var candidatoGetDto = new List<CandidatoUpdateDto>();
+            var candidatoGetDto = new List<CandidatoGetDto>();
 
             if (cand.Estado != "Descartado")
             {
-                candidatoGetDto.Add(_mapper.Map<CandidatoUpdateDto>(cand));
+                candidatoGetDto.Add(_mapper.Map<CandidatoGetDto>(cand));
             }
 
             for (int i = 0; i < candidatoGetDto.Count; i++)
             {
                 List<int> candXCompe = db.CandidatosXcompetencias.Where(x => x.IdCandidato == candidatoGetDto[i].IdCandidato).Select(x => x.IdCompetencia).ToList();
+                List<CompetenciaListGetDto> compe = new List<CompetenciaListGetDto>();
+                for (int j = 0; j < candXCompe.Count; j++)
+                {
+                    var compes = db.Competencias.Where(x => x.IdCompetencia == candXCompe[j]).FirstOrDefault();
+                    compe.Add(_mapper.Map<CompetenciaListGetDto>(compes));
+                }
                 var pais = db.Paises.Where(x => x.IdPais == candidatoGetDto[i].IdPais).FirstOrDefault();
                 candidatoGetDto[i].nombrePais = pais.Nombre;
-                candidatoGetDto[i].lstCompes = candXCompe;
+                candidatoGetDto[i].lstCompes = compe;
             }
 
             return Ok(candidatoGetDto);
