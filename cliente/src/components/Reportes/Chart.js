@@ -24,7 +24,6 @@ export const Chart = () => {
     }
     data.push({ name: nombreCliente, Cantidad: e.countCliente, amt: 2400 });
   });
-  console.log("EMPLEO", empleos);
   return (
     <>
       <div className="row p-t-20">

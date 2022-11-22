@@ -22,9 +22,7 @@ export function obtenerPagosAction() {
     try {
       const respuesta = await clienteAxios.get("/Pagos");
       dispatch(descargarPagosExitosa(respuesta.data));
-      console.log(respuesta.data);
     } catch (error) {
-      console.log(error.response.data);
       dispatch(descargarPagosError(error.response));
     }
   };
@@ -38,9 +36,7 @@ export function obtenerPagoReporte(fecha1, fecha2) {
         `/Pagos/GetPagosReporte?fecha1=${fecha1}&fecha2=${fecha2}`
       );
       dispatch(descargarPagosExitosa(respuesta.data));
-      console.log(respuesta.data);
     } catch (error) {
-      console.log(error.response.data);
       dispatch(descargarPagosError(error.response));
     }
   };
@@ -48,7 +44,6 @@ export function obtenerPagoReporte(fecha1, fecha2) {
 export function obtenerPagosFilterAction(filtros) {
   return async (dispatch) => {
     dispatch(descargarPagos());
-    console.log(filtros);
     try {
       const respuesta = await clienteAxios.get(
         `/Pagos/GetPagosFilter?idCliente=${filtros.idCliente}&estado=${filtros.estado}`
@@ -82,7 +77,6 @@ export function crearNuevoPagoAction(pago) {
     try {
       //insertar en la API
       await clienteAxios.post("/Pagos", pago);
-      console.log(pago);
       dispatch(agregarPagoExito(pago));
     } catch (error) {
       Swal.fire(error.response.data, "Intenta de nuevo", "error");
@@ -118,7 +112,6 @@ const obtenerPagoEditarAction = (pago) => ({
 });
 
 export function editarPagoAction(pago) {
-  console.log(pago);
   return async (dispatch) => {
     dispatch(editarPago());
     try {

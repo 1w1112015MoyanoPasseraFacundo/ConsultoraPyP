@@ -24,7 +24,6 @@ export function obtenerCompetenciasAction() {
       const respuesta = await clienteAxios.get("/Competencias");
       dispatch(descargarCompetenciasExitosa(respuesta.data));
     } catch (error) {
-      console.log(error);
       dispatch(descargarCompetenciasError(error.response));
     }
   };
@@ -32,16 +31,13 @@ export function obtenerCompetenciasAction() {
 export function obtenerCompetenciasFilterAction(filtros) {
   return async (dispatch) => {
     dispatch(descargarCompetencias());
-    console.log(filtros);
     try {
       const respuesta = await clienteAxios.get(
         `/Competencias/GetCompetenciasFilter?Nombre=${filtros.nombre}&idRubro=${filtros.idRubro}`
       );
-      console.log(respuesta);
 
       dispatch(descargarCompetenciasExitosa(respuesta.data));
     } catch (error) {
-      console.log(error);
       dispatch(descargarCompetenciasError(error.response.data));
     }
   };
@@ -65,13 +61,11 @@ const descargarCompetenciasError = (error) => ({
 export function crearNuevaCompetenciaAction(competencia) {
   return async (dispatch) => {
     dispatch(agregarCompetencia());
-    console.log(competencia);
     try {
       //insertar en la API
       await clienteAxios.post("/competencias", competencia);
       dispatch(agregarCompetenciaExito(competencia));
     } catch (error) {
-      console.log(error);
       dispatch(agregarCompetenciaError(true));
       Swal.fire(error.response.data, "Intenta de nuevo", "error");
     }

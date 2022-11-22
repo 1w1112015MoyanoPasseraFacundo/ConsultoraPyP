@@ -22,9 +22,7 @@ export function obtenerClientesAction() {
     try {
       const respuesta = await clienteAxios.get("/Clientes");
       dispatch(descargarClientesExitosa(respuesta.data));
-      console.log(respuesta.data);
     } catch (error) {
-      console.log(error.response.data);
       dispatch(descargarClientesError(error.response));
     }
   };
@@ -33,16 +31,13 @@ export function obtenerClientesAction() {
 export function obtenerClientesFilterAction(filtros) {
   return async (dispatch) => {
     dispatch(descargarClientes());
-    console.log(filtros);
     try {
       const respuesta = await clienteAxios.get(
         `/Clientes/GetClientesFilter?nombre=${filtros.nombre}&mail=${filtros.mail}&estado=${filtros.estado}`
       );
-      console.log(respuesta);
 
       dispatch(descargarClientesExitosa(respuesta.data));
     } catch (error) {
-      console.log(error);
       dispatch(descargarClientesError(error.response.data));
     }
   };
@@ -66,13 +61,11 @@ const descargarClientesError = (error) => ({
 export function crearNuevoClienteAction(cliente) {
   return async (dispatch) => {
     dispatch(agregarCliente());
-    console.log(cliente);
     try {
       //insertar en la API
       await clienteAxios.post("/clientes", cliente);
       dispatch(agregarClienteExito(cliente));
     } catch (error) {
-      console.log("ERROR", error);
       Swal.fire(error.response.data, "Intenta de nuevo", "error");
       dispatch(agregarClienteError(true));
     }
@@ -110,7 +103,6 @@ export function editarClienteAction(cliente) {
     dispatch(editarCliente());
     try {
       await clienteAxios.put(`/clientes/${cliente.idCliente}`, cliente);
-      console.log(cliente);
       dispatch(editarClienteExito(cliente));
       Swal.fire("Editado!", "El cliente ha sido editado", "success");
     } catch (error) {
@@ -139,7 +131,6 @@ export function darDeBajaCliente(idCliente) {
   return async (dispatch) => {
     dispatch(obtenerClienteBaja(idCliente));
     try {
-      console.log(idCliente);
       await clienteAxios.delete(`/clientes/${idCliente}`);
       dispatch(eliminarClienteExito());
       Swal.fire("Eliminado!", "El cliente ha sido dado de baja", "success");

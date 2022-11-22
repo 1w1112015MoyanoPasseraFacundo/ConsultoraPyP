@@ -39,7 +39,6 @@ const NuevoCliente = () => {
 
   //llama clienteAction
   const agregarCliente = (cliente) => {
-    console.log("CLIENTE", cliente);
     dispatch(crearNuevoClienteAction(cliente));
   };
   useEffect(() => {
@@ -73,14 +72,6 @@ const NuevoCliente = () => {
       direccion.trim() === "" ||
       telefono === ""
     ) {
-      console.log(nombre);
-      console.log(nombreFantasia);
-      console.log(mail);
-      console.log(idPais);
-      console.log(documento);
-      console.log(idRubro);
-      console.log(direccion);
-      console.log(telefono);
       Swal.fire("Llene todos los campos obligatorios", "", "warning");
       return;
     } else if (telefono.includes("-") || telefono.includes("e")) {

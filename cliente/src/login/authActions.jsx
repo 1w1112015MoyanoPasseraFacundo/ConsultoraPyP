@@ -20,15 +20,10 @@ export function usuarioAutenticado() {
 
   export function recoverPassword(email){
     return async(dispatch)=>{
-      console.log("MAIL", email);
-
       try{
       const resp = await clienteAxios.patch(`/Usuarios/ForgotPasswordUsuario?mail=${email}`);
      Swal.fire("Correo enviado", "", "success");
-     console.log("RESPUESTA", resp);
       }catch(error){
-        console.log("error", error);
-
         Swal.fire("Ocurrió un error al enviar el correo", "Intenta de nuevo", "error");
       }
     }
@@ -50,7 +45,6 @@ export function usuarioAutenticado() {
       localStorage.setItem("token", resp.data.usuario);
       usuarioAutenticado();
     } catch (error) {
-        console.log(error.response);
       dispatch({
         type: LOGIN_ERROR,
         payload: error.response.data,

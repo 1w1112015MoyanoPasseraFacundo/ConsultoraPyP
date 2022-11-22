@@ -23,9 +23,7 @@ export function obtenerEmpleosAction() {
     try {
       const respuesta = await clienteAxios.get("/Empleos");
       dispatch(descargarEmpleosExitosa(respuesta.data));
-      console.log(respuesta.data);
     } catch (error) {
-      console.log(error.response.data);
       dispatch(descargarEmpleosError(error.response));
     }
   };
@@ -37,9 +35,7 @@ export function obtenerAllEmpleosAction() {
     try {
       const respuesta = await clienteAxios.get("/Empleos/GetAllEmpleos");
       dispatch(descargarEmpleosExitosa(respuesta.data));
-      console.log(respuesta.data);
     } catch (error) {
-      console.log(error.response.data);
       dispatch(descargarEmpleosError(error.response));
     }
   };
@@ -53,9 +49,7 @@ export function obtenerEmpleosByMesAction(mes) {
         `/Empleos/GetEmpleosByMes?mes=${mes}`
       );
       dispatch(descargarEmpleosReporteExitosa(respuesta.data));
-      console.log(respuesta.data);
     } catch (error) {
-      console.log(error.response.data);
       dispatch(descargarEmpleosError(error.response));
     }
   };
@@ -68,9 +62,7 @@ export function obtenerEstadosEmpleosByFechasAction(fecha1, fecha2) {
         `/Empleos/GetEstadosEmpleosByFechas?fecha1=${fecha1}&fecha2=${fecha2}`
       );
       dispatch(descargarEmpleosExitosa(respuesta.data));
-      console.log(respuesta.data);
     } catch (error) {
-      console.log(error.response.data);
       dispatch(descargarEmpleosError(error.response));
     }
   };
@@ -83,9 +75,7 @@ export function obtenerEmpleosByFechasAction(fecha1, fecha2) {
         `/Empleos/GetEmpleosByFechas?fecha1=${fecha1}&fecha2=${fecha2}`
       );
       dispatch(descargarEmpleosReporteExitosa(respuesta.data));
-      console.log(respuesta.data);
     } catch (error) {
-      console.log(error.response.data);
       dispatch(descargarEmpleosError(error.response));
     }
   };
@@ -98,17 +88,14 @@ const descargarEmpleosReporteExitosa = (empleos) => ({
 
 export function obtenerEmpleosFilterAction(filtros) {
   return async (dispatch) => {
-    console.log(filtros);
     dispatch(descargarEmpleos());
     try {
       const respuesta = await clienteAxios.get(
         `/Empleos/GetEmpleosFilter?nombre=${filtros.nombre}&idRubro=${filtros.idRubro}&idCliente=${filtros.idCliente}&idEstado=${filtros.idEstado}`
       );
-      console.log(respuesta);
 
       dispatch(descargarEmpleosExitosa(respuesta.data));
     } catch (error) {
-      console.log(error);
       dispatch(descargarEmpleosError(error.response.data));
     }
   };
@@ -132,13 +119,11 @@ const descargarEmpleosError = (error) => ({
 export function crearNuevoEmpleoAction(empleo) {
   return async (dispatch) => {
     dispatch(agregarEmpleo());
-    console.log(empleo);
     try {
       //insertar en la API
       await clienteAxios.post("/empleos", empleo);
       dispatch(agregarEmpleoExito(empleo));
     } catch (error) {
-      console.log(error);
       dispatch(agregarEmpleoError(true));
       Swal.fire(error.response.data, "Intenta de nuevo", "error");
     }
@@ -172,7 +157,6 @@ const obtenerEmpleoEditarAction = (empleo) => ({
 });
 
 export function editarEmpleoAction(empleo) {
-  console.log("EMPLEO", empleo);
   return async (dispatch) => {
     dispatch(editarEmpleo());
     try {
@@ -180,12 +164,10 @@ export function editarEmpleoAction(empleo) {
         `/empleos/${empleo.idEmpleo}`,
         empleo
       );
-      console.log("resp", rest);
 
       dispatch(editarEmpleoExito(empleo));
       Swal.fire("Editado!", "El empleo ha sido editado", "success");
     } catch (error) {
-      console.log("ERROR", error);
       Swal.fire(error.response.data, "Intenta de nuevo", "error");
       dispatch(editarEmpleoError());
     }

@@ -19,7 +19,6 @@ import Swal from "sweetalert2";
 export function crearNuevoCandidatoAction(candidato) {
   return async (dispatch) => {
     dispatch(agregarCandidato());
-    console.log(candidato);
     try {
       //insertar en la API
       await clienteAxios.post("/candidatos", candidato);
@@ -65,7 +64,6 @@ export function editarCandidatoAction(candidato) {
       dispatch(editarCandidatoExito(candidato));
       Swal.fire("Editado!", "El candidato ha sido editado", "success");
     } catch (error) {
-      console.log("ERROR", error);
       Swal.fire(error.response.data, "Intenta de nuevo", "error");
       dispatch(editarCandidatoError());
     }
@@ -107,9 +105,7 @@ export function obtenerCandidatosAction() {
     try {
       const respuesta = await clienteAxios.get("/Candidatos");
       dispatch(descargarCandidatosExitosa(respuesta.data));
-      console.log(respuesta.data);
     } catch (error) {
-      console.log(error.response.data);
       dispatch(descargarCandidatosError(error.response));
     }
   };
@@ -117,36 +113,29 @@ export function obtenerCandidatosAction() {
 
 export function obtenerCandidatosFilterAction(filtros) {
   return async (dispatch) => {
-    console.log(filtros);
     dispatch(descargarCandidatos());
     try {
       const respuesta = await clienteAxios.get(
         `/Candidatos/GetCandidatosFilter?nombre=${filtros.nombre}&apellido=${filtros.apellido}&estado=${filtros.estado}`
       );
-      console.log(respuesta);
 
       dispatch(descargarCandidatosExitosa(respuesta.data));
     } catch (error) {
-      console.log(error);
       dispatch(descargarCandidatosError(error.response.data));
     }
   };
 }
 
 export function obtenerCandidatosByCompes(idsCompes) {
-  console.log(idsCompes);
   return async (dispatch) => {
-    console.log(idsCompes);
     dispatch(descargarCandidatos());
     try {
       const respuesta = await clienteAxios.get(
         `/Candidatos/GetCandidatosByCompes?idsCompes=${idsCompes}`
       );
-      console.log(respuesta);
 
       dispatch(descargarCandidatosExitosa(respuesta.data));
     } catch (error) {
-      console.log(error);
       dispatch(descargarCandidatosError(error.response.data));
     }
   };

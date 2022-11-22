@@ -11,7 +11,6 @@ const RecoverPassword = () => {
         navigate("/login");
     }
     const [email, guardarMail] = useState("");
-    console.log(email);
     const onSubmit = (e) => {
         e.preventDefault();
     try{

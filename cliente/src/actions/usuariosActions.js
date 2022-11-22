@@ -66,16 +66,13 @@ export function obtenerUsuariosAction() {
 export function obtenerUsuariosFilterAction(filtros) {
   return async (dispatch) => {
     dispatch(descargarUsuarios());
-    console.log(filtros);
     try {
       const respuesta = await clienteAxios.get(
         `/Usuarios/GetUsuariosFilter?nombreUsuario=${filtros.usuario}&cuil=${filtros.cuil}&estado=${filtros.estado}`
       );
-      console.log(respuesta);
 
       dispatch(descargarUsuariosExitosa(respuesta.data));
     } catch (error) {
-      console.log(error);
       dispatch(descargarUsuariosError(error.response.data));
     }
   };
@@ -154,11 +151,9 @@ export function editarUsuarioAction(usuario) {
     dispatch(editarUsuario());
     try {
       await clienteAxios.put(`/usuarios/${usuario.idUsuario}`, usuario);
-      console.log(usuario);
       dispatch(editarUsuarioExito(usuario));
       Swal.fire("Editado!", "El usuario ha sido editado", "success");
     } catch (error) {
-      console.log(error);
       Swal.fire(error.response.data, "Intenta de nuevo", "error");
       dispatch(editarUsuarioError());
     }

@@ -21,7 +21,6 @@ const Reporte1 = () => {
   }, [fecha1, fecha2]);
 
   const empleos = useSelector((state) => state.empleos.empleos);
-  console.log("Empleos", empleos);
   // let finalizados = 0;
   // let cancelados = 0;
   // let activos = 0;
@@ -64,7 +63,6 @@ const Reporte1 = () => {
   empleos.forEach((e) => {
     data.push({ name: e.nombreEstado, value: e.countEstado });
   });
-  console.log("DATA", data);
 
   const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 

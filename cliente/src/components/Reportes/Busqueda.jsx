@@ -144,7 +144,6 @@ const Busqueda = () => {
                     {candidatos.map((candidato) => {
                     let fecha = candidato.fechaNacimiento.split("T");
                     candidato.fechaNacimiento = fecha[0];
-                    console.log("CAND", candidato);
                       return (
                         <AccionesDashboard
                           key={candidato.idCandidato}

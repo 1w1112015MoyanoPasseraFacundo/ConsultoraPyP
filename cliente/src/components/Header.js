@@ -17,11 +17,9 @@ const Header = () => {
   useEffect(() => {
     dispatch(usuarioAutenticado());
   }, [autenticado]);
-  console.log("USU", usuario);
   useEffect(() => {
     dispatch(getUsuarioById(usuario.idUsuario));
   }, [usuario]);
-  console.log("AUTENTICADO", autenticado);
 
   const onSubmit = () => {
     try {
@@ -33,7 +31,6 @@ const Header = () => {
 
   const usuAEdit = useSelector((state) => state.usuarios.editar);
   const onEdit = () => {
-    console.log("USU A EDIT", usuAEdit);
     if (usuAEdit.fechaNacimiento.includes("T")) {
       let fecha = usuAEdit.fechaNacimiento.split("T");
       usuAEdit.fechaNacimiento = fecha[0];

@@ -102,7 +102,6 @@ const EditarCliente = () => {
     dispatch(editarClienteAction(cliente));
   };
 
-  console.log(listaRubros);
   return (
     <div className="row justify-content-center">
       <div className="col-md-12">

@@ -47,7 +47,6 @@ const EditarCompetencia = () => {
 
     //validar form
     if (nombre.trim() === "" || idRubro === 0 || idRubro === "0") {
-      console.log(idRubro);
       Swal.fire("Llene los campos obligatorios", "", "warning");
       return;
     }

@@ -215,7 +215,6 @@ const Empleos = () => {
             </thead>
             <tbody>
               {currentItems.map((empleo) => {
-                console.log(empleo);
                 return (
                   <AccionesEmpleos key={empleo.idEmpleo} empleo={empleo} />
                 );

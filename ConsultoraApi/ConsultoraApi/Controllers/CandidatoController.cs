@@ -102,14 +102,33 @@ namespace ConsultoraApi.Controllers
         [HttpGet("GetCandidatosFilter")]
         public IActionResult GetCandidatosFilter([FromQuery] CandidatoFilterDto filterDto)
         {
-            var listaCandidatos = _uRepo.GetFilterCandidato(filterDto);
+            var listaCandidatos = _uRepo.GetFilterCandidato(filterDto).ToList();
 
             if (listaCandidatos.Count == 0)
             {
                 return StatusCode(409, "No hay candidatos con esos filtros");
             }
 
-            return Ok(listaCandidatos);
+            var candidatoGetDto = new List<CandidatoGetDto>();
+            for (int i = 0; i < listaCandidatos.Count; i++)
+            {
+                candidatoGetDto.Add(_mapper.Map<CandidatoGetDto>(listaCandidatos[i]));
+            }
+            for (int i = 0; i < candidatoGetDto.Count; i++)
+            {
+                List<int> candXCompe = db.CandidatosXcompetencias.Where(x => x.IdCandidato == candidatoGetDto[i].IdCandidato).Select(x => x.IdCompetencia).ToList();
+                List<CompetenciaListGetDto> compe = new List<CompetenciaListGetDto>();
+                for (int j = 0; j < candXCompe.Count; j++)
+                {
+                    var compes = db.Competencias.Where(x => x.IdCompetencia == candXCompe[j]).FirstOrDefault();
+                    compe.Add(_mapper.Map<CompetenciaListGetDto>(compes));
+                }
+                var pais = db.Paises.Where(x => x.IdPais == candidatoGetDto[i].IdPais).FirstOrDefault();
+                candidatoGetDto[i].nombrePais = pais.Nombre;
+                candidatoGetDto[i].lstCompes = compe;
+            }
+
+            return Ok(candidatoGetDto);
         }
 
         [HttpGet("GetCandidatosByCompes")]
@@ -125,7 +144,7 @@ namespace ConsultoraApi.Controllers
                 return StatusCode(400, "Error");
             }
             var listaCandidatos = new List<CandidatoGetDto>();
-            var cand = db.Candidatos.Where(x=>x.Estado!="Descartado").ToList();
+            var cand = db.Candidatos.Where(x => x.Estado != "Descartado").ToList();
             foreach (var item in cand)
             {
                 bool esValido = true;
@@ -133,8 +152,8 @@ namespace ConsultoraApi.Controllers
                 foreach (var compes in idsCompe)
                 {
                     esValido = _CXCRepo.CandXCompeExists(item.IdCandidato, int.Parse(compes));
-                   var competencia = db.Competencias.Where(x => x.IdCompetencia == int.Parse(compes)).FirstOrDefault();
-                   compe.Add(_mapper.Map<CompetenciaListGetDto>(competencia));
+                    var competencia = db.Competencias.Where(x => x.IdCompetencia == int.Parse(compes)).FirstOrDefault();
+                    compe.Add(_mapper.Map<CompetenciaListGetDto>(competencia));
                     if (!esValido)
                     {
                         break;

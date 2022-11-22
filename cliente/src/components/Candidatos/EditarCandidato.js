@@ -63,7 +63,6 @@ const EditarCandidato = () => {
     lstCompes,
   } = candidato;
 
-  console.log("CANDIDATO", candidato);
   const error = useSelector((state) => state.candidatos.error);
 
   const formattedCompetencies = useMemo(

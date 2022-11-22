@@ -136,9 +136,18 @@ namespace ConsultoraApi.Controllers
                 var rubro = db.Rubros.FirstOrDefault(x => x.IdRubro == item.IdRubro);
                 var cliente = db.Clientes.FirstOrDefault(x => x.IdCliente == item.IdCliente);
                 var estado = db.Estados.FirstOrDefault(x => x.IdEstado == item.IdEstado);
+                List<int> empXCompe = db.EmpleosXcompetencias.Where(x => x.IdEmpleo == listaEmpleosDto[i].IdEmpleo).Select(x => x.IdCompetencia).ToList();
+
+                List<CompetenciaListGetDto> compe = new List<CompetenciaListGetDto>();
+                for (int j = 0; j < empXCompe.Count; j++)
+                {
+                    var compes = db.Competencias.Where(x => x.IdCompetencia == empXCompe[j]).FirstOrDefault();
+                    compe.Add(_mapper.Map<CompetenciaListGetDto>(compes));
+                }
                 listaEmpleosDto[i].nombreRubro = rubro.Nombre;
                 listaEmpleosDto[i].nombreCliente = cliente.Nombre;
                 listaEmpleosDto[i].nombreEstado = estado.Nombre;
+                listaEmpleosDto[i].lstCompes = compe;
                 i++;
             }
             return Ok(listaEmpleosDto);

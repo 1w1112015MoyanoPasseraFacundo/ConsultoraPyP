@@ -84,7 +84,6 @@ const AccionesCandidatos = ({ candidato }) => {
 
   const redireccionarEdicion = (candidato) => {
     dispatch(obtenerCandidatoEditar(candidato));
-    console.log("candidato", candidato);
     navigate(`editar/${candidato.idCandidato}`);
   };
 

@@ -27,7 +27,6 @@ const Competencias = () => {
   }, []);
 
   const buscar = (datos) => {
-    console.log(datos);
     dispatch(obtenerCompetenciasFilterAction(datos));
   };
   const filtrar = (e) => {

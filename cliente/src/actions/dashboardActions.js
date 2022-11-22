@@ -13,11 +13,9 @@ export const GetCompetenciasByEmpleo = (idEmpleo) => {
           `Competencias/GetCompetenciasByIdEmpleo?idEmpleo=${idEmpleo}`
         );
         const dato = await response.data;
-        console.log(dato);
         setData(dato);
         setIsLoading(false);
       } catch (error) {
-        console.log(error);
         setIsError(error);
         setIsLoading(false);
       }

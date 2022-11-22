@@ -176,7 +176,6 @@ const Usuarios = () => {
                     </thead>
                     <tbody>
                       {currentItems.map((usuario) => {
-                        console.log(usuario);
                         let fecha = usuario.fechaNacimiento.split("T");
                         usuario.fechaNacimiento = fecha[0];
                         return (
