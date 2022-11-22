@@ -31,7 +31,7 @@ namespace ConsultoraApi.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            var pago = db.Pagos.ToList();
+            var pago = db.Pagos.Where(n=> n.Estado == true).ToList();
             if (pago == null || pago.Count == 0)
             {
                 return StatusCode(400, "No existe ningún pago registrado");
@@ -59,7 +59,7 @@ namespace ConsultoraApi.Controllers
         [HttpGet("GetPagosReporte")]
         public IActionResult GetPagosReporte(DateTime fecha1, DateTime fecha2)
         {
-            var pago = db.Pagos.Where(x=>x.FechaPago.Date >= fecha1.Date && x.FechaPago.Date <= fecha2.Date).ToList();
+            var pago = db.Pagos.Where(x=>x.FechaPago.Date >= fecha1.Date && x.FechaPago.Date <= fecha2.Date && x.Estado ==true).ToList();
             if (pago == null || pago.Count == 0)
             {
                 return StatusCode(400, "No existe ningún pago registrado");
@@ -183,7 +183,13 @@ namespace ConsultoraApi.Controllers
             }
 
             pago.Estado = false;
-
+            Empleo emp = _eRepo.GetEmpleo(pago.IdEmpleo);
+            Estado est = _eRepo.GetEstado("Activo");
+            emp.IdEstado = est.IdEstado;
+            if (!_eRepo.UpdateEmpleo(emp))
+            {
+                return StatusCode(500, $"Algo salió mal actualizando el empleo {emp.Nombre} ");
+            }
             if (!_pRepo.DarDeBajaPago(pago))
             {
                 return StatusCode(500, $"Algo salió mal dando de baja el pago {pago.IdPago}");

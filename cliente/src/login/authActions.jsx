@@ -1,8 +1,6 @@
-import Cookies from "js-cookie";
-import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import clienteAxios from "../config/axios";
-import { CERRAR_SESION, LOGIN_ERROR, LOGIN_EXITOSO, OBTENER_USUARIO } from "../types";
+import { CARGANDO, CERRAR_SESION, LOGIN_ERROR, LOGIN_EXITOSO, OBTENER_USUARIO } from "../types";
 
 export function usuarioAutenticado() {
     const token = localStorage.getItem("token");
@@ -37,11 +35,13 @@ export function usuarioAutenticado() {
   }
 
   export function iniciarSesion(datos) {
-    console.log(datos);
+     
     return async (dispatch) => {    
+      dispatch({
+        type: CARGANDO,
+      });  
     try {
       const resp = await clienteAxios.post("/Usuarios/login", datos);
-      console.log("RESP", resp);
       dispatch({
         type: LOGIN_EXITOSO,
         payload: resp.data,

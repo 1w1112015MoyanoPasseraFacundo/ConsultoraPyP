@@ -62,6 +62,8 @@ const EditarCandidato = () => {
     estado,
     lstCompes,
   } = candidato;
+
+  console.log("CANDIDATO", candidato);
   const error = useSelector((state) => state.candidatos.error);
 
   const formattedCompetencies = useMemo(
@@ -134,7 +136,7 @@ const EditarCandidato = () => {
       idTipoDocumento === 0 ||
       idTipoDocumento === "0" ||
       mail.trim() === "" ||
-      documento === "" ||
+      doc === "" ||
       idRubro === "0" ||
       idRubro === 0 ||
       idGenero === "0" ||
@@ -142,14 +144,12 @@ const EditarCandidato = () => {
       idPais === "0" ||
       idPais === 0 ||
       fechaNacimiento.trim() === "" ||
-      lstCompes.length === 0 ||
-      documento.toString().includes("-") ||
-      documento.toString().includes("e") ||
-      telefono.includes("e") ||
-      telefono.includes("-")
+      lstCompes.length === 0
     ) {
       Swal.fire("Llene los campos obligatorios", "", "warning");
       return;
+    } else if (doc.includes("-") || doc.includes("e")) {
+      Swal.fire("Ingrese un documento correcto", "", "warning");
     } else if (doc.length != 8) {
       Swal.fire("El campo documento sólo acepta ocho números", "", "warning");
       return;
@@ -157,7 +157,12 @@ const EditarCandidato = () => {
       Swal.fire("Ingrese un año válido", "", "warning");
       return;
     } else if (telefono != "") {
-      if (telefono.length < 7 || telefono.length > 20) {
+      if (
+        telefono.length < 5 ||
+        telefono.length > 20 ||
+        telefono.includes("-") ||
+        telefono.includes("e")
+      ) {
         Swal.fire("Ingrese un télefono correcto", "", "warning");
         return;
       }
@@ -229,7 +234,7 @@ const EditarCandidato = () => {
                 <div className="form-group col-lg-4 col-md-4 col-sm-12 col-xs-12">
                   <label>Documento</label>
                   <input
-                    type="text"
+                    type="number"
                     className="form-control"
                     placeholder="Documento"
                     name="documento"
@@ -296,7 +301,7 @@ const EditarCandidato = () => {
                   <label>País</label>
                   <select
                     className="form-control"
-                    name="pais"
+                    name="idPais"
                     value={idPais}
                     onChange={onChangeFormulario}
                   >

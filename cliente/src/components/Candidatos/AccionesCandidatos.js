@@ -61,6 +61,14 @@ const AccionesCandidatos = ({ candidato }) => {
   };
   const submitEditarCandidato = (e) => {
     e.preventDefault();
+    let ids = lstCompes.map((e) => e.value);
+    for (let i = lstCompes.length; i > 0; i--) {
+      lstCompes.pop();
+    }
+    for (let i = 0; lstCompes.length > i; i++) {
+      lstCompes.push(ids[i]);
+    }
+
     dispatch(editarEstadoCandidatoAction(candidatos));
     Swal.fire(
       "Estado actulizado!",

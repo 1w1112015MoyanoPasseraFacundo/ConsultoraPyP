@@ -314,10 +314,6 @@ namespace ConsultoraApi.Controllers
                 return StatusCode(400, "El empleo no existe");
             }
 
-            if (db.Empleos.Any(u => u.Nombre == empleoUpdateDto.Nombre && u.IdEmpleo != idEmpleo))
-            {
-                return StatusCode(409, "El nombre de empleo ya existe");
-            }
 
             empleo.Nombre = empleoUpdateDto.Nombre;
             empleo.IdCliente = empleoUpdateDto.IdCliente;

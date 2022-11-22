@@ -9,6 +9,13 @@ const EditarCliente = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const error = useSelector((state) => state.clientes.error);
+  const editar = useSelector((state) => state.clientes.editar);
+  const [listaRubros, guardarRubros] = useState([]);
+  const [listaPaises, guardarPaises] = useState([]);
+
+  useEffect(() => {
+    guardarCliente(editar);
+  }, [editar]);
 
   useEffect(() => {
     if (error === false) {
@@ -26,9 +33,6 @@ const EditarCliente = () => {
     telefono: "",
     direccion: "",
   });
-  const [listaRubros, guardarRubros] = useState([]);
-  const [listaPaises, guardarPaises] = useState([]);
-  const editar = useSelector((state) => state.clientes.editar);
   useEffect(() => {
     const consultarAPI = async () => {
       const resultado = await clienteAxios.get(`/rubros`);
@@ -41,8 +45,7 @@ const EditarCliente = () => {
       guardarPaises(resultado.data);
     };
     llenarPaises();
-    guardarCliente(editar);
-  }, [editar]);
+  }, []);
 
   const onChangeFormulario = (e) => {
     guardarCliente({
@@ -53,6 +56,7 @@ const EditarCliente = () => {
   const cancelar = () => {
     navigate("/clientes");
   };
+
   const {
     nombre,
     nombreFantasia,
@@ -77,27 +81,28 @@ const EditarCliente = () => {
       idRubro === "0" ||
       idRubro === 0 ||
       direccion.trim() === "" ||
-      telefono === "" ||
-      documento.includes("-") ||
-      documento.includes("e") ||
-      telefono.includes("-") ||
-      telefono.includes("e")
+      telefono === ""
     ) {
       Swal.fire("Llene todos los campos obligatorios", "", "warning");
       return;
-    }
-    if (documento.length !== 11) {
+    } else if (telefono.includes("-") || telefono.includes("e")) {
+      Swal.fire("Ingrese un télefono correcto", "", "warning");
+      return;
+    } else if (documento.includes("-") || documento.includes("e")) {
+      Swal.fire("Ingrese un cuit correcto", "", "warning");
+    } else if (documento.length !== 11) {
       Swal.fire("El campo cuit sólo acepta once números", "", "warning");
       return;
-    }
-    if (telefono !== "") {
-      if (telefono.length < 7 || telefono.length > 20) {
+    } else if (telefono !== "") {
+      if (telefono.length < 5 || telefono.length > 20) {
         Swal.fire("Ingrese un télefono correcto", "", "warning");
         return;
       }
     }
     dispatch(editarClienteAction(cliente));
   };
+
+  console.log(listaRubros);
   return (
     <div className="row justify-content-center">
       <div className="col-md-12">
@@ -146,11 +151,10 @@ const EditarCliente = () => {
                   <label>País</label>
                   <select
                     className="form-control"
-                    name="pais"
+                    name="idPais"
                     value={idPais}
                     onChange={onChangeFormulario}
                   >
-                    <option>Seleccione...</option>
                     {listaPaises.map((pais) => (
                       <option key={pais.idPais} value={pais.idPais}>
                         {pais.nombre}
@@ -161,7 +165,7 @@ const EditarCliente = () => {
                 <div className="form-group col-lg-4 col-md-4 col-sm-12 col-xs-12">
                   <label>CUIT</label>
                   <input
-                    type="text"
+                    type="number"
                     className="form-control"
                     placeholder="Documento"
                     name="documento"
@@ -176,7 +180,7 @@ const EditarCliente = () => {
                   <label>Rubro</label>
                   <select
                     className="form-control"
-                    name="rubro"
+                    name="idRubro"
                     value={idRubro}
                     onChange={onChangeFormulario}
                   >

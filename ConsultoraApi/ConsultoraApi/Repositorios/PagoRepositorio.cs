@@ -19,7 +19,7 @@ namespace ConsultoraApi.Repositorios
         {
             if (idPago != null)
             {
-                return db.Pagos.FirstOrDefault(u => u.IdPago == idPago);
+                return db.Pagos.FirstOrDefault(u => u.IdPago == idPago );
             }
             else
             {
@@ -30,20 +30,10 @@ namespace ConsultoraApi.Repositorios
         {
             var lstPagos = db.Pagos.ToList();
 
-            if (filterDto.estado != null)
-            {
-                if (filterDto.estado == true)
-                {
-                    lstPagos = lstPagos.Where(n => n.Estado == filterDto.estado).ToList();
-                }
-                else
-                {
-                    lstPagos = lstPagos.Where(n => n.Estado == filterDto.estado).ToList();
-                }
-            }
+            
             if (filterDto.idCliente != null)
             {
-                lstPagos = lstPagos.Where(n => n.IdCliente == filterDto.idCliente).ToList();
+                lstPagos = lstPagos.Where(n => n.IdCliente == filterDto.idCliente && n.Estado==true).ToList();
             }
 
             return lstPagos;

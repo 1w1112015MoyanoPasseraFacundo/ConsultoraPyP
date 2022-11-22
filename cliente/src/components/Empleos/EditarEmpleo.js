@@ -103,7 +103,7 @@ const EditarEmpleo = () => {
   return (
     <div className="row justify-content-center">
       <div className="col-md-12">
-        <h3 className="title-decorator">Editar Empleo</h3>
+        <h3 className="title-decorator">Editar vacante</h3>
         <div className="card">
           <div className="card-body">
             <form>
@@ -127,7 +127,6 @@ const EditarEmpleo = () => {
                     value={idCliente}
                     onChange={onChangeFormulario}
                   >
-                    <option value={0}>Seleccione...</option>
                     {listaClientes.map((cliente) => (
                       <option key={cliente.idCliente} value={cliente.idCliente}>
                         {cliente.nombre}
@@ -156,7 +155,6 @@ const EditarEmpleo = () => {
                     value={idRubro}
                     onChange={onChangeFormulario}
                   >
-                    <option value={0}>Seleccione...</option>
                     {listaRubros.map((rubro) => (
                       <option key={rubro.idRubro} value={rubro.idRubro}>
                         {rubro.nombre}

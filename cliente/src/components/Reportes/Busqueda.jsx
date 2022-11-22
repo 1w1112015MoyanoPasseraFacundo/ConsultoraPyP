@@ -11,9 +11,10 @@ import jsPDF from "jspdf";
 
 const Busqueda = () => {
   const dispatch = useDispatch();
-  const [lstCompes, guardarCompetencias] = useState([]);
+  let [lstCompes, guardarCompetencias] = useState([]);
   const [idEmpleo, guardarEmpleo] = useState(0);
   const [listaEmpleo, guardarEmpleos] = useState([]);
+
   const candidatos = useSelector((state) => state.candidatos.candidatos);
   const error = useSelector((state) => state.candidatos.error);
 
@@ -30,7 +31,9 @@ const Busqueda = () => {
   }, [guardarEmpleos, lstCompes]);
 
   const { data } = GetCompetenciasByEmpleo(idEmpleo);
-
+  if (lstCompes !== null) {
+    lstCompes = lstCompes.map((e) => e.value);
+  }
   //PDF
   const exportPDF = () => {
     const unit = "pt";
@@ -64,11 +67,10 @@ const Busqueda = () => {
     doc.autoTable(content);
     doc.save("CandidatosPorHabilidades.pdf");
   };
-
   return (
     <>
       <h3 className="title-decorator">Búsqueda avanzada</h3>
-      <div class="card custom-card-shadow">
+      <div class="card custom-card-shadow col-lg-12 col-md-12 col-sm-6">
         <div class="card-body">
           <div className="row">
             <div className="col-md-6">
@@ -97,7 +99,7 @@ const Busqueda = () => {
                       <Multipleselect
                         options={data ? data : []}
                         setState={guardarCompetencias}
-                        defaultOption={"Seleccione habilidades"}
+                        defaultOption={"Seleccione habilidades..."}
                       />
                     </div>
                   </div>
@@ -142,6 +144,7 @@ const Busqueda = () => {
                     {candidatos.map((candidato) => {
                     let fecha = candidato.fechaNacimiento.split("T");
                     candidato.fechaNacimiento = fecha[0];
+                    console.log("CAND", candidato);
                       return (
                         <AccionesDashboard
                           key={candidato.idCandidato}

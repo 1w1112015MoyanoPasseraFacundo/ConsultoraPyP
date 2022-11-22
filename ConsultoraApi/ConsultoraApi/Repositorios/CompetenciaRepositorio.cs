@@ -63,6 +63,11 @@ namespace ConsultoraApi.Repositorios
             return db.Competencias.Any(u => u.Nombre.ToLower() == competencia.ToLower());
         }
 
+        public bool CompetenciaExists(string competencia, int idRubro)
+        {
+            return db.Competencias.Any(u => u.Nombre.ToLower() == competencia.ToLower() && u.IdRubro == idRubro);
+        }
+
         public bool CompetenciaExists(int idRubro)
         {
             return db.Competencias.Any(u => u.IdRubro == idRubro);

@@ -124,14 +124,17 @@ namespace ConsultoraApi.Controllers
             {
                 return StatusCode(400, "Error");
             }
-            var listaCandidatos = new List<CandidatoUpdateDto>();
+            var listaCandidatos = new List<CandidatoGetDto>();
             var cand = db.Candidatos.Where(x=>x.Estado!="Descartado").ToList();
             foreach (var item in cand)
             {
                 bool esValido = true;
+                List<CompetenciaListGetDto> compe = new List<CompetenciaListGetDto>();
                 foreach (var compes in idsCompe)
                 {
                     esValido = _CXCRepo.CandXCompeExists(item.IdCandidato, int.Parse(compes));
+                   var competencia = db.Competencias.Where(x => x.IdCompetencia == int.Parse(compes)).FirstOrDefault();
+                   compe.Add(_mapper.Map<CompetenciaListGetDto>(competencia));
                     if (!esValido)
                     {
                         break;
@@ -139,7 +142,11 @@ namespace ConsultoraApi.Controllers
                 }
                 if (esValido)
                 {
-                    listaCandidatos.Add(_mapper.Map<CandidatoUpdateDto>(item));
+                    listaCandidatos.Add(_mapper.Map<CandidatoGetDto>(item));
+                    for (int i = 0; i < listaCandidatos.Count; i++)
+                    {
+                        listaCandidatos[i].lstCompes = compe;
+                    }
                 }
             }
 

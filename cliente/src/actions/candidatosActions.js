@@ -65,6 +65,7 @@ export function editarCandidatoAction(candidato) {
       dispatch(editarCandidatoExito(candidato));
       Swal.fire("Editado!", "El candidato ha sido editado", "success");
     } catch (error) {
+      console.log("ERROR", error);
       Swal.fire(error.response.data, "Intenta de nuevo", "error");
       dispatch(editarCandidatoError());
     }

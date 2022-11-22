@@ -26,6 +26,19 @@ const EditarUsuario = () => {
     telefono: "",
   });
 
+  const {
+    nombre,
+    apellido,
+    mail,
+    idTipoDocumento,
+    documento,
+    password,
+    fechaNacimiento,
+    nombreUsuario,
+    direccion,
+    telefono,
+  } = usuario;
+
   const editar = useSelector((state) => state.usuarios.editar);
   const error = useSelector((state) => state.usuarios.error);
 
@@ -57,45 +70,39 @@ const EditarUsuario = () => {
     });
   };
 
-  const {
-    nombre,
-    apellido,
-    mail,
-    idTipoDocumento,
-    documento,
-    password,
-    fechaNacimiento,
-    nombreUsuario,
-    direccion,
-    telefono,
-  } = usuario;
-
   const submitEditarUsuario = (e) => {
     e.preventDefault();
     let fecha = fechaNacimiento.split("-")[0];
+    let doc = documento.toString();
+
     //validar form
     if (
       nombre.trim() === "" ||
       apellido.trim() === "" ||
       idTipoDocumento === 0 ||
       mail.trim() === "" ||
-      documento === "" ||
+      doc === "" ||
       nombreUsuario.trim() === "" ||
       password.trim() === "" ||
-      fechaNacimiento.trim() === "" ||
-      documento.includes("-") ||
-      telefono.includes("-")
+      fechaNacimiento.trim() === ""
     ) {
       Swal.fire("Llene los campos obligatorios", "", "warning");
       return;
-    } else if (documento.length !== 8) {
+    } else if (doc.includes("-") || doc.includes("e")) {
+      Swal.fire("Ingrese un documento correcto", "", "warning");
+    } else if (doc.length !== 8) {
       Swal.fire("El campo documento sólo acepta ocho números", "", "warning");
       return;
     } else if (fecha < 1900 || fecha > 2022) {
       Swal.fire("Ingrese un año válido", "", "warning");
       return;
     } else if (telefono !== "") {
-      if (telefono.length < 7 || telefono.length > 20) {
+      if (
+        telefono.length < 5 ||
+        telefono.length > 20 ||
+        telefono.includes("-") ||
+        telefono.includes("e")
+      ) {
         Swal.fire("Ingrese un télefono correcto", "", "warning");
         return;
       }
@@ -162,7 +169,6 @@ const EditarUsuario = () => {
                       value={idTipoDocumento}
                       onChange={onChangeFormulario}
                     >
-                      <option>Seleccione...</option>
                       {listaTiposDocs.map((tipoDocumento) => (
                         <option
                           key={tipoDocumento.idTipoDocumento}
@@ -176,7 +182,7 @@ const EditarUsuario = () => {
                   <div className="form-group col-lg-4 col-md-4 col-sm-12 col-xs-12">
                     <label>Documento</label>
                     <input
-                      type="text"
+                      type="number"
                       className="form-control"
                       placeholder="Documento"
                       name="documento"
@@ -215,7 +221,6 @@ const EditarUsuario = () => {
                     <input
                       className="form-control"
                       type="password"
-                      id="password"
                       name="password"
                       placeholder="Contraseña"
                       value={password}

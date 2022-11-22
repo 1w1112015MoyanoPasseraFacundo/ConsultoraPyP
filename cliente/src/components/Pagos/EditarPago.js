@@ -66,11 +66,16 @@ const EditarPago = () => {
       idCliente === 0 ||
       idEmpleo === 0 ||
       idEmpleo === "0" ||
-      fechaPago.trim() === "" ||
-      monto.includes("-") ||
-      monto.includes("e")
+      fechaPago.trim() === ""
     ) {
       Swal.fire("Llene los campos obligatorios", "", "warning");
+      return;
+    } else if (
+      montoPago.includes("-") ||
+      montoPago.includes("e") ||
+      montoPago.length > 10
+    ) {
+      Swal.fire("Ingrese un monto correcto", "", "warning");
       return;
     } else if (fecha < 1900 || fecha > 2022) {
       Swal.fire("Ingrese un año válido", "", "warning");
@@ -96,7 +101,6 @@ const EditarPago = () => {
                     value={idCliente}
                     onChange={onChangeFormulario}
                   >
-                    <option>Seleccione...</option>
                     {listaClientes.map((cliente) => (
                       <option key={cliente.idCliente} value={cliente.idCliente}>
                         {cliente.nombre}

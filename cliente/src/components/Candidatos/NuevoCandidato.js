@@ -46,7 +46,9 @@ const NuevoCandidato = () => {
     }
   }, [error]);
 
-  lstCompes = lstCompes.map((e) => e.value);
+  if (lstCompes !== null && lstCompes !== undefined) {
+    lstCompes = lstCompes.map((e) => e.value);
+  }
 
   //llama candidatoAction
   const agregarCandidato = (candidato) =>
@@ -97,14 +99,12 @@ const NuevoCandidato = () => {
       idPais === "0" ||
       idPais === 0 ||
       fechaNacimiento.trim() === "" ||
-      lstCompes.length === 0 ||
-      documento.toString().includes("-") ||
-      documento.toString().includes("e") ||
-      telefono.includes("e") ||
-      telefono.includes("-")
+      lstCompes.length === 0
     ) {
       Swal.fire("Llene los campos obligatorios", "", "warning");
       return;
+    } else if (documento.includes("-") || documento.includes("e")) {
+      Swal.fire("Ingrese un documento correcto", "", "warning");
     } else if (documento.length != 8) {
       Swal.fire("El campo documento sólo acepta ocho números", "", "warning");
       return;
@@ -112,7 +112,12 @@ const NuevoCandidato = () => {
       Swal.fire("Ingrese un año válido", "", "warning");
       return;
     } else if (telefono != "") {
-      if (telefono.length < 7 || telefono.length > 20) {
+      if (
+        telefono.length < 5 ||
+        telefono.length > 20 ||
+        telefono.includes("-") ||
+        telefono.includes("e")
+      ) {
         Swal.fire("Ingrese un télefono correcto", "", "warning");
         return;
       }

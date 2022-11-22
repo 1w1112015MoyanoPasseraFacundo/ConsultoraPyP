@@ -19,7 +19,7 @@ const AccionesPagos = ({ pago }) => {
 
   const confirmarEliminar = (idPago) => {
     Swal.fire({
-      title: "Está seguro que desea dar de baja este pago?",
+      title: "¿Está seguro que desea dar de baja este pago?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",

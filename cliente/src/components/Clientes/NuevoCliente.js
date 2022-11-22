@@ -17,7 +17,7 @@ const NuevoCliente = () => {
   const [documento, guardarDocumento] = useState("");
   const [idRubro, guardarRubro] = useState(0);
   const [listaRubros, guardarRubros] = useState([]);
-  const [direccion, guardarDireccion] = useState([]);
+  const [direccion, guardarDireccion] = useState("");
   const [listaPaises, guardarPaises] = useState([]);
   const [idPais, guardarPais] = useState(0);
   const [telefono, guardarTelefono] = useState("");
@@ -71,21 +71,28 @@ const NuevoCliente = () => {
       idRubro === "0" ||
       idRubro === 0 ||
       direccion.trim() === "" ||
-      telefono === "" ||
-      documento.includes("-") ||
-      documento.includes("e") ||
-      telefono.includes("-") ||
-      telefono.includes("e")
+      telefono === ""
     ) {
-      console.log("ENTRA");
+      console.log(nombre);
+      console.log(nombreFantasia);
+      console.log(mail);
+      console.log(idPais);
+      console.log(documento);
+      console.log(idRubro);
+      console.log(direccion);
+      console.log(telefono);
       Swal.fire("Llene todos los campos obligatorios", "", "warning");
       return;
+    } else if (telefono.includes("-") || telefono.includes("e")) {
+      Swal.fire("Ingrese un télefono correcto", "", "warning");
+      return;
+    } else if (documento.includes("-") || documento.includes("e")) {
+      Swal.fire("Ingrese un cuit correcto", "", "warning");
     } else if (documento.length !== 11) {
-      console.log("ENTRA");
       Swal.fire("El campo cuit sólo acepta once números", "", "warning");
       return;
     } else if (telefono !== "") {
-      if (telefono.length < 7 || telefono.length > 20) {
+      if (telefono.length < 5 || telefono.length > 20) {
         Swal.fire("Ingrese un télefono correcto", "", "warning");
         return;
       }

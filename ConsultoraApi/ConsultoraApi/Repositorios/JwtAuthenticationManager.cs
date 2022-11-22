@@ -20,11 +20,7 @@ namespace ConsultoraApi.Repositorios
 
         public string Authenticate(string username, string password)
         {
-            var users = db.Usuarios.ToList();
-            if (!users.Any(u => u.NombreUsuario == username && u.Password == password))
-            {
-                return null;
-            }
+           
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var tokenKey = Encoding.ASCII.GetBytes(key);

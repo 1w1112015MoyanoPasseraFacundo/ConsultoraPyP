@@ -11,15 +11,12 @@ const Login = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const autenticado = useSelector((state) => state.login.autenticado);
-  console.log("Auten", autenticado);
+  const loading = useSelector((state) => state.login.loading);
   
-  console.log(token);
+
   const mensaje = useSelector((state) => state.login.mensaje);
-  console.log(mensaje);
+
   useEffect(() => {
-    // if(autenticado===true){
-    //   navigate("/", {replace:true});
-    // }
     if (token!=null) {
       navigate("/", {replace:true});
     }
@@ -131,12 +128,14 @@ const Login = () => {
                   type="submit"
                   onClick={onSubmit}
                 >
-                  {/* {{ loading: "Iniciar sesión" }} */}
-                  Iniciar sesión
-                  <app-dots-animation
-                    size=".9rem"
-                    color="#ffffff"
-                  ></app-dots-animation>
+                {loading?(
+                <div className="bouncing-loader">
+                <div></div>
+                <div></div>
+                <div></div>
+                </div>): "Iniciar sesión"}
+
+                  
                 </button>
               </div>
             </div>

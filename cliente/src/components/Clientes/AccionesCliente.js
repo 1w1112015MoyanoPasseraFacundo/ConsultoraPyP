@@ -14,7 +14,7 @@ const AccionesCliente = ({ cliente }) => {
   const dispatch = useDispatch();
   const confirmarEliminar = (idCliente) => {
     Swal.fire({
-      title: "Está seguro que desea dar de baja este cliente?",
+      title: "¿Está seguro que desea dar de baja este cliente?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",

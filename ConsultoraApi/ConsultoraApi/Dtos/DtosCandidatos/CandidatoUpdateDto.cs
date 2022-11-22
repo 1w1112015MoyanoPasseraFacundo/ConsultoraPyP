@@ -35,7 +35,7 @@ namespace ConsultoraApi.Dtos.DtosCandidatos
         public int IdGenero { get; set; }
         [Required(ErrorMessage = "El campo Pais es obligatorio")]
         public int IdPais { get; set; }
-        public string nombrePais { get; set; }
+        public string? nombrePais { get; set; }
 
         [Required(ErrorMessage = "El campo Rubro es obligatorio")]
         public int IdRubro { get; set; }

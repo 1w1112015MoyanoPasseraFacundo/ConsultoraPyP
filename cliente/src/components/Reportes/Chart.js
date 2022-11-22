@@ -18,8 +18,13 @@ export const Chart = () => {
   const empleos = useSelector((state) => state.empleos.reporte);
   let data = [];
   empleos.forEach((e) => {
-    data.push({ name: e.nombreCliente, Cantidad: e.countCliente, amt: 2400 });
+    let nombreCliente = e.nombreCliente;
+    if (nombreCliente.includes(" ")) {
+      nombreCliente = nombreCliente.split(" ")[0];
+    }
+    data.push({ name: nombreCliente, Cantidad: e.countCliente, amt: 2400 });
   });
+  console.log("EMPLEO", empleos);
   return (
     <>
       <div className="row p-t-20">
@@ -54,13 +59,13 @@ export const Chart = () => {
         <>
           <br />
           <BarChart
-            width={500}
+            width={600}
             height={300}
             data={data}
             margin={{
               top: 5,
-              right: 30,
-              left: 20,
+              right: 50,
+              left: -16,
               bottom: 5,
             }}
           >

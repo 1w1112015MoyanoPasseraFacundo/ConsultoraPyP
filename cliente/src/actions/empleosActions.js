@@ -213,7 +213,13 @@ export function darDeBajaEmpleo(idEmpleo) {
     try {
       await clienteAxios.put(`/Empleos/CancelarEmpleo?idEmpleo=${idEmpleo}`);
       dispatch(eliminarEmpleoExito());
-      Swal.fire("Eliminado!", "El empleo ha sido cancelado", "success");
+      Swal.fire("Eliminado!", "El empleo ha sido cancelado", "success").then(
+        (result) => {
+          if (result.isConfirmed) {
+            window.location.reload();
+          }
+        }
+      );
     } catch (error) {
       dispatch(eliminarEmpleoError());
     }
@@ -227,7 +233,13 @@ export function suspenderEmpleo(idEmpleo) {
     try {
       await clienteAxios.put(`/Empleos/SuspenderEmpleo?idEmpleo=${idEmpleo}`);
       dispatch(eliminarEmpleoExito());
-      Swal.fire("Eliminado!", "El empleo ha sido suspendido", "success");
+      Swal.fire("Suspendido!", "El empleo ha sido suspendido", "success").then(
+        (result) => {
+          if (result.isConfirmed) {
+            window.location.reload();
+          }
+        }
+      );
     } catch (error) {
       dispatch(eliminarEmpleoError());
     }
@@ -241,7 +253,13 @@ export function reanudarEmpleo(idEmpleo) {
     try {
       await clienteAxios.put(`/Empleos/ReanudarEmpleo?idEmpleo=${idEmpleo}`);
       dispatch(eliminarEmpleoExito());
-      Swal.fire("Eliminado!", "El empleo ha sido reanudado", "success");
+      Swal.fire("Reanudado!", "El empleo ha sido reanudado", "success").then(
+        (result) => {
+          if (result.isConfirmed) {
+            window.location.reload();
+          }
+        }
+      );
     } catch (error) {
       dispatch(eliminarEmpleoError());
     }

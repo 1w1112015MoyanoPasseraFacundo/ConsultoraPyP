@@ -1,10 +1,15 @@
 import React from "react";
+import { useMemo } from "react";
+import { useEffect } from "react";
 import { useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 import { BsFillPencilFill, BsSearch } from "react-icons/bs";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { obtenerCandidatoEditar } from "../actions/candidatosActions";
+import clienteAxios from "../config/axios";
+import { useGetCompetencia } from "./Empleos/Hooks/useGetCompetencia";
+import { Multipleselect } from "./MultipleSelect";
 const AccionesDashboard = ({ candidato }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -24,11 +29,18 @@ const AccionesDashboard = ({ candidato }) => {
     idCandidato,
     lstCompes,
   } = candidato;
-
+  const [listaPaises, guardarPaises] = useState([]);
   const redireccionarEdicion = (candidato) => {
     dispatch(obtenerCandidatoEditar(candidato));
     navigate(`/candidatos/editar/${candidato.idCandidato}`);
   };
+  useEffect(() => {
+    const llenarPais = async () => {
+      const resultado = await clienteAxios.get(`/Paises`);
+      guardarPaises(resultado.data);
+    };
+    llenarPais();
+  }, []);
 
   const [show, setShow] = useState(false);
 
@@ -36,6 +48,22 @@ const AccionesDashboard = ({ candidato }) => {
     setShow(true);
   }
   const handleClose = () => setShow(false);
+  const formattedCompetencies = useMemo(
+    () =>
+      lstCompes.map((e) => {
+        return { value: e.idCompetencia, label: e.nombre };
+      }),
+    [lstCompes]
+  );
+
+  let [value, setValue] = useState(
+    formattedCompetencies ? formattedCompetencies : null
+  );
+
+  if (value.length === 0) {
+    value = formattedCompetencies;
+  }
+  const { data } = useGetCompetencia(idRubro);
   return (
     <>
       <tr>
@@ -147,11 +175,10 @@ const AccionesDashboard = ({ candidato }) => {
                 <label>Género</label>
                 <select
                   className="form-control"
-                  name="pais"
+                  name="idGenero"
                   value={idGenero}
                   disabled="true"
                 >
-                  <option>Seleccione...</option>
                   <option value="1">Masculino</option>
                   <option value="2">Femenino</option>
                 </select>
@@ -162,12 +189,15 @@ const AccionesDashboard = ({ candidato }) => {
                 <label>País</label>
                 <select
                   className="form-control"
-                  name="pais"
+                  name="idPais"
                   value={idPais}
                   disabled="true"
                 >
-                  <option>Seleccione...</option>
-                  <option value="1">Argentina</option>
+                  {listaPaises.map((pais) => (
+                    <option key={pais.idPais} value={pais.idPais}>
+                      {pais.nombre}
+                    </option>
+                  ))}
                 </select>
               </div>
               <div className="form-group col-lg-6 col-md-6  col-sm-12 col-xs-12">
@@ -208,6 +238,22 @@ const AccionesDashboard = ({ candidato }) => {
                     name="linkedin"
                     value={linkedin}
                     disabled="true"
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="row p-t-20">
+              <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div className="form-group">
+                  <label className="form-label"> Habilidades </label>
+                  <Multipleselect
+                    options={data ? data : []}
+                    // setState={guardarCompetencias}
+                    setState={setValue}
+                    defaultOption={"Seleccione habilidades..."}
+                    // values={candidato.lstCompes ? candidato.lstCompes : []}
+                    value={value}
+                    disabled={true}
                   />
                 </div>
               </div>

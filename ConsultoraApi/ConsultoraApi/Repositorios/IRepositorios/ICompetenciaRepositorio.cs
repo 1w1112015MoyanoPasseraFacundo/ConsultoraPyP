@@ -10,6 +10,7 @@ namespace ConsultoraApi.Repositorios.IRepositorios
         public bool UpdateCompetencia(Competencia competencia);
         public bool CompetenciaExists(string competencia);
         public bool CompetenciaExists(int idRubro);
+        public bool CompetenciaExists(string competencia, int idRubro);
         public bool CompetenciaExists(int idCompetencia, string competencia);
         public bool CompetenciaExists(int idCompetencia, int idRubro);
         public bool CreateCompetencia(Competencia competencia);

@@ -35,7 +35,9 @@ const NuevoEmpleo = () => {
       });
     }
   }, [error]); //llama empleoAction
-  lstCompes = lstCompes.map((e) => e.value);
+  if (lstCompes !== null) {
+    lstCompes = lstCompes.map((e) => e.value);
+  }
   const agregarEmpleo = (empleo) => dispatch(crearNuevoEmpleoAction(empleo));
   {
     listaClientes.map((cliente) => (
@@ -94,7 +96,7 @@ const NuevoEmpleo = () => {
   return (
     <div className="row justify-content-center">
       <div className="col-md-12">
-        <h3 className="title-decorator">Nuevo Empleo</h3>
+        <h3 className="title-decorator">Nueva vacante</h3>
         <div className="card">
           <div className="card-body">
             {/* {alerta ? <p className={alerta.clases}>{alerta.msg}</p>:null} */}

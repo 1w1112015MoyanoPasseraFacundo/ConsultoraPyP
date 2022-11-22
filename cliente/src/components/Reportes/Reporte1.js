@@ -97,13 +97,13 @@ const Reporte1 = () => {
   return (
     <div className="row">
       <div class="col-lg-6 col-md-6 col-sm-12 col-xs-24">
-        <h5 className="gx-mb-3">Empleos finalizados</h5>
+        <h5 className="gx-mb-3">Vacantes finalizadas</h5>
         <br />
         <Chart />
       </div>
       <div class="col-lg-6 col-md-6 col-sm-12 col-xs-24">
         <div className="gx-site-dash">
-          <h5 className="gx-mb-3"> Estado de empleos</h5>
+          <h5 className="gx-mb-3"> Estado de vacantes</h5>
           <br />
           <div className="row p-t-20">
             <div class="col-md-5">

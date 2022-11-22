@@ -64,17 +64,22 @@ const NuevoPago = () => {
   const submitNuevoPago = (e) => {
     e.preventDefault();
     let fecha = fechaPago.split("-")[0];
-    console.log(idEmpleo);
     //validar form
     if (
       montoPago === "" ||
       idCliente === 0 ||
       idEmpleo === 0 ||
       idEmpleo === "0" ||
-      fechaPago === "" ||
-      montoPago.includes("-")
+      fechaPago === ""
     ) {
       Swal.fire("Llene todos los campos obligatorios", "", "warning");
+      return;
+    } else if (
+      montoPago.includes("-") ||
+      montoPago.includes("e") ||
+      montoPago.length > 10
+    ) {
+      Swal.fire("Ingrese un monto correcto", "", "warning");
       return;
     } else if (fecha < 1900 || fecha > 2022) {
       Swal.fire("Ingrese un año válido", "", "warning");

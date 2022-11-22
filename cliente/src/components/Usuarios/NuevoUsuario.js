@@ -65,12 +65,12 @@ const NuevoUsuario = () => {
       documento.trim() === "" ||
       nombreUsuario.trim() === "" ||
       password.trim() === "" ||
-      fechaNacimiento.trim() === "" ||
-      documento.includes("-") ||
-      telefono.includes("-")
+      fechaNacimiento.trim() === ""
     ) {
       Swal.fire("Llene los campos obligatorios", "", "warning");
       return;
+    } else if (documento.includes("-") || documento.includes("e")) {
+      Swal.fire("Ingrese un documento correcto", "", "warning");
     } else if (documento.length !== 8) {
       Swal.fire("El campo documento sólo acepta ocho números", "", "warning");
       return;
@@ -78,7 +78,12 @@ const NuevoUsuario = () => {
       Swal.fire("Ingrese un año válido", "", "warning");
       return;
     } else if (telefono !== "") {
-      if (telefono.length < 7 || telefono.length > 20) {
+      if (
+        telefono.length < 5 ||
+        telefono.length > 20 ||
+        telefono.includes("-") ||
+        telefono.includes("e")
+      ) {
         Swal.fire("Ingrese un télefono correcto", "", "warning");
         return;
       }

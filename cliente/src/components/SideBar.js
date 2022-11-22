@@ -53,7 +53,7 @@ const SideBar = () => {
       </a>
       <a className="menu-item" onClick={emp}>
         <BsFolderFill />
-        &nbsp; Empleos
+        &nbsp; Vacantes
       </a>
       <a className="menu-item" onClick={cand}>
         <BsPeopleFill />

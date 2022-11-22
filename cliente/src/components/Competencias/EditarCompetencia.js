@@ -93,7 +93,6 @@ const EditarCompetencia = () => {
                     value={idRubro}
                     onChange={onChangeFormulario}
                   >
-                    <option value={0}>Seleccione...</option>
                     {listaRubros.map((rubro) => (
                       <option key={rubro.idRubro} value={rubro.idRubro}>
                         {rubro.nombre}

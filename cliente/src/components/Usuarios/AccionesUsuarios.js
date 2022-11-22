@@ -25,7 +25,7 @@ const AccionesUsuarios = ({ usuario }) => {
   const navigate = useNavigate();
   const confirmarEliminar = (idUsuario) => {
     Swal.fire({
-      title: "Está seguro que desea dar de baja este usuario?",
+      title: "¿Está seguro que desea dar de baja este usuario?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",

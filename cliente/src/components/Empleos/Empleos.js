@@ -98,7 +98,7 @@ const Empleos = () => {
                     type="text"
                     class="form-control"
                     value={nombre}
-                    placeholder="Descripción del empleo"
+                    placeholder="Descripción de la vacante"
                     name="nombre"
                     onChange={(e) => guardarNombre(e.target.value)}
                   />

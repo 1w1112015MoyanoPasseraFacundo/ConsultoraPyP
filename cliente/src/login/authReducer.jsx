@@ -3,10 +3,12 @@ import {
     LOGIN_EXITOSO,
     OBTENER_USUARIO,
     CERRAR_SESION,
+    CARGANDO,
   } from "../types/index";
   const initialState = {
     login: [],
     // token: Cookies.get("token"),
+    loading : false,
     token: null,
     autenticado: false,
     mensaje: null
@@ -20,7 +22,8 @@ import {
           ...state,
           autenticado: true,
           login: action.payload,
-          mensaje:null
+          mensaje:null,
+          loading:false,
         };
       case OBTENER_USUARIO:
         return {
@@ -38,6 +41,7 @@ import {
           login: null,
           autenticado: false,
           mensaje: action.payload,
+          loading:false,
         };
       case CERRAR_SESION:
         return {
@@ -46,6 +50,11 @@ import {
           login: null,
           autenticado: false,
           mensaje: null,
+        };
+        case CARGANDO:
+        return {
+          ...state,
+          loading: true,
         };
       default:
         return state;

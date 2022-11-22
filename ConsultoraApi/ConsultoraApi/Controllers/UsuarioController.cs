@@ -60,19 +60,20 @@ namespace ConsultoraApi.Controllers
         [HttpGet("{idUsuario:int}", Name = "GetUsuario")]
         public IActionResult GetUsuario(int idUsuario)
         {
-            var usuario = _uRepo.GetListUsuario(idUsuario);
-            var usuarioGetDto = new UpdateUsuarioDto();
-            var lstUsuario = new List<UpdateUsuarioDto>();
+            var usuario = _uRepo.GetUsuario(idUsuario);
+            //var usuario = _uRepo.GetListUsuario(idUsuario);;
+            //var lstUsuario = new List<UpdateUsuarioDto>();
             if (usuario == null)
             {
                 return NotFound();
             }
-            foreach (var item in usuario)
-            {
-                usuarioGetDto = _mapper.Map<UpdateUsuarioDto>(item);
-                lstUsuario.Add(usuarioGetDto);
-            }
-            return Ok(lstUsuario);
+            var usuarioGetDto = _mapper.Map<UpdateUsuarioDto>(usuario);
+            //foreach (var item in usuario)
+            //{
+            //    usuarioGetDto = _mapper.Map<UpdateUsuarioDto>(item);
+            //    lstUsuario.Add(usuarioGetDto);
+            //}
+            return Ok(usuarioGetDto);
         }
 
         [HttpGet("GetUsuariosFilter")]
@@ -183,7 +184,7 @@ namespace ConsultoraApi.Controllers
             usuario.FechaNacimiento = usuarioUpdateDto.FechaNacimiento;
             usuario.Mail = usuarioUpdateDto.Mail;
             usuario.IdGenero = usuarioUpdateDto.IdGenero;
-
+            usuario.Password = usuarioUpdateDto.Password;
 
             if (!_uRepo.UpdateUsuario(usuario))
             {

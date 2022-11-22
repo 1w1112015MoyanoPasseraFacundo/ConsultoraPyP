@@ -131,7 +131,7 @@ namespace ConsultoraApi.Controllers
                 BadRequest();
             }
             var compe = _mapper.Map<Competencia>(competenciaDto);
-            if (_uRepo.CompetenciaExists(competenciaDto.Nombre) && _uRepo.CompetenciaExists(competenciaDto.IdRubro))
+            if (_uRepo.CompetenciaExists(competenciaDto.Nombre, competenciaDto.IdRubro))
             {
                 return StatusCode(409, "Ya existe una habilidad idéntica");
             }

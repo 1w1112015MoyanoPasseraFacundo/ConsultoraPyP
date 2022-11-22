@@ -15,9 +15,13 @@ const Header = () => {
   const usuario = useSelector((state) => state.login.login);
 
   useEffect(() => {
-    dispatch(getUsuarioById(usuario.idUsuario));
     dispatch(usuarioAutenticado());
   }, [autenticado]);
+  console.log("USU", usuario);
+  useEffect(() => {
+    dispatch(getUsuarioById(usuario.idUsuario));
+  }, [usuario]);
+  console.log("AUTENTICADO", autenticado);
 
   const onSubmit = () => {
     try {
@@ -29,9 +33,12 @@ const Header = () => {
 
   const usuAEdit = useSelector((state) => state.usuarios.editar);
   const onEdit = () => {
-    let fecha = usuAEdit[0].fechaNacimiento.split("T");
-    usuAEdit[0].fechaNacimiento = fecha[0];
-    dispatch(obtenerUsuarioEditar(usuAEdit[0]));
+    console.log("USU A EDIT", usuAEdit);
+    if (usuAEdit.fechaNacimiento.includes("T")) {
+      let fecha = usuAEdit.fechaNacimiento.split("T");
+      usuAEdit.fechaNacimiento = fecha[0];
+    }
+    dispatch(obtenerUsuarioEditar(usuAEdit));
     navigate(`/usuarios/editar/${usuario.idUsuario}`);
   };
 
