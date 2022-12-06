@@ -16,7 +16,9 @@ const Reportes = () => {
 
   const [fecha1, guardarFecha1] = useState("");
   const [fecha2, guardarFecha2] = useState("");
-
+  function formatNumber(number) {
+    return new Intl.NumberFormat().format(number);
+  }
   useEffect(() => {
     //consultar api
 
@@ -44,7 +46,7 @@ const Reportes = () => {
     const data = pagos.map((elt) => [
       elt.nombreCliente,
       elt.nombreEmpleo,
-      "$" + elt.montoPago,
+      "$" + formatNumber(elt.montoPago),
       elt.fechaPago,
     ]);
 
@@ -69,7 +71,7 @@ const Reportes = () => {
       finalY,
       `   
           Total 
-         $${monto}`
+         $${formatNumber(monto)}`
     );
     doc.save("EmpleosPorFecha.pdf");
   };
@@ -169,7 +171,7 @@ const Reportes = () => {
                             {" "}
                             &nbsp;&nbsp;&nbsp;&nbsp; Total
                           </h5>
-                          <h3>$ {monto}</h3>
+                          <h3>$ {formatNumber(monto)}</h3>
                         </div>
                       </div>
                     </div>

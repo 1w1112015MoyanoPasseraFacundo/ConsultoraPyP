@@ -9,7 +9,9 @@ const AccionesReporte = ({ pago }) => {
     idPago,
     nombreEmpleo,
   } = pago;
-
+  function formatNumber(number) {
+    return new Intl.NumberFormat().format(number);
+  }
   return (
     <tr>
       <td>
@@ -19,7 +21,7 @@ const AccionesReporte = ({ pago }) => {
         <span>{nombreEmpleo}</span>
       </td>
       <td width="40px">
-        <span className="monto">${montoPago}</span>
+        <span className="monto">${formatNumber(montoPago)}</span>
       </td>
       <td align="center">
         <span>{fechaPago}</span>

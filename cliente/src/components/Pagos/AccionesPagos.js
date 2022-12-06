@@ -16,7 +16,9 @@ const AccionesPagos = ({ pago }) => {
     idPago,
     nombreEmpleo,
   } = pago;
-
+  function formatNumber(number) {
+    return new Intl.NumberFormat().format(number);
+  }
   const confirmarEliminar = (idPago) => {
     Swal.fire({
       title: "¿Está seguro que desea dar de baja este pago?",
@@ -45,7 +47,7 @@ const AccionesPagos = ({ pago }) => {
         <span>{nombreEmpleo}</span>
       </td>
       <td width="40px">
-        <span className="monto">${montoPago}</span>
+        <span className="monto">${formatNumber(montoPago)}</span>
       </td>
       <td align="center">
         <span>{fechaPago}</span>
