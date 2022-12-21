@@ -35,6 +35,11 @@ namespace ConsultoraApi.Repositorios
             {
                 lstPagos = lstPagos.Where(n => n.IdCliente == filterDto.idCliente && n.Estado==true).ToList();
             }
+            else
+            {
+                lstPagos = lstPagos.Where(n => n.Estado == true).ToList();
+
+            }
 
             return lstPagos;
         }

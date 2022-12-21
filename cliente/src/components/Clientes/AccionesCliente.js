@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import {
+  darDeAltaCliente,
   darDeBajaCliente,
   obtenerClienteEditar,
 } from "../../actions/clientesActions";
@@ -24,6 +25,22 @@ const AccionesCliente = ({ cliente }) => {
     }).then((result) => {
       if (result.isConfirmed) {
         dispatch(darDeBajaCliente(cliente.idCliente));
+      }
+    });
+  };
+
+  const confirmarAlta = (idCliente) => {
+    Swal.fire({
+      title: "¿Está seguro que desea dar de alta este cliente?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Confirmar",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(darDeAltaCliente(cliente.idCliente));
       }
     });
   };
@@ -73,7 +90,7 @@ const AccionesCliente = ({ cliente }) => {
             type="button"
             title="Dar de alta"
             className="btn btn-warning"
-            onClick={() => confirmarEliminar(idCliente)}
+            onClick={() => confirmarAlta(idCliente)}
           >
             <BsRecycle />
           </button>

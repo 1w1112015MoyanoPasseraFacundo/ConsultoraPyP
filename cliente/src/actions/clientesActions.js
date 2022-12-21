@@ -141,6 +141,20 @@ export function darDeBajaCliente(idCliente) {
   };
 }
 
+export function darDeAltaCliente(idCliente) {
+  return async (dispatch) => {
+    dispatch(obtenerClienteBaja(idCliente));
+    try {
+      await clienteAxios.put(`/Clientes/AltaCliente?idCliente=${idCliente}`);
+      dispatch(eliminarClienteExito());
+      Swal.fire("Dado de alta!", "El cliente ha sido dado de alta", "success");
+      window.location.reload();
+    } catch (error) {
+      dispatch(eliminarClienteError());
+    }
+  };
+}
+
 const obtenerClienteBaja = (id) => ({
   type: OBTENER_CLIENTE_ELIMINAR,
   payload: id,

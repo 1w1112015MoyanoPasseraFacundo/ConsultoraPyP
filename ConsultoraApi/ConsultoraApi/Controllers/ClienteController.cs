@@ -177,5 +177,30 @@ namespace ConsultoraApi.Controllers
             return Ok($"Cliente {cand.Nombre} dado de baja con exito");
         }
 
+        [HttpPut("AltaCliente")]
+        public IActionResult AltaCliente(int idCliente)
+        {
+            if (idCliente == null)
+            {
+                BadRequest();
+            }
+            var cand = _cRepo.GetCliente(idCliente);
+
+
+            if (cand == null)
+            {
+                return StatusCode(400, "El cliente no existe");
+            }
+
+            cand.IdEstado = 1;
+
+            if (!_cRepo.UpdateCliente(cand))
+            {
+                return StatusCode(500, $"Algo salió mal dando de alta el cliente {cand.Nombre}");
+            }
+
+            return Ok($"Cliente {cand.Nombre} dado de alta con exito");
+        }
+
     }
 }
